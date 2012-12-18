@@ -30,6 +30,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         return array(
             array(Type::TARRAY),
             array(Type::BIGINTEGER),
+            array(Type::BLOB),
             array(Type::BOOLEAN),
             array(Type::DATE),
             array(Type::DATETIME),

@@ -105,6 +105,56 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BIGINT(100)', $this->platform->getBigIntegerSQLDeclaration(array('length' => 100)));
     }
 
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The string type prefix length must be a strict positive integer.
+     */
+    public function testBlobSQLDeclarationWithInvalidNegativeValue()
+    {
+        $this->platform->getBlobSQLDeclaration(array('length' => -42));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     */
+    public function testBlobSQLDeclarationWithInvalidZeroValue()
+    {
+        $this->platform->getBlobSQLDeclaration(array('length' => 0));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     */
+    public function testBlobSQLDeclarationWithInvalidStringValue()
+    {
+        $this->platform->getBlobSQLDeclaration(array('length' => 'foo'));
+    }
+
+    public function testBlobSQLDeclarationWithoutLength()
+    {
+        $this->assertSame('LONGBLOB', $this->platform->getBlobSQLDeclaration());
+    }
+
+    public function testBlobSQLDeclarationForTinyBlob()
+    {
+        $this->assertSame('TINYBLOB', $this->platform->getBlobSQLDeclaration(array('length' => 255)));
+    }
+
+    public function testBlobSQLDeclarationForBlob()
+    {
+        $this->assertSame('BLOB', $this->platform->getBlobSQLDeclaration(array('length' => 65535)));
+    }
+
+    public function testBlobSQLDeclarationForMediumBlob()
+    {
+        $this->assertSame('MEDIUMBLOB', $this->platform->getBlobSQLDeclaration(array('length' => 16777215)));
+    }
+
+    public function testBlobSQLDeclarationForLongBlob()
+    {
+        $this->assertSame('LONGBLOB', $this->platform->getBlobSQLDeclaration(array('length' => 16777216)));
+    }
+
     public function testBooleanSQLDeclaration()
     {
         $this->assertSame('TINYINT(1)', $this->platform->getBooleanSQLDeclaration());

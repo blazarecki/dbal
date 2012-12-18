@@ -37,6 +37,14 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getBlobSQLDeclaration(array $options = array())
+    {
+        return 'BYTEA';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDateTimeSQLDeclaration(array $options = array())
     {
         return 'TIMESTAMP(0) WITHOUT TIME ZONE';
@@ -334,6 +342,7 @@ class PostgreSQLPlatform extends AbstractPlatform
             'bigint'           => Type::BIGINTEGER,
             'bigserial'        => Type::BIGINTEGER,
             'bool'             => Type::BOOLEAN,
+            'bytea'            => Type::BLOB,
             'char'             => Type::STRING,
             'date'             => Type::DATE,
             'datetime'         => Type::DATETIME,
