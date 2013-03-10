@@ -5,6 +5,7 @@
 /installer
 /composer.phar
 /composer.lock
+/bin
 /vendor
 
 # PHPUnit
