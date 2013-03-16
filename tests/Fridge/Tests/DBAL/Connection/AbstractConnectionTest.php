@@ -75,6 +75,29 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Asserts a query result.
+     *
+     * @param array $expectedResult The expected result.
+     * @param mixed $actualResult   The actual result.
+     */
+    protected function assertQueryResult(array $expectedResult, $actualResult)
+    {
+        $this->assertInternalType('array', $actualResult);
+
+        $this->assertCount(count($expectedResult), $actualResult);
+
+        foreach ($expectedResult as $key => $result) {
+            $this->assertArrayHasKey($key, $actualResult);
+
+            if (is_resource($actualResult[$key])) {
+                $actualResult[$key] = fread($actualResult[$key], strlen($result));
+            }
+
+            $this->assertEquals($result, $actualResult[$key]);
+        }
+    }
+
     public function testConnectAndClose()
     {
         $this->assertTrue($this->connection->connect());
@@ -134,79 +157,79 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithoutParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
-            $this->connection->executeQuery(self::$fixture->getQuery())->fetchAll(PDO::FETCH_ASSOC)
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
+            $this->connection->executeQuery(self::$fixture->getQuery())->fetch(PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithNamedParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithNamedParameters(),
                 self::$fixture->getNamedQueryParameters()
-            )->fetchAll(PDO::FETCH_ASSOC)
+            )->fetch(PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithNamedTypedParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithNamedParameters(),
                 self::$fixture->getNamedTypedQueryParameters(),
                 self::$fixture->getNamedQueryTypes()
-            )->fetchAll(PDO::FETCH_ASSOC)
+            )->fetch(PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPartialNamedTypedParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithNamedParameters(),
                 self::$fixture->getNamedTypedQueryParameters(),
                 self::$fixture->getPartialNamedQueryTypes()
-            )->fetchAll(PDO::FETCH_ASSOC)
+            )->fetch(PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPositionalParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithPositionalParameters(),
                 self::$fixture->getPositionalQueryParameters()
-            )->fetchAll(PDO::FETCH_ASSOC)
+            )->fetch(PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPositionalTypedParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithPositionalParameters(),
                 self::$fixture->getPositionalTypedQueryParameters(),
                 self::$fixture->getPositionalQueryTypes()
-            )->fetchAll(PDO::FETCH_ASSOC)
+            )->fetch(PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPartialPositionalTypedParameters()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithPositionalParameters(),
                 self::$fixture->getPositionalTypedQueryParameters(),
                 self::$fixture->getPartialPositionalQueryTypes()
-            )->fetchAll(PDO::FETCH_ASSOC)
+            )->fetch(PDO::FETCH_ASSOC)
         );
     }
 
@@ -286,19 +309,25 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchAll()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
-            $this->connection->fetchAll(
+        $expected = array(self::$fixture->getQueryResult());
+
+        $results = $this->connection->fetchAll(
                 self::$fixture->getQueryWithNamedParameters(),
                 self::$fixture->getNamedTypedQueryParameters(),
                 self::$fixture->getNamedQueryTypes()
-            )
         );
+
+        $this->assertCount(count($expected), $results);
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayHasKey($key, $results);
+            $this->assertQueryResult($value, $results[$key]);
+        }
     }
 
     public function testFetchArray()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array_values(self::$fixture->getQueryResult()),
             $this->connection->fetchArray(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -310,7 +339,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchAssoc()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             self::$fixture->getQueryResult(),
             $this->connection->fetchAssoc(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -543,9 +572,9 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testQuery()
     {
-        $this->assertEquals(
-            array(self::$fixture->getQueryResult()),
-            $this->connection->query(self::$fixture->getQuery())->fetchAll(PDO::FETCH_ASSOC)
+        $this->assertQueryResult(
+            self::$fixture->getQueryResult(),
+            $this->connection->query(self::$fixture->getQuery())->fetch(PDO::FETCH_ASSOC)
         );
     }
 

@@ -30,6 +30,9 @@ class MysqliConnection implements ConnectionInterface
     /** @var boolean */
     protected $inTransaction;
 
+    /** @var integer */
+    protected $maxAllowedPacket;
+
     /**
      * Mysqli connection constructor.
      *
@@ -145,7 +148,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function prepare($statement)
     {
-        return new MysqliStatement($statement, $this->mysqli);
+        return new MysqliStatement($statement, $this);
     }
 
     /**
@@ -186,5 +189,22 @@ class MysqliConnection implements ConnectionInterface
     public function errorInfo()
     {
         return array($this->mysqli->errno, $this->mysqli->errno, $this->mysqli->error);
+    }
+
+    /**
+     * Gets the MySQL max allowed packet constant.
+     *
+     * @link http://dev.mysql.com/doc/refman/5.0/en/program-variables.html
+     *
+     * @return integer The max allowed packet.
+     */
+    public function getMaxAllowedPacket()
+    {
+        if ($this->maxAllowedPacket === null) {
+            $result = $this->mysqli->query('SELECT @@global.max_allowed_packet')->fetch_array(MYSQLI_NUM);
+            $this->maxAllowedPacket = (int) $result[0];
+        }
+
+        return $this->maxAllowedPacket;
     }
 }

@@ -51,6 +51,16 @@ class PlatformException extends Exception
     }
 
     /**
+     * Gets the "INVALID STRING TYPE PREFIX LENGTH" exception.
+     *
+     * @return \Fridge\DBAL\Exception\PlatformException The "INVALID STRING TYPE PREFIX LENGTH" exception.
+     */
+    public static function invalidStringTypePrefixLength()
+    {
+        return new static('The string type prefix length must be a strict positive integer.');
+    }
+
+    /**
      * Gets the "MAPPED TYPE ALREADY EXISTS" exception.
      *
      * @param string $type The mapped type.

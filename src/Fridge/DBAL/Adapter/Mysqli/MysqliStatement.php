@@ -13,7 +13,6 @@ namespace Fridge\DBAL\Adapter\Mysqli;
 
 use \ArrayIterator,
     \IteratorAggregate,
-    \mysqli,
     \PDO;
 
 use Fridge\DBAL\Adapter\StatementInterface,
@@ -32,12 +31,15 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
         PDO::PARAM_NULL => 's',
         PDO::PARAM_INT  => 'i',
         PDO::PARAM_STR  => 's',
-        PDO::PARAM_LOB  => 's',
+        PDO::PARAM_LOB  => 'b',
         PDO::PARAM_BOOL => 'i',
     );
 
+    /** @var \Fridge\DBAL\Adapter\Mysqli\MysqliConnection */
+    protected $connection;
+
     /** @var \mysqli_stmt */
-    protected $mysqli;
+    protected $mysqliStatement;
 
     /** @var \Fridge\DBAL\Adapter\Mysqli\StatementRewriter */
     protected $statementRewriter;
@@ -63,19 +65,20 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     /**
      * Mysqli statement constructor.
      *
-     * @param string  $statement  The SQL statement.
-     * @param \mysqli $connection The mysqli connection.
+     * @param string                                       $statement  The SQL statement.
+     * @param \Fridge\DBAL\Adapter\Mysqli\MysqliConnection $connection The mysqli connection.
      *
      * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be prepared.
      */
-    public function __construct($statement, mysqli $connection)
+    public function __construct($statement, MysqliConnection $connection)
     {
         $this->statementRewriter = new StatementRewriter($statement);
 
-        $this->mysqli = $connection->prepare($this->statementRewriter->getRewritedStatement());
+        $this->connection = $connection;
+        $this->mysqliStatement = $connection->getMysqli()->prepare($this->statementRewriter->getRewritedStatement());
 
-        if ($this->mysqli === false) {
-            throw new MysqliException($connection->error, $connection->errno);
+        if ($this->mysqliStatement === false) {
+            throw new MysqliException($connection->getMysqli()->error, $connection->getMysqli()->errno);
         }
 
         $this->defaultFetchMode = PDO::FETCH_BOTH;
@@ -90,9 +93,9 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      *
      * @return \mysqli_stmt The mysqli low-level statement.
      */
-    public function getMysqli()
+    public function getMysqliStatement()
     {
-        return $this->mysqli;
+        return $this->mysqliStatement;
     }
 
     /**
@@ -157,11 +160,11 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
             $this->bindParameters();
         }
 
-        if ($this->mysqli->execute() === false) {
-            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
+        if ($this->mysqliStatement->execute() === false) {
+            throw new MysqliException($this->mysqliStatement->error, $this->mysqliStatement->errno);
         }
 
-        $this->mysqli->store_result();
+        $this->mysqliStatement->store_result();
 
         if (empty($this->resultFields)) {
             $this->bindResultFields();
@@ -180,10 +183,10 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     public function rowCount()
     {
         if (!empty($this->resultFields)) {
-            return $this->mysqli->num_rows;
+            return $this->mysqliStatement->num_rows;
         }
 
-        return $this->mysqli->affected_rows;
+        return $this->mysqliStatement->affected_rows;
     }
 
     /**
@@ -208,10 +211,10 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function fetch($fetchMode = PDO::FETCH_BOTH)
     {
-        $fetchResult = $this->mysqli->fetch();
+        $fetchResult = $this->mysqliStatement->fetch();
 
         if ($fetchResult === false) {
-            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
+            throw new MysqliException($this->mysqliStatement->error, $this->mysqliStatement->errno);
         }
 
         if ($fetchResult === null) {
@@ -278,7 +281,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function columnCount()
     {
-        return $this->mysqli->field_count;
+        return $this->mysqliStatement->field_count;
     }
 
     /**
@@ -286,7 +289,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function closeCursor()
     {
-        $this->mysqli->free_result();
+        $this->mysqliStatement->free_result();
 
         return true;
     }
@@ -296,7 +299,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function errorCode()
     {
-        return $this->mysqli->errno;
+        return $this->mysqliStatement->errno;
     }
 
     /**
@@ -304,7 +307,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function errorInfo()
     {
-        return array($this->mysqli->errno, $this->mysqli->errno, $this->mysqli->error);
+        return array($this->mysqliStatement->errno, $this->mysqliStatement->errno, $this->mysqliStatement->error);
     }
 
     /**
@@ -350,15 +353,31 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     protected function bindParameters()
     {
-        $bindedParameterReferences = array();
-
-        $bindedParameterReferences[0] = implode('', $this->bindedTypes);
+        $bindedParameterReferences = array(implode('', $this->bindedTypes));
+        $lobParameters = array();
+        $null = null;
 
         foreach ($this->bindedParameters as $key => &$parameter) {
-            $bindedParameterReferences[$key] = &$parameter;
+            if (isset($this->bindedTypes[$key - 1]) && ($this->bindedTypes[$key - 1] === self::$mappedTypes[PDO::PARAM_LOB])) {
+                $lobParameters[$key - 1] = $parameter;
+                $bindedParameterReferences[$key] = &$null;
+            } else {
+                $bindedParameterReferences[$key] = &$parameter;
+            }
         }
 
-        call_user_func_array(array($this->mysqli, 'bind_param'), $bindedParameterReferences);
+        call_user_func_array(array($this->mysqliStatement, 'bind_param'), $bindedParameterReferences);
+
+        foreach ($lobParameters as $key => $lobParameter) {
+            rewind($lobParameter);
+
+            while (!feof($lobParameter)) {
+                $this->mysqliStatement->send_long_data(
+                    $key,
+                    fread($lobParameter, $this->connection->getMaxAllowedPacket())
+                );
+            }
+        }
     }
 
     /**
@@ -366,7 +385,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     protected function bindResultFields()
     {
-        $resultMetadata = $this->mysqli->result_metadata();
+        $resultMetadata = $this->mysqliStatement->result_metadata();
 
         if ($resultMetadata !== false) {
             $this->resultFields = array();
@@ -391,7 +410,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
             $resultReferences[$key] = &$result;
         }
 
-        call_user_func_array(array($this->mysqli, 'bind_result'), $resultReferences);
+        call_user_func_array(array($this->mysqliStatement, 'bind_result'), $resultReferences);
 
         $this->result = $resultReferences;
     }

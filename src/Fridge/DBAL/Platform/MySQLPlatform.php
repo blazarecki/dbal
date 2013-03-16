@@ -11,7 +11,8 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema\Diff\ColumnDiff,
+use Fridge\DBAL\Exception\PlatformException,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
     Fridge\DBAL\Schema\Diff\SchemaDiff,
     Fridge\DBAL\Schema\ForeignKey,
     Fridge\DBAL\Schema\Index,
@@ -45,25 +46,21 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getBlobSQLDeclaration(array $options = array())
+    {
+        $length = isset($options['length']) ? $options['length'] : null;
+
+        return $this->getStringTypePrefix($length).parent::getBlobSQLDeclaration($options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getClobSQLDeclaration(array $options = array())
     {
         $length = isset($options['length']) ? $options['length'] : null;
 
-        if ($length !== null) {
-            if ($length <= 255) {
-                return 'TINYTEXT';
-            }
-
-            if ($length <= 65535) {
-                return parent::getClobSQLDeclaration($options);
-            }
-
-            if ($length <= 16777215) {
-                return 'MEDIUMTEXT';
-            }
-        }
-
-        return 'LONGTEXT';
+        return $this->getStringTypePrefix($length).parent::getClobSQLDeclaration($options);
     }
 
     /**
@@ -327,6 +324,7 @@ class MySQLPlatform extends AbstractPlatform
     {
         $this->mappedTypes = array(
             'bigint'     => Type::BIGINTEGER,
+            'blob'       => Type::BLOB,
             'char'       => Type::STRING,
             'date'       => Type::DATE,
             'datetime'   => Type::DATETIME,
@@ -335,7 +333,9 @@ class MySQLPlatform extends AbstractPlatform
             'float'      => Type::FLOAT,
             'int'        => Type::INTEGER,
             'integer'    => Type::INTEGER,
+            'longblob'   => Type::BLOB,
             'longtext'   => Type::TEXT,
+            'mediumblob' => Type::BLOB,
             'mediumint'  => Type::INTEGER,
             'mediumtext' => Type::TEXT,
             'numeric'    => Type::DECIMAL,
@@ -345,6 +345,7 @@ class MySQLPlatform extends AbstractPlatform
             'text'       => Type::TEXT,
             'time'       => Type::TIME,
             'timestamp'  => Type::DATETIME,
+            'tinyblob'   => Type::BLOB,
             'tinyint'    => Type::BOOLEAN,
             'tinytext'   => Type::TEXT,
             'varchar'    => Type::STRING,
@@ -380,5 +381,44 @@ class MySQLPlatform extends AbstractPlatform
         }
 
         return $sql;
+    }
+
+    /**
+     * Gets the string type prefix for the given length.
+     *
+     * @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
+     *
+     * @param null|integer $length The length of the type.
+     * 
+     * @throws \Fridge\DBAL\Exception\PlatformException If the length is not a strict positive integer.
+     *
+     * @return string The prefix.
+     */
+    protected function getStringTypePrefix($length = null)
+    {
+        if ($length === null) {
+            return 'LONG';
+        }
+
+        if (!is_int($length) || ($length <= 0)) {
+            throw PlatformException::invalidStringTypePrefixLength();
+        }
+
+        $prefixLimits = array(
+            'TINY'   => 255,
+            ''       => 65535,
+            'MEDIUM' => 16777215,
+        );
+
+        $stringTypePrefix = 'LONG';
+        foreach ($prefixLimits as $prefix => $limit) {
+            if ($length <= $limit) {
+                $stringTypePrefix = $prefix;
+
+                break;
+            }
+        }
+
+        return $stringTypePrefix;
     }
 }

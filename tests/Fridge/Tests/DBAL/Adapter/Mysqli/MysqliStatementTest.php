@@ -33,7 +33,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     protected $statement;
 
     /** @var \mysqli */
-    protected $mysqli;
+    protected $connection;
 
     /**
      * {@inheritdoc}
@@ -68,9 +68,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
         self::$fixture->createDatas();
 
         $settings = self::$fixture->getSettings();
-        $connection = new MysqliConnection($settings, $settings['username'], $settings['password']);
-
-        $this->mysqli = $connection->getMysqli();
+        $this->connection = new MysqliConnection($settings, $settings['username'], $settings['password']);
     }
 
     /**
@@ -79,14 +77,14 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         unset($this->statement);
-        unset($this->mysqli);
+        unset($this->connection);
     }
 
     public function testStatementWithValidStatement()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
 
-        $this->assertInstanceOf('\mysqli_stmt', $this->statement->getMysqli());
+        $this->assertInstanceOf('\mysqli_stmt', $this->statement->getMysqliStatement());
     }
 
     /**
@@ -94,12 +92,12 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
      */
     public function testStatementWithInvalidStatement()
     {
-        $this->statement = new MysqliStatement('foo', $this->mysqli);
+        $this->statement = new MysqliStatement('foo', $this->connection);
     }
 
     public function testExecuteWithoutParameters()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
 
         $this->assertTrue($this->statement->execute());
     }
@@ -109,7 +107,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithInvalidStatement()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->fetch();
     }
 
@@ -119,7 +117,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithInvalidHydratation()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->statement->fetch(PDO::FETCH_BOUND);
@@ -127,7 +125,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchWithNumHydratation()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertEquals(array_values(self::$fixture->getQueryResult()), $this->statement->fetch(PDO::FETCH_NUM));
@@ -135,7 +133,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchWithAssocHydratation()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertEquals(self::$fixture->getQueryResult(), $this->statement->fetch(PDO::FETCH_ASSOC));
@@ -143,7 +141,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchWithBothHydratation()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $expected = self::$fixture->getQueryResult();
@@ -154,7 +152,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchWithoutHydratation()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $expected = self::$fixture->getQueryResult();
@@ -165,7 +163,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchColumn()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $queryResult = array_values(self::$fixture->getQueryResult());
@@ -177,7 +175,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     {
         self::$fixture->dropDatas();
 
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertFalse($this->statement->fetchColumn());
@@ -185,7 +183,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchAll()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertEquals(array(self::$fixture->getQueryResult()), $this->statement->fetchAll(PDO::FETCH_ASSOC));
@@ -197,7 +195,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
      */
     public function testBindParameterWithInvalidType()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->connection);
         $parameter = 'foo';
 
         $this->statement->bindParam(1, $parameter, 'foo');
@@ -205,7 +203,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindPositionalParameters()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->connection);
 
         $parameters = self::$fixture->getPositionalQueryParameters();
 
@@ -219,7 +217,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindNamedParametersWithColon()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->connection);
 
         $parameters = self::$fixture->getNamedQueryParameters();
 
@@ -233,7 +231,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindNamedParametersWithoutColon()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->connection);
 
         $parameters = self::$fixture->getNamedQueryParameters();
 
@@ -245,9 +243,29 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::$fixture->getQueryResult(), $this->statement->fetch(PDO::FETCH_ASSOC));
     }
 
+    public function testBindLobParameter()
+    {
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->connection);
+
+        $parameters = self::$fixture->getNamedQueryParameters();
+
+        foreach ($parameters as $parameter => &$value) {
+            if ($parameter === 'cblob') {
+                $resource = fopen('data://text/plain;base64,'.base64_encode($value), 'r');
+
+                $this->assertTrue($this->statement->bindParam($parameter, $resource, PDO::PARAM_LOB));
+            } else {
+                $this->assertTrue($this->statement->bindParam($parameter, $value));
+            }
+        }
+
+        $this->assertTrue($this->statement->execute());
+        $this->assertEquals(self::$fixture->getQueryResult(), $this->statement->fetch(PDO::FETCH_ASSOC));
+    }
+
     public function testBindPositionalValues()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->connection);
 
         foreach (self::$fixture->getPositionalQueryParameters() as $parameter => $value) {
             $this->assertTrue($this->statement->bindValue($parameter + 1, $value));
@@ -259,7 +277,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindNamedValues()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->connection);
 
         foreach (self::$fixture->getNamedQueryParameters() as $parameter => $value) {
             $this->assertTrue($this->statement->bindValue(':'.$parameter, $value));
@@ -271,7 +289,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithPositionalParameters()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->connection);
 
         $this->assertTrue($this->statement->execute(self::$fixture->getPositionalQueryParameters()));
         $this->assertEquals(self::$fixture->getQueryResult(), $this->statement->fetch(PDO::FETCH_ASSOC));
@@ -279,7 +297,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithNamedParameters()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithNamedParameters(), $this->connection);
 
         $parameters = array();
         foreach (self::$fixture->getNamedQueryParameters() as $key => $parameter) {
@@ -295,13 +313,13 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteWithInvalidParameters()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQueryWithPositionalParameters(), $this->connection);
         $this->statement->execute();
     }
 
     public function testRownCountWithQueryStatement()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertSame(1, $this->statement->rowCount());
@@ -309,7 +327,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testRowCountWithQueryUpdate()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getUpdateQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getUpdateQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertSame(1, $this->statement->rowCount());
@@ -317,7 +335,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testSetFetchMode()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->setFetchMode(PDO::FETCH_ASSOC);
         $this->statement->execute();
 
@@ -326,7 +344,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testColumnCount()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertSame(count(self::$fixture->getQueryResult()), $this->statement->columnCount());
@@ -334,7 +352,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testCloseCursor()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertTrue($this->statement->closeCursor());
@@ -342,7 +360,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testErrorCode()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
 
         try {
             $this->statement->fetch();
@@ -355,7 +373,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testErrorInfo()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
 
         try {
             $this->statement->fetch();
@@ -377,7 +395,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 
     public function testIterator()
     {
-        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
+        $this->statement = new MysqliStatement(self::$fixture->getQuery(), $this->connection);
         $this->statement->execute();
 
         $this->assertInstanceOf('\ArrayIterator', $this->statement->getIterator());
