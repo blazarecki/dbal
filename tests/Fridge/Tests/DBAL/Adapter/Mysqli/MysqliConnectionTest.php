@@ -274,6 +274,9 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpConnection();
 
-        $this->assertSame(16777216, $this->connection->getMaxAllowedPacket());
+        $maxAllowedPacket = $this->connection->getMaxAllowedPacket();
+
+        $this->assertInternalType('int', $maxAllowedPacket);
+        $this->assertGreaterThan(0, $maxAllowedPacket);
     }
 }
