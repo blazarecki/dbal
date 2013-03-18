@@ -34,7 +34,11 @@ class MySQLFixture extends AbstractFixture
      */
     public function getViews()
     {
-        $sql = 'select `dbal_test`.`tcolumns`.`cinteger` AS `cinteger` from `dbal_test`.`tcolumns`';
+        $sql = sprintf(
+            'select `%s`.`tcolumns`.`cinteger` AS `cinteger` from `%s`.`tcolumns`',
+            $this->settings['dbname'],
+            $this->settings['dbname']
+        );
 
         return array(new View('vcolumns', $sql));
     }

@@ -55,20 +55,32 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
     public function testCreateView()
     {
+        $settings = self::$fixture->getSettings();
+
         $table = $this->oldSchema->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
         $this->setUpSchema();
 
-        $this->newSchema->createView('vfoo', 'select `dbal_test`.`foo`.`foo` AS `foo` from `dbal_test`.`foo`');
+        $this->newSchema->createView(
+            'vfoo',
+            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+        );
 
         $this->assertAlteration();
     }
 
     public function testRenameView()
     {
+        $settings = self::$fixture->getSettings();
+
         $table = $this->oldSchema->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
-        $this->oldSchema->createView('vfoo', 'select `dbal_test`.`foo`.`foo` AS `foo` from `dbal_test`.`foo`');
+
+        $this->oldSchema->createView(
+            'vfoo',
+            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+        );
+
         $this->setUpSchema();
 
         $this->newSchema->renameView('vfoo', 'vbar');
@@ -78,15 +90,26 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
     public function testAlterView()
     {
+        $settings = self::$fixture->getSettings();
+
         $table = $this->oldSchema->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
         $table->createColumn('bar', Type::STRING, array('length' => 50));
-        $view = $this->oldSchema->createView('vfoo', 'select `dbal_test`.`foo`.`foo` AS `foo` from `dbal_test`.`foo`');
+
+        $view = $this->oldSchema->createView(
+            'vfoo',
+            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+        );
+
         $this->setUpSchema();
 
         $this->newSchema
             ->getView($view->getName())
-            ->setSQL('select `dbal_test`.`foo`.`bar` AS `bar` from `dbal_test`.`foo`');
+            ->setSQL(sprintf(
+                'select `%s`.`foo`.`bar` AS `foo` from `%s`.`foo`',
+                $settings['dbname'],
+                $settings['dbname']
+            ));
 
         $this->assertAlteration();
     }
