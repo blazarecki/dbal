@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Driver\PDO;
+namespace Fridge\DBAL\Driver;
 
 use Fridge\DBAL\Adapter\PDO\PDOConnection,
     Fridge\DBAL\Driver\AbstractDriver as BaseDriver;
@@ -21,7 +21,7 @@ use Fridge\DBAL\Adapter\PDO\PDOConnection,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractDriver extends BaseDriver
+abstract class AbstractPDODriver extends BaseDriver
 {
     /**
      * {@inheritdoc}

@@ -42,8 +42,8 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
     static public function validDriverClassProvider()
     {
         return array(
-            array('Fridge\DBAL\Driver\PDO\MySQLDriver'),
-            array('Fridge\DBAL\Driver\PDO\PostgreSQLDriver'),
+            array('Fridge\DBAL\Driver\PDOMySQLDriver'),
+            array('Fridge\DBAL\Driver\PDOPostgreSQLDriver'),
             array('Fridge\DBAL\Driver\MysqliDriver'),
         );
     }
