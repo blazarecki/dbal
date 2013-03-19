@@ -9,25 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Driver\PDO;
+namespace Fridge\DBAL\Driver;
 
 use Fridge\DBAL\Connection\ConnectionInterface,
-    Fridge\DBAL\Platform\PostgreSQLPlatform,
-    Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager;
+    Fridge\DBAL\Platform\MySQLPlatform,
+    Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 
 /**
- * PDO PostgreSQL driver.
+ * PDO MySQL driver.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PostgreSQLDriver extends AbstractDriver
+class PDOMySQLDriver extends AbstractPDODriver
 {
     /**
      * {@inheritdoc}
      */
     protected function createPlatform()
     {
-        return new PostgreSQLPlatform();
+        return new MySQLPlatform();
     }
 
     /**
@@ -35,7 +35,7 @@ class PostgreSQLDriver extends AbstractDriver
      */
     protected function createSchemaManager(ConnectionInterface $connection)
     {
-        return new PostgreSQLSchemaManager($connection);
+        return new MySQLSchemaManager($connection);
     }
 
     /**
@@ -57,6 +57,14 @@ class PostgreSQLDriver extends AbstractDriver
             $dsnOptions[] = 'port='.$parameters['port'];
         }
 
-        return 'pgsql:'.implode(';', $dsnOptions);
+        if (isset($parameters['unix_socket']) && !empty($parameters['unix_socket'])) {
+            $dsnOptions[] = 'unix_socket='.$parameters['unix_socket'];
+        }
+
+        if (isset($parameters['charset']) && !empty($parameters['charset'])) {
+            $dsnOptions[] = 'charset='.$parameters['charset'];
+        }
+
+        return 'mysql:'.implode(';', $dsnOptions);
     }
 }

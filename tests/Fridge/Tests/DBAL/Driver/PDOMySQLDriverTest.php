@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Driver;
 
-use Fridge\DBAL\Driver\PDO\MySQLDriver,
+use Fridge\DBAL\Driver\PDOMySQLDriver,
     Fridge\Tests\PHPUnitUtility,
     Fridge\Tests\Fixture\MySQLFixture;
 
@@ -42,7 +42,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     protected function setUp()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            $this->driver = new MySQLDriver();
+            $this->driver = new PDOMySQLDriver();
         }
 
         parent::setUp();
