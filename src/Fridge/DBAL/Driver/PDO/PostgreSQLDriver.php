@@ -25,25 +25,17 @@ class PostgreSQLDriver extends AbstractDriver
     /**
      * {@inheritdoc}
      */
-    public function getPlatform()
+    protected function createPlatform()
     {
-        if ($this->platform === null) {
-            $this->platform = new PostgreSQLPlatform();
-        }
-
-        return $this->platform;
+        return new PostgreSQLPlatform();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSchemaManager(ConnectionInterface $connection)
+    protected function createSchemaManager(ConnectionInterface $connection)
     {
-        if (($this->schemaManager === null) || ($this->schemaManager->getConnection() !== $connection)) {
-            $this->schemaManager = new PostgreSQLSchemaManager($connection);
-        }
-
-        return $this->schemaManager;
+        return new PostgreSQLSchemaManager($connection);
     }
 
     /**
