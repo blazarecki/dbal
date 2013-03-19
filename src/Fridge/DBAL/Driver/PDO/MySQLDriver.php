@@ -25,25 +25,17 @@ class MySQLDriver extends AbstractDriver
     /**
      * {@inheritdoc}
      */
-    public function getPlatform()
+    protected function createPlatform()
     {
-        if ($this->platform === null) {
-            $this->platform = new MySQLPlatform();
-        }
-
-        return $this->platform;
+        return new MySQLPlatform();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSchemaManager(ConnectionInterface $connection)
+    protected function createSchemaManager(ConnectionInterface $connection)
     {
-        if (($this->schemaManager === null) || ($this->schemaManager->getConnection() !== $connection)) {
-            $this->schemaManager = new MySQLSchemaManager($connection);
-        }
-
-        return $this->schemaManager;
+        return $this->schemaManager = new MySQLSchemaManager($connection);
     }
 
     /**

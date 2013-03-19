@@ -11,6 +11,8 @@
 
 namespace Fridge\DBAL\Driver;
 
+use Fridge\DBAL\Connection\ConnectionInterface;
+
 /**
  * The abstract driver wraps the platform and the schema manager.
  *
@@ -23,4 +25,44 @@ abstract class AbstractDriver implements DriverInterface
 
     /** @var \Fridge\DBAL\SchemaManager\SchemaManagerInterface */
     protected $schemaManager;
+
+    /**
+     * Creates a platform.
+     *
+     * @return \Fridge\DBAL\Platform\PlatformInterface The platform.
+     */
+    abstract protected function createPlatform();
+
+    /**
+     * Creates a schema manager.
+     *
+     * @param \Fridge\DBAL\Connection\ConnectionInterface The connection.
+     *
+     * @return \Fridge\DBAL\SchemaManager\SchemaManagerInterface The schema manager.
+     */
+    abstract protected function createSchemaManager(ConnectionInterface $connection);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPlatform()
+    {
+        if ($this->platform === null) {
+            $this->platform = $this->createPlatform();
+        }
+
+        return $this->platform;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSchemaManager(ConnectionInterface $connection)
+    {
+        if (($this->schemaManager === null) || ($this->schemaManager->getConnection() !== $connection)) {
+            $this->schemaManager = $this->createSchemaManager($connection);
+        }
+
+        return $this->schemaManager;
+    }
 }
