@@ -9,22 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter\Mysqli;
+namespace Fridge\DBAL\Driver\Statement;
 
 use \ArrayIterator,
     \IteratorAggregate,
     \PDO;
 
-use Fridge\DBAL\Adapter\StatementInterface,
-    Fridge\DBAL\Adapter\StatementRewriter,
-    Fridge\DBAL\Exception\Adapter\MysqliException;
+use Fridge\DBAL\Driver\Connection\MysqliConnection,
+    Fridge\DBAL\Exception\MysqliException;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliStatement implements StatementInterface, IteratorAggregate
+class MysqliStatement implements NativeStatementInterface, IteratorAggregate
 {
     /** @var array */
     static protected $mappedTypes = array(
@@ -35,13 +34,13 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
         PDO::PARAM_BOOL => 'i',
     );
 
-    /** @var \Fridge\DBAL\Adapter\Mysqli\MysqliConnection */
+    /** @var \Fridge\DBAL\Driver\Connection\MysqliConnection */
     protected $connection;
 
     /** @var \mysqli_stmt */
     protected $mysqliStatement;
 
-    /** @var \Fridge\DBAL\Adapter\Mysqli\StatementRewriter */
+    /** @var \Fridge\DBAL\Driver\Statement\StatementRewriter */
     protected $statementRewriter;
 
     /** @var integer */
@@ -65,10 +64,10 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     /**
      * Mysqli statement constructor.
      *
-     * @param string                                       $statement  The SQL statement.
-     * @param \Fridge\DBAL\Adapter\Mysqli\MysqliConnection $connection The mysqli connection.
+     * @param string                                          $statement  The SQL statement.
+     * @param \Fridge\DBAL\Driver\Connection\MysqliConnection $connection The mysqli connection.
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be prepared.
+     * @throws \Fridge\DBAL\Exception\MysqliException If the statement can not be prepared.
      */
     public function __construct($statement, MysqliConnection $connection)
     {
@@ -148,7 +147,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      * To retrieve the field name fetched, the wrapper will bind the result fields on the resultFields property and
      * then, bind the result on the result property according to the binded result fields.
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be executed.
+     * @throws \Fridge\DBAL\Exception\MysqliException If the statement can not be executed.
      */
     public function execute($parameters = array())
     {
@@ -206,8 +205,8 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be fetched or if the fetch mode
-     *                                                        is not supported.
+     * @throws \Fridge\DBAL\Exception\MysqliException If the statement can not be fetched or if the fetch mode is not
+     *                                                supported.
      */
     public function fetch($fetchMode = PDO::FETCH_BOTH)
     {
@@ -315,7 +314,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      *
      * @param integer $type The type (PDO::PARAM_*).
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the mapped type does not exist.
+     * @throws \Fridge\DBAL\Exception\MysqliException If the mapped type does not exist.
      *
      * @return string The mapped type.
      */

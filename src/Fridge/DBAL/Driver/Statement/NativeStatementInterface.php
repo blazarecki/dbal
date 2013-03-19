@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter;
+namespace Fridge\DBAL\Driver\Statement;
 
 use \PDO;
 
@@ -20,7 +20,7 @@ use \PDO;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface StatementInterface
+interface NativeStatementInterface
 {
     /**
      * Binds a parameter to a PHP variable.

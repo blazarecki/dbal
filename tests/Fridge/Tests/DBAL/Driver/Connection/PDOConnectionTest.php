@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Adapter\PDO;
+namespace Fridge\Tests\DBAL\Driver\Connection;
 
 use \PDO;
 
-use Fridge\DBAL\Adapter\PDO\PDOConnection,
+use Fridge\DBAL\Driver\Connection\PDOConnection,
     Fridge\Tests\PHPUnitUtility,
     Fridge\Tests\Fixture\MySQLFixture;
 
 /**
- * PDO connection adapter tests.
+ * PDO connection tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -27,7 +27,7 @@ class PDOConnectionTest extends \PHPUnit_Framework_TestCase
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
     static protected $fixture;
 
-    /** @var \Fridge\DBAL\Adapter\PDO\Connection */
+    /** @var \Fridge\DBAL\Driver\Connection\PDOConnection */
     protected $connection;
 
     /**
@@ -85,12 +85,12 @@ class PDOConnectionTest extends \PHPUnit_Framework_TestCase
         unset($this->connection);
     }
 
-    public function testAttribute()
+    public function testAttributes()
     {
         $this->assertSame(PDO::ERRMODE_EXCEPTION, $this->connection->getAttribute(PDO::ATTR_ERRMODE));
 
         $this->assertSame(
-            array('Fridge\DBAL\Adapter\PDO\PDOStatement', array()),
+            array('Fridge\DBAL\Driver\Statement\PDOStatement', array()),
             $this->connection->getAttribute(PDO::ATTR_STATEMENT_CLASS)
         );
     }

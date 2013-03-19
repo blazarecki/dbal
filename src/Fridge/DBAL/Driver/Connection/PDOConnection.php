@@ -9,18 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter\PDO;
+namespace Fridge\DBAL\Driver\Connection;
 
 use \PDO;
-
-use Fridge\DBAL\Adapter\ConnectionInterface;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOConnection extends PDO implements ConnectionInterface
+class PDOConnection extends PDO implements NativeConnectionInterface
 {
     /**
      * Creates a PDO connection.
@@ -35,6 +33,6 @@ class PDOConnection extends PDO implements ConnectionInterface
         parent::__construct($dsn, $username, $password, $driverOptions);
 
         $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
-        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('Fridge\DBAL\Adapter\PDO\PDOStatement', array()));
+        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('Fridge\DBAL\Driver\Statement\PDOStatement', array()));
     }
 }

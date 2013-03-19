@@ -69,7 +69,7 @@ abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
         $settings = self::$fixture->getSettings();
 
         $this->assertInstanceOf(
-            'Fridge\DBAL\Adapter\ConnectionInterface',
+            'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
             $this->driver->connect($settings, $settings['username'], $settings['password'])
         );
     }

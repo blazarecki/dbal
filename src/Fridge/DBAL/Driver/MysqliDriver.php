@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Driver;
 
-use Fridge\DBAL\Adapter\Mysqli\MysqliConnection,
-    Fridge\DBAL\Connection\ConnectionInterface,
+use Fridge\DBAL\Connection\ConnectionInterface,
+    Fridge\DBAL\Driver\Connection\MysqliConnection,
     Fridge\DBAL\Platform\MySQLPlatform,
     Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 

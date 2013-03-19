@@ -9,18 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter\PDO;
+namespace Fridge\DBAL\Driver\Statement;
 
 use \PDOStatement as BaseStatement;
-
-use Fridge\DBAL\Adapter\StatementInterface;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOStatement extends BaseStatement implements StatementInterface
+class PDOStatement extends BaseStatement implements NativeStatementInterface
 {
     /**
      * Disabeld constructor.
