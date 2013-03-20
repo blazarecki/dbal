@@ -11,9 +11,7 @@
 
 namespace Fridge\Tests\DBAL;
 
-use Fridge\DBAL\Configuration,
-    Monolog\Logger,
-    Symfony\Component\EventDispatcher\EventDispatcher;
+use Fridge\DBAL\Configuration;
 
 /**
  * Configuration test.
@@ -22,12 +20,11 @@ use Fridge\DBAL\Configuration,
  */
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDefaultLogger()
+    public function testDefaultDebug()
     {
         $configuration = new Configuration();
 
-        $this->assertInstanceOf('Monolog\Logger', $configuration->getLogger());
-        $this->assertSame('Fridge DBAL', $configuration->getLogger()->getName());
+        $this->assertFalse($configuration->getDebug());
     }
 
     public function testDefaultEventDispatcher()
@@ -40,29 +37,18 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCustomLogger()
+    public function testCustomDebug()
     {
-        $logger1 = new Logger('foo');
-        $configuration = new Configuration($logger1);
+        $configuration = new Configuration(true);
 
-        $this->assertSame($logger1, $configuration->getLogger());
-
-        $logger2 = new Logger('bar');
-        $configuration->setLogger($logger2);
-
-        $this->assertSame($logger2, $configuration->getLogger());
+        $this->assertTrue($configuration->getDebug());
     }
 
     public function testCustomEventDispatcher()
     {
-        $eventDispatcher1 = new EventDispatcher();
-        $configuration = new Configuration(null, $eventDispatcher1);
+        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $configuration = new Configuration(false, $eventDispatcher);
 
-        $this->assertSame($eventDispatcher1, $configuration->getEventDispatcher());
-
-        $eventDispatcher2 = new EventDispatcher();
-        $configuration->setEventDispatcher($eventDispatcher2);
-
-        $this->assertSame($eventDispatcher2, $configuration->getEventDispatcher());
+        $this->assertSame($eventDispatcher, $configuration->getEventDispatcher());
     }
 }

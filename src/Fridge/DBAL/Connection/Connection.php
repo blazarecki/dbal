@@ -14,18 +14,18 @@ namespace Fridge\DBAL\Connection;
 use \PDO;
 
 use Fridge\DBAL\Configuration,
+    Fridge\DBAL\Debug\QueryDebugger,
     Fridge\DBAL\Driver\DriverInterface,
     Fridge\DBAL\Driver\Statement\NativeStatementInterface,
+    Fridge\DBAL\Event\DebugQueryEvent,
     Fridge\DBAL\Event\Events,
     Fridge\DBAL\Event\PostConnectEvent,
     Fridge\DBAL\Exception\ConnectionException,
-    Fridge\DBAL\Logging\Debugger,
     Fridge\DBAL\Query\Expression\ExpressionBuilder,
     Fridge\DBAL\Query\QueryBuilder,
     Fridge\DBAL\Query\Rewriter\QueryRewriter,
     Fridge\DBAL\Statement\Statement,
-    Fridge\DBAL\Type\TypeUtility,
-    Monolog\Logger;
+    Fridge\DBAL\Type\TypeUtility;
 
 /**
  * {@inheritdoc}
@@ -405,11 +405,10 @@ class Connection implements ConnectionInterface
      */
     public function executeQuery($query, array $parameters = array(), array $types = array())
     {
-        $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::DEBUG) ? new Debugger() : null;
+        $debug = $this->getConfiguration()->getDebug()
+            && $this->getConfiguration()->getEventDispatcher()->hasListeners(Events::DEBUG_QUERY);
 
-        if ($debugger !== null) {
-            $debugger->start($query, $parameters, $types);
-        }
+        $queryDebugger = $debug ? new QueryDebugger($query, $parameters, $types) : null;
 
         if (!empty($parameters)) {
             list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
@@ -425,9 +424,13 @@ class Connection implements ConnectionInterface
             $statement = $this->getNativeConnection()->query($query);
         }
 
-        if ($debugger !== null) {
-            $debugger->stop();
-            $this->getConfiguration()->getLogger()->addDebug($debugger->toString(), $debugger->toArray());
+        if ($debug) {
+            $queryDebugger->stop();
+
+            $this->getConfiguration()->getEventDispatcher()->dispatch(
+                Events::DEBUG_QUERY,
+                new DebugQueryEvent($queryDebugger)
+            );
         }
 
         return $statement;
@@ -519,11 +522,10 @@ class Connection implements ConnectionInterface
      */
     public function executeUpdate($query, array $parameters = array(), array $types = array())
     {
-        $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::DEBUG) ? new Debugger() : null;
+        $debug = $this->getConfiguration()->getDebug()
+            && $this->getConfiguration()->getEventDispatcher()->hasListeners(Events::DEBUG_QUERY);
 
-        if ($debugger !== null) {
-            $debugger->start($query, $parameters, $types);
-        }
+        $queryDebugger = $debug ? new QueryDebugger($query, $parameters, $types) : null;
 
         if (!empty($parameters)) {
             list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
@@ -541,9 +543,13 @@ class Connection implements ConnectionInterface
             $affectedRows = $this->getNativeConnection()->exec($query);
         }
 
-        if ($debugger !== null) {
-            $debugger->stop();
-            $this->getConfiguration()->getLogger()->addDebug($debugger->toString(), $debugger->toArray());
+        if ($debug) {
+            $queryDebugger->stop();
+
+            $this->getConfiguration()->getEventDispatcher()->dispatch(
+                Events::DEBUG_QUERY,
+                new DebugQueryEvent($queryDebugger)
+            );
         }
 
         return $affectedRows;
