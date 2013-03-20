@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Exception\Query\Rewriter;
-
-use Fridge\DBAL\Exception\Exception;
+namespace Fridge\DBAL\Exception;
 
 /**
  * Query rewriter exception.

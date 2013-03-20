@@ -146,7 +146,7 @@ class PositionalQueryRewriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Query\Rewriter\QueryRewriterException
+     * @expectedException \Fridge\DBAL\Exception\QueryRewriterException
      * @expectedExceptionMessage The positional placeholder (0) does not exist in the query: "SELECT * FROM foo".
      */
     public function testRewriteWithInvalidPlaceholder()
