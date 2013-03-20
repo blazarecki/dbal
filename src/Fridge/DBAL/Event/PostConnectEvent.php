@@ -21,13 +21,13 @@ use Fridge\DBAL\Connection\ConnectionInterface,
  */
 class PostConnectEvent extends Event
 {
-    /** @var Fridge\DBAL\Connection\ConnectionInterface */
+    /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     protected $connection;
 
     /**
      * Creates a post connect event.
      *
-     * @param Fridge\DBAL\Connection\ConnectionInterface $connection The connection.
+     * @param \Fridge\DBAL\Connection\ConnectionInterface $connection The connection.
      */
     public function __construct(ConnectionInterface $connection)
     {
@@ -37,7 +37,7 @@ class PostConnectEvent extends Event
     /**
      * Gets the connection
      *
-     * @return Fridge\DBAL\Connection\ConnectionInterface The connection.
+     * @return \Fridge\DBAL\Connection\ConnectionInterface The connection.
      */
     public function getConnection()
     {
