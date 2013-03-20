@@ -93,7 +93,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertTrue($this-> platform->useStrictMappedType());
+        $this->assertTrue($this-> platform->useStrictTypeMapping());
         $this->assertSame(Type::TEXT, $this->platform->getFallbackMappedType());
     }
 
@@ -116,18 +116,18 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      * @expectedException Fridge\DBAL\Exception\PlatformException
      * @expectedExceptionMessage The mapped type "bar" does not exist.
      */
-    public function testGetMappedTypeWithInvalidValueAndStrictMappedTypeEnable()
+    public function testGetMappedTypeWithInvalidValueAndStrictTypeMappingEnable()
     {
         $this->initializeMappedTypes();
 
         $this->platform->getMappedType('bar');
     }
 
-    public function testGetMappedTypeWithInvalidValueAndStrictMappedTypeDisable()
+    public function testGetMappedTypeWithInvalidValueAndStrictTypeMappingDisable()
     {
         $this->initializeMappedTypes();
 
-        $this->platform->useStrictMappedType(false);
+        $this->platform->useStrictTypeMapping(false);
         $this->assertSame($this->platform->getFallbackMappedType(), $this->platform->getMappedType('bar'));
     }
 
@@ -207,10 +207,10 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->removeMappedType('bar');
     }
 
-    public function testStrictMappedType()
+    public function testStrictTypeMapping()
     {
-        $this->platform->useStrictMappedType(false);
-        $this->assertFalse($this->platform->useStrictMappedType());
+        $this->platform->useStrictTypeMapping(false);
+        $this->assertFalse($this->platform->useStrictTypeMapping());
     }
 
     public function testFallbackMappedTypeWithValidValue()

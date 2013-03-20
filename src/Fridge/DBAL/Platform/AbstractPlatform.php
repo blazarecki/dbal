@@ -41,7 +41,7 @@ abstract class AbstractPlatform implements PlatformInterface
     protected $mappedTypes;
 
     /** @var boolean */
-    protected $strictMappedType;
+    protected $useStrictTypeMapping;
 
     /** @var string */
     protected $fallbackMappedType;
@@ -56,7 +56,7 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $this->initializeMappedTypes();
 
-        $this->strictMappedType = true;
+        $this->useStrictTypeMapping = true;
         $this->fallbackMappedType = Type::TEXT;
 
         $this->initializeMandatoryTypes();
@@ -81,7 +81,7 @@ abstract class AbstractPlatform implements PlatformInterface
             return $this->mappedTypes[$type];
         }
 
-        if ($this->strictMappedType) {
+        if ($this->useStrictTypeMapping) {
             throw PlatformException::mappedTypeDoesNotExist($type);
         }
 
@@ -143,13 +143,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function useStrictMappedType($strictMappedType = null)
+    public function useStrictTypeMapping($useStrictTypeMapping = null)
     {
-        if ($strictMappedType !== null) {
-            $this->strictMappedType = (bool) $strictMappedType;
+        if ($useStrictTypeMapping !== null) {
+            $this->useStrictTypeMapping = (bool) $useStrictTypeMapping;
         }
 
-        return $this->strictMappedType;
+        return $this->useStrictTypeMapping;
     }
 
     /**
