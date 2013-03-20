@@ -201,8 +201,10 @@ class MysqliConnection implements NativeConnectionInterface
     public function getMaxAllowedPacket()
     {
         if ($this->maxAllowedPacket === null) {
-            $result = $this->mysqli->query('SELECT @@global.max_allowed_packet')->fetch_array(MYSQLI_NUM);
-            $this->maxAllowedPacket = (int) $result[0];
+            $statement = $this->prepare('SELECT @@global.max_allowed_packet');
+            $statement->execute();
+
+            $this->maxAllowedPacket = (int) $statement->fetchColumn();
         }
 
         return $this->maxAllowedPacket;
