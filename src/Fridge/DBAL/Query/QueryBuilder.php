@@ -32,11 +32,20 @@ class QueryBuilder
     /** @const The delete query type */
     const DELETE = 3;
 
+    /** @const The parameter positional mode */
+    const MODE_POSITIONAL = 0;
+
+    /** @const The parameter named mode */
+    const MODE_NAMED = 1;
+
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     protected $connection;
 
     /** @var integer */
     protected $type;
+
+    /** @var integer */
+    protected $mode;
 
     /** @var array */
     protected $parts;
@@ -60,6 +69,8 @@ class QueryBuilder
         $this->connection = $connection;
 
         $this->type = self::SELECT;
+        $this->mode = self::MODE_POSITIONAL;
+
         $this->parts = array(
             'select'   => array(),
             'from'     => array(),
@@ -109,6 +120,30 @@ class QueryBuilder
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Gets the query parameter mode.
+     *
+     * @return integer The query parameter mode.
+     */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * Sets the query parameter mode.
+     *
+     * @param integer $mode The query parameter mode.
+     *
+     * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
+     */
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
+
+        return $this;
     }
 
     /**
@@ -509,7 +544,10 @@ class QueryBuilder
         }
 
         if (is_int($parameter)) {
+            $this->mode = self::MODE_POSITIONAL;
             $this->parameterCounters['positional']++;
+        } else {
+            $this->mode = self::MODE_NAMED;
         }
 
         return $this;
@@ -525,7 +563,7 @@ class QueryBuilder
      */
     public function createParameter($value, $type = null)
     {
-        if (empty($this->parameters) || is_int(key($this->parameters))) {
+        if ($this->mode === self::MODE_POSITIONAL) {
             return $this->createPositionalParameter($value, $type);
         }
 
