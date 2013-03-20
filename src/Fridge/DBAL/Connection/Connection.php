@@ -461,36 +461,33 @@ class Connection implements ConnectionInterface
         array $expressionParameterTypes = array()
     )
     {
-        $queryBuilder = $this->createQueryBuilder()->update($tableName);
-
         $isPositional = empty($expressionParameters) || is_int(key($expressionParameters));
+
+        $queryBuilder = $this->createQueryBuilder()
+            ->update($tableName)
+            ->setMode($isPositional ? QueryBuilder::MODE_POSITIONAL : QueryBuilder::MODE_NAMED);
 
         foreach ($datas as $identifier => $value) {
             $dataType = isset($dataTypes[$identifier]) ? $dataTypes[$identifier] : null;
-
-            if ($isPositional) {
-                $queryBuilder->set($identifier, $queryBuilder->createPositionalParameter($value, $dataType));
-            } else {
-                $queryBuilder->set($identifier, $queryBuilder->createNamedParameter($value, $dataType));
-            }
+            $queryBuilder->set($identifier, $queryBuilder->createParameter($value, $dataType));
         }
 
         if ($expression !== null) {
-            $queryBuilder->where($expression);
+            if ($isPositional && (($datasCount = count($datas)) > 0)) {
+                $fixer = function (&$parameters, $fix) {
+                    foreach ($parameters as $parameter => $value) {
+                        $parameters[$parameter + $fix] = $parameters[$parameter];
+                        unset($parameters[$parameter]);
+                    }
+                };
 
-            $datasCount = count($datas);
-
-            foreach ($expressionParameters as $identifier => $value) {
-                $expressionType = isset($expressionParameterTypes[$identifier])
-                    ? $expressionParameterTypes[$identifier]
-                    : null;
-
-                if ($isPositional) {
-                    $queryBuilder->setParameter($identifier + $datasCount, $value, $expressionType);
-                } else {
-                    $queryBuilder->setParameter($identifier, $value, $expressionType);
-                }
+                $fixer($expressionParameters, $datasCount);
+                $fixer($expressionParameterTypes, $datasCount);
             }
+
+            $queryBuilder
+                ->where($expression)
+                ->setParameters($expressionParameters, $expressionParameterTypes);
         }
 
         return $queryBuilder->execute();

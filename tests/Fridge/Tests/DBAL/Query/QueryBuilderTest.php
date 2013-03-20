@@ -82,6 +82,14 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(QueryBuilder::DELETE, $this->queryBuilder->getType());
     }
 
+    public function testDefaultMode()
+    {
+        $this->assertSame(QueryBuilder::MODE_POSITIONAL, $this->queryBuilder->getMode());
+
+        $this->queryBuilder->setMode(QueryBuilder::MODE_NAMED);
+        $this->assertSame(QueryBuilder::MODE_NAMED, $this->queryBuilder->getMode());
+    }
+
     public function testParts()
     {
         $this->assertSame(array(
@@ -300,6 +308,24 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SELECT * FROM foo LIMIT 10', $this->queryBuilder->getQuery());
     }
 
+    public function testSetPositionalParameterWithoutType()
+    {
+        $this->queryBuilder->setParameter(0, 'foo');
+
+        $this->assertSame(QueryBuilder::MODE_POSITIONAL, $this->queryBuilder->getMode());
+        $this->assertSame('foo', $this->queryBuilder->getParameter(0));
+        $this->assertNull($this->queryBuilder->getParameterType(0));
+    }
+
+    public function testSetNamedParameterWithoutType()
+    {
+        $this->queryBuilder->setParameter('foo', 'bar');
+
+        $this->assertSame(QueryBuilder::MODE_NAMED, $this->queryBuilder->getMode());
+        $this->assertSame('bar', $this->queryBuilder->getParameter('foo'));
+        $this->assertNull($this->queryBuilder->getParameterType('foo'));
+    }
+
     public function testSetParametersWithoutTypes()
     {
         $this->queryBuilder->setParameters(array('foo'));
@@ -314,14 +340,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array('foo'), $this->queryBuilder->getParameters());
         $this->assertSame(array(Type::STRING), $this->queryBuilder->getParameterTypes());
-    }
-
-    public function testSetParameterWithoutType()
-    {
-        $this->queryBuilder->setParameter(0, 'foo');
-
-        $this->assertSame('foo', $this->queryBuilder->getParameter(0));
-        $this->assertNull($this->queryBuilder->getParameterType(0));
     }
 
     public function testSetParameterWithType()
