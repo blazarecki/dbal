@@ -58,7 +58,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
         $settings['unix_socket'] = ini_get('mysql.default_socket');
 
         $this->assertInstanceOf(
-            'Fridge\DBAL\Adapter\ConnectionInterface',
+            'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
             $this->driver->connect($settings, $settings['username'], $settings['password'])
         );
     }
@@ -69,7 +69,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
         $settings['charset'] = 'utf8';
 
         $this->assertInstanceOf(
-            'Fridge\DBAL\Adapter\ConnectionInterface',
+            'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
             $this->driver->connect($settings, $settings['username'], $settings['password'])
         );
     }

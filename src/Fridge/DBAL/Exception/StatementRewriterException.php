@@ -9,23 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Exception\Adapter;
-
-use Fridge\DBAL\Exception\Exception as BaseException;
+namespace Fridge\DBAL\Exception;
 
 /**
  * Statement rewriter exception.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class StatementRewriterException extends BaseException
+class StatementRewriterException extends Exception
 {
     /**
      * Gets the "PARAMETER DOES NOT EXIST" exception.
      *
      * @param string $parameter The parameter.
      *
-     * @return \Fridge\DBAL\Exception\Adapter\StatementRewriterException The "PARAMETER DOES NOT EXIST" exception.
+     * @return \Fridge\DBAL\Exception\StatementRewriterException The "PARAMETER DOES NOT EXIST" exception.
      */
     static public function parameterDoesNotExist($parameter)
     {

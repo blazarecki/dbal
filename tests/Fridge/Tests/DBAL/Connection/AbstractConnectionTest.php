@@ -131,9 +131,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         $this->connection->connect();
     }
 
-    public function testAdapter()
+    public function testNativeConnection()
     {
-        $this->assertInstanceOf('Fridge\DBAL\Adapter\ConnectionInterface', $this->connection->getAdapter());
+        $this->assertInstanceOf(
+            'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
+            $this->connection->getNativeConnection()
+        );
     }
 
     public function testTransactionIsolation()

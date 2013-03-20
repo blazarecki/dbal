@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Adapter\Mysqli;
+namespace Fridge\Tests\DBAL\Driver\Statement;
 
 use \Exception,
     \PDO;
 
-use Fridge\DBAL\Adapter\Mysqli\MysqliConnection,
-    Fridge\DBAL\Adapter\Mysqli\MysqliStatement,
+use Fridge\DBAL\Driver\Connection\MysqliConnection,
+    Fridge\DBAL\Driver\Statement\MysqliStatement,
     Fridge\Tests\PHPUnitUtility,
     Fridge\Tests\Fixture\MySQLFixture;
 
 /**
- * Mysqli statement adapter tests.
+ * Mysqli statement tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -29,10 +29,10 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
     static protected $fixture;
 
-    /** @var \Fridge\DBAL\Adapter\Mysqli\Statement */
+    /** @var \Fridge\DBAL\Driver\Statement\MysqliStatement */
     protected $statement;
 
-    /** @var \mysqli */
+    /** @var \Fridge\DBAL\Driver\Connection\MysqliConnection */
     protected $connection;
 
     /**
@@ -88,7 +88,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      */
     public function testStatementWithInvalidStatement()
     {
@@ -103,7 +103,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      */
     public function testFetchWithInvalidStatement()
     {
@@ -112,7 +112,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      * @expectedExceptionMessage The fetch mode "6" is not supported.
      */
     public function testFetchWithInvalidHydratation()
@@ -190,7 +190,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      * @expectedExceptionMessage The mapped type "foo" does not exist.
      */
     public function testBindParameterWithInvalidType()
@@ -309,7 +309,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      */
     public function testExecuteWithInvalidParameters()
     {

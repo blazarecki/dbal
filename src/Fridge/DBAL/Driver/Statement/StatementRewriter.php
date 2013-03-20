@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter;
+namespace Fridge\DBAL\Driver\Statement;
 
-use Fridge\DBAL\Exception\Adapter\StatementRewriterException;
+use Fridge\DBAL\Exception\StatementRewriterException;
 
 /**
  * A statement rewriter allows to deal with named placeholder.
@@ -62,7 +62,7 @@ class StatementRewriter
      *
      * @param string $parameter The named parameter.
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\StatementRewriterException If the parameter does not exist.
+     * @throws \Fridge\DBAL\Exception\StatementRewriterException If the parameter does not exist.
      *
      * @return array The rewrited positional parameters.
      */

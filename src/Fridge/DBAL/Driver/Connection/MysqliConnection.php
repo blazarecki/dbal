@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter\Mysqli;
+namespace Fridge\DBAL\Driver\Connection;
 
 use \mysqli,
     \PDO;
 
-use Fridge\DBAL\Adapter\ConnectionInterface,
-    Fridge\DBAL\Exception\Adapter\MysqliException;
+use Fridge\DBAL\Driver\Statement\MysqliStatement,
+    Fridge\DBAL\Exception\MysqliException;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliConnection implements ConnectionInterface
+class MysqliConnection implements NativeConnectionInterface
 {
     /** @var \mysqli */
     protected $mysqli;
@@ -47,8 +47,8 @@ class MysqliConnection implements ConnectionInterface
      * @param string $username   The database username.
      * @param string $password   The database password.
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the connection can not be established or if the
-     *                                                        charset can not be setted.
+     * @throws \Fridge\DBAL\Exception\MysqliException If the connection can not be established or if the
+     *                                                charset can not be setted.
      */
     public function __construct(array $parameters, $username, $password)
     {
@@ -154,7 +154,7 @@ class MysqliConnection implements ConnectionInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be executed.
+     * @throws \Fridge\DBAL\Exception\MysqliException If the statement can not be executed.
      */
     public function exec($statement)
     {

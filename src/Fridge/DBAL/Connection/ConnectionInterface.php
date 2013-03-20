@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Connection;
 
-use Fridge\DBAL\Adapter\ConnectionInterface as AdapterConnection;
+use Fridge\DBAL\Driver\Connection\NativeConnectionInterface;
 
 /**
  * Adds some incredible features to a low-level connection like asynchronous connection, nested transactions,
@@ -21,14 +21,14 @@ use Fridge\DBAL\Adapter\ConnectionInterface as AdapterConnection;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface ConnectionInterface extends AdapterConnection
+interface ConnectionInterface extends NativeConnectionInterface
 {
     /**
      * Gets the low-level connection used by the connection.
      *
-     * @return \Fridge\DBAL\Adapter\ConnectionInterface The low-level connection.
+     * @return \Fridge\DBAL\Driver\Connection\NativeConnectionInterface The low-level connection.
      */
-    function getAdapter();
+    function getNativeConnection();
 
     /**
      * Gets the driver used by the connection.
@@ -287,7 +287,7 @@ interface ConnectionInterface extends AdapterConnection
      * @param array  $parameters Associative array that describes placeholder name => value pairs.
      * @param array  $types      Associative array that describes placeholder name => type pairs (PDO or DBAL).
      *
-     * @return \Fridge\DBAL\Adapter\StatementInterface The statement.
+     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The statement.
      */
     function executeQuery($query, array $parameters = array(), array $types = array());
 

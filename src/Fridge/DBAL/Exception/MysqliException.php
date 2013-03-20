@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Exception\Adapter;
+namespace Fridge\DBAL\Exception;
 
 /**
- * Mysqli adapter exception.
+ * Mysqli exception.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliException extends AbstractAdapterException
+class MysqliException extends Exception
 {
     /**
      * Gets the "MAPPED TYPE DOES NOT EXIST" exception
      *
      * @param integer $type The type.
      *
-     * @return \Fridge\DBAL\Exception\Adapter\MysqliException The "MAPPED TYPE DOES NOT EXIST" exception.
+     * @return \Fridge\DBAL\Exception\MysqliException The "MAPPED TYPE DOES NOT EXIST" exception.
      */
     static public function mappedTypeDoesNotExist($type)
     {
@@ -35,7 +35,7 @@ class MysqliException extends AbstractAdapterException
      *
      * @param string $fetchMode The fetch mode.
      *
-     * @return \Fridge\DBAL\Exception\Adapter\MysqliException The "FETCH MODE NOT SUPPORTED" exception.
+     * @return \Fridge\DBAL\Exception\MysqliException The "FETCH MODE NOT SUPPORTED" exception.
      */
     static public function fetchModeNotSupported($fetchMode)
     {

@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Adapter\Mysqli;
+namespace Fridge\Tests\DBAL\Driver\Connection;
 
 use \Exception;
 
-use Fridge\DBAL\Adapter\Mysqli\MysqliConnection,
+use Fridge\DBAL\Driver\Connection\MysqliConnection,
     Fridge\Tests\PHPUnitUtility,
     Fridge\Tests\Fixture\MySQLFixture;
 
 /**
- * Mysqli connection adapter tests.
+ * Mysqli connection tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -27,7 +27,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
     static protected $fixture;
 
-    /** @var \Fridge\DBAL\Adapter\Mysqli\Connection */
+    /** @var \Fridge\DBAL\Driver\Connection\MysqliConnection */
     protected $connection;
 
     /**
@@ -70,7 +70,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets up a mysqli connection adapter.
+     * Sets up a mysqli connection.
      */
     protected function setUpConnection()
     {
@@ -149,7 +149,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      */
     public function testConnectionWithInvalidCharset()
     {
@@ -159,7 +159,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\MysqliException
      */
     public function testConnectionWithInvalidParameters()
     {
@@ -206,7 +206,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
         $this->setUpConnection();
 
         $this->assertInstanceOf(
-            '\Fridge\DBAL\Adapter\Mysqli\MysqliStatement',
+            '\Fridge\DBAL\Driver\Statement\NativeStatementInterface',
             $this->connection->query(self::$fixture->getQuery())
         );
     }
@@ -216,7 +216,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
         $this->setUpConnection();
 
         $this->assertInstanceOf(
-            '\Fridge\DBAL\Adapter\Mysqli\MysqliStatement',
+            '\Fridge\DBAL\Driver\Statement\NativeStatementInterface',
             $this->connection->query(self::$fixture->getQuery())
         );
     }

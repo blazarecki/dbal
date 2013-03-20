@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter;
+namespace Fridge\DBAL\Driver\Connection;
 
 use \PDO;
 
@@ -20,7 +20,7 @@ use \PDO;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface ConnectionInterface
+interface NativeConnectionInterface
 {
     /**
      * Starts a transaction.
@@ -63,7 +63,7 @@ interface ConnectionInterface
     /**
      * Executes an SQL query.
      *
-     * @return \Fridge\DBAL\Adapter\StatementInterface The executed query.
+     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The executed query.
      */
     function query();
 
@@ -72,7 +72,7 @@ interface ConnectionInterface
      *
      * @param string $statement The statement to prepare.
      *
-     * @return \Fridge\DBAL\Adapter\StatementInterface The prepared statement.
+     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The prepared statement.
      */
     function prepare($statement);
 
