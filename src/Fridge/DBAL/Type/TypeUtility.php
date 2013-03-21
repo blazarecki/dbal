@@ -30,7 +30,7 @@ class TypeUtility
      * @param string|integer|\Fridge\DBAL\Type\TypeInterface &$type    The type (PDO or DBAL).
      * @param \Fridge\DBAL\Platform\PlatformInterface        $platform The platform.
      */
-    static public function bindTypedValue(&$value, &$type, PlatformInterface $platform)
+    public static function bindTypedValue(&$value, &$type, PlatformInterface $platform)
     {
         if (is_string($type)) {
             $type = Type::getType($type);

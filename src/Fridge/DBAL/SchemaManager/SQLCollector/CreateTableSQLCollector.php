@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Platform\PlatformInterface,
-    Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Platform\PlatformInterface;
+use Fridge\DBAL\Schema\Table;
 
 /**
  * Collects queries to create tables.

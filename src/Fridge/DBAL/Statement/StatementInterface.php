@@ -27,19 +27,19 @@ interface StatementInterface extends NativeStatementInterface
      *
      * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The low-level statement.
      */
-    function getNativeStatement();
+    public function getNativeStatement();
 
     /**
      * Gets the connection linked to the statement.
      *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The connection linked to the statement.
      */
-    function getConnection();
+    public function getConnection();
 
     /**
      * Gets the SQL statement.
      *
      * @return string The SQL statement.
      */
-    function getSQL();
+    public function getSQL();
 }

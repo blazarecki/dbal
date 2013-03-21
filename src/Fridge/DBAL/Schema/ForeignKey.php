@@ -64,8 +64,7 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
         array $foreignColumnNames,
         $onDelete = self::RESTRICT,
         $onUpdate = self::RESTRICT
-    )
-    {
+    ) {
         if ($name === null) {
             $name = $this->generateIdentifier('fk_', 20);
         }

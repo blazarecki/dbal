@@ -11,11 +11,10 @@
 
 namespace Fridge\DBAL\Type;
 
-use \DateTime,
-    \PDO;
-
-use Fridge\DBAL\Exception\TypeException,
-    Fridge\DBAL\Platform\PlatformInterface;
+use DateTime;
+use Fridge\DBAL\Exception\TypeException;
+use Fridge\DBAL\Platform\PlatformInterface;
+use PDO;
 
 /**
  * Date time type.

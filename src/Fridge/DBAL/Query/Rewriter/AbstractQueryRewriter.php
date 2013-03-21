@@ -27,7 +27,7 @@ abstract class AbstractQueryRewriter
      *
      * @return string|boolean The fridge type or false if the type is not an expanded one.
      */
-    static protected function extractType($type)
+    protected static function extractType($type)
     {
         if (substr($type, -2) === Connection::PARAM_ARRAY) {
             return substr($type, 0, strlen($type) - 2);

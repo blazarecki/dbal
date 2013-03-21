@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\BigIntegerType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\BigIntegerType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Big integer type test.

@@ -41,7 +41,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return array 0 => The rewritten query, 1 => The rewritten parameters, 2 => The rewritten types.
      */
-    static public function rewrite($query, array $parameters, array $types)
+    public static function rewrite($query, array $parameters, array $types)
     {
         if (empty($types)) {
             return array($query, $parameters, $types);
@@ -73,7 +73,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
 
                 // Find the current placeholder position according to the current parameter and cached placeholders
                 // positions.
-                $placeholderPosition = static::determinePlaceholderPosition(
+                $placeholderPos = static::determinePlaceholderPosition(
                     $rewrittenQuery,
                     $index,
                     $cachedPlaceholdersPositions
@@ -83,7 +83,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
                 $newPlaceholders = array_fill(0, $parameterCount, '?');
 
                 // Rewrite the query.
-                $rewrittenQuery = static::rewriteQuery($rewrittenQuery, $placeholderPosition, $newPlaceholders);
+                $rewrittenQuery = static::rewriteQuery($rewrittenQuery, $placeholderPos, $newPlaceholders);
 
                 // Rewrite parameter & type.
                 list($rewrittenParameters, $rewrittenTypes) = static::rewriteParameterAndType(
@@ -93,7 +93,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
                 );
 
                 // Cache the placeholder position according to the parameter count.
-                $cachedPlaceholdersPositions[$index] = $placeholderPosition + $parameterCount + (($parameterCount - 1) * 2);
+                $cachedPlaceholdersPositions[$index] = $placeholderPos + $parameterCount + (($parameterCount - 1) * 2);
 
                 // Increase the position gap according to the parameter count.
                 $positionGap += $parameterCount - 1;
@@ -123,7 +123,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return integer The placeholder position.
      */
-    static protected function determinePlaceholderPosition($query, $index, array $placeholdersPositions = array())
+    protected static function determinePlaceholderPosition($query, $index, array $placeholdersPositions = array())
     {
         // The placeholder position.
         $placeholderPosition = null;
@@ -156,7 +156,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
         $queryLength = strlen($query);
 
         // Iterate from the previous cached parameter index to the current one.
-        for ($placeholderIndex = $previousIndex ; $placeholderIndex <= $index ; $placeholderIndex++) {
+        for ($placeholderIndex = $previousIndex; $placeholderIndex <= $index; $placeholderIndex++) {
 
             // TRUE if we are in an escaped section else FALSE.
             $escaped = false;
@@ -211,7 +211,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return string The rewritten query.
      */
-    static protected function rewriteQuery($query, $placeholderPosition, array $newPlaceholders)
+    protected static function rewriteQuery($query, $placeholderPosition, array $newPlaceholders)
     {
         return substr($query, 0, $placeholderPosition).
             implode(', ', $newPlaceholders).
@@ -236,7 +236,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return array 0 => The rewritten parameters, 1 => The rewritten types.
      */
-    static protected function rewriteParameterAndType(array $parameters, array $types, $index)
+    protected static function rewriteParameterAndType(array $parameters, array $types, $index)
     {
         // The parameter value according.
         $parameterValue = $parameters[$index];
@@ -255,7 +255,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
         $maxPosition = max(array_keys($parameters));
 
         // Iterate the interval to shift each of them according to the parameter count.
-        for ($rewritePosition = $maxPosition ; $rewritePosition > $minPosition ; $rewritePosition--) {
+        for ($rewritePosition = $maxPosition; $rewritePosition > $minPosition; $rewritePosition--) {
 
             // Determine the new position.
             $newPosition = $rewritePosition + $parameterCount - 1;
@@ -266,13 +266,13 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
             // Shift or unset the type if it does not exist.
             if (isset($types[$rewritePosition])) {
                 $types[$newPosition] = $types[$rewritePosition];
-            } else if (isset($types[$newPosition])) {
+            } elseif (isset($types[$newPosition])) {
                 unset($types[$newPosition]);
             }
         }
 
         // Rewrite parameters and types according to the parameter count.
-        for ($newPlaceholderIndex = 0 ; $newPlaceholderIndex < $parameterCount ; $newPlaceholderIndex++) {
+        for ($newPlaceholderIndex = 0; $newPlaceholderIndex < $parameterCount; $newPlaceholderIndex++) {
 
             // Determine the new position.
             $newPosition = $index + $newPlaceholderIndex;

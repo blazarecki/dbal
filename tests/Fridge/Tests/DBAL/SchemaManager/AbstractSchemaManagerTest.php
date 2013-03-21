@@ -19,7 +19,7 @@ namespace Fridge\Tests\DBAL\SchemaManager;
 abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    static protected $fixture;
+    protected static $fixture;
 
     /** @var \Fridge\DBAL\SchemaManager\SchemaManagerInterface */
     protected $schemaManager;
@@ -27,7 +27,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->create();
@@ -37,7 +37,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function tearDownAfterClass()
+    public static function tearDownAfterClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->drop();

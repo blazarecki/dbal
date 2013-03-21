@@ -11,12 +11,11 @@
 
 namespace Fridge\DBAL\Driver\Statement;
 
-use \ArrayIterator,
-    \IteratorAggregate,
-    \PDO;
-
-use Fridge\DBAL\Driver\Connection\MysqliConnection,
-    Fridge\DBAL\Exception\MysqliException;
+use ArrayIterator;
+use Fridge\DBAL\Driver\Connection\MysqliConnection;
+use Fridge\DBAL\Exception\MysqliException;
+use IteratorAggregate;
+use PDO;
 
 /**
  * {@inheritdoc}
@@ -26,7 +25,7 @@ use Fridge\DBAL\Driver\Connection\MysqliConnection,
 class MysqliStatement implements NativeStatementInterface, IteratorAggregate
 {
     /** @var array */
-    static protected $mappedTypes = array(
+    protected static $mappedTypes = array(
         PDO::PARAM_NULL => 's',
         PDO::PARAM_INT  => 'i',
         PDO::PARAM_STR  => 's',
@@ -232,22 +231,15 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
         switch ($fetchMode) {
             case PDO::FETCH_NUM:
                 return $values;
-                break;
-
             case PDO::FETCH_ASSOC:
                 return array_combine($this->resultFields, $values);
-                break;
-
             case PDO::FETCH_BOTH:
                 $result = array_combine($this->resultFields, $values);
                 $result += $values;
 
                 return $result;
-                break;
-
             default:
                 throw MysqliException::fetchModeNotSupported($fetchMode);
-                break;
         }
     }
 
@@ -318,7 +310,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
      *
      * @return string The mapped type.
      */
-    static protected function getMappedType($type)
+    protected static function getMappedType($type)
     {
         if (!isset(self::$mappedTypes[$type])) {
             throw MysqliException::mappedTypeDoesNotExist($type);
@@ -357,7 +349,8 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
         $null = null;
 
         foreach ($this->bindedParameters as $key => &$parameter) {
-            if (isset($this->bindedTypes[$key - 1]) && ($this->bindedTypes[$key - 1] === self::$mappedTypes[PDO::PARAM_LOB])) {
+            if (isset($this->bindedTypes[$key - 1])
+                && ($this->bindedTypes[$key - 1] === self::$mappedTypes[PDO::PARAM_LOB])) {
                 $lobParameters[$key - 1] = $parameter;
                 $bindedParameterReferences[$key] = &$null;
             } else {

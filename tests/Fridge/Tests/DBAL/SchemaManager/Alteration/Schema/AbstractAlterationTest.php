@@ -11,11 +11,11 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Schema;
 
-use Fridge\DBAL\Schema\Comparator\SchemaComparator,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Type\Type,
-    Fridge\Tests\DBAL\SchemaManager\Alteration\AbstractAlterationTest as BaseAlteration;
+use Fridge\DBAL\Schema\Comparator\SchemaComparator;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Type\Type;
+use Fridge\Tests\DBAL\SchemaManager\Alteration\AbstractAlterationTest as BaseAlteration;
 
 /**
  * Base schema alteration test case.

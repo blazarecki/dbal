@@ -11,13 +11,12 @@
 
 namespace Fridge\Tests\DBAL\Driver\Statement;
 
-use \Exception,
-    \PDO;
-
-use Fridge\DBAL\Driver\Connection\MysqliConnection,
-    Fridge\DBAL\Driver\Statement\MysqliStatement,
-    Fridge\Tests\PHPUnitUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Exception;
+use Fridge\DBAL\Driver\Connection\MysqliConnection;
+use Fridge\DBAL\Driver\Statement\MysqliStatement;
+use Fridge\Tests\PHPUnitUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
+use PDO;
 
 /**
  * Mysqli statement tests.
@@ -27,7 +26,7 @@ use Fridge\DBAL\Driver\Connection\MysqliConnection,
 class MysqliStatementTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    static protected $fixture;
+    protected static $fixture;
 
     /** @var \Fridge\DBAL\Driver\Statement\MysqliStatement */
     protected $statement;
@@ -38,7 +37,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
             self::$fixture = new MySQLFixture(PHPUnitUtility::MYSQLI);
@@ -49,7 +48,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function tearDownAfterCLass()
+    public static function tearDownAfterCLass()
     {
         if (self::$fixture !== null) {
             self::$fixture->drop();

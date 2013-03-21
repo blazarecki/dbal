@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\TextType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\TextType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Text type test.

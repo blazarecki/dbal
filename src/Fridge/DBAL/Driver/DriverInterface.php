@@ -33,14 +33,14 @@ interface DriverInterface
      *
      * @return \Fridge\DBAL\Driver\Connection\NativeConnectionInterface The low-level connection.
      */
-    function connect(array $parameters, $username = null, $password = null, array $driverOptions = array());
+    public function connect(array $parameters, $username = null, $password = null, array $driverOptions = array());
 
     /**
      * Gets the driver platform.
      *
      * @return \Fridge\DBAL\Platform\PlatformInterface The driver platform.
      */
-    function getPlatform();
+    public function getPlatform();
 
     /**
      * Gets the driver schema manager.
@@ -49,5 +49,5 @@ interface DriverInterface
      *
      * @return \Fridge\DBAL\SchemaManager\SchemaManagerInterface The driver schema manager.
      */
-    function getSchemaManager(ConnectionInterface $connection);
+    public function getSchemaManager(ConnectionInterface $connection);
 }

@@ -25,7 +25,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of valid drivers.
      */
-    static public function validDriverProvider()
+    public static function validDriverProvider()
     {
         return array(
             array('pdo_mysql'),
@@ -39,7 +39,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of valid driver classes.
      */
-    static public function validDriverClassProvider()
+    public static function validDriverClassProvider()
     {
         return array(
             array('Fridge\DBAL\Driver\PDOMySQLDriver'),
@@ -53,7 +53,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of valid connection classes.
      */
-    static public function validConnectionClassProvider()
+    public static function validConnectionClassProvider()
     {
         $validConnectionClass = get_class(
             \PHPUnit_Framework_MockObject_Generator::getMock('Fridge\DBAL\Connection\ConnectionInterface')
@@ -69,7 +69,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of invalid drives.
      */
-    static public function invalidDriverProvider()
+    public static function invalidDriverProvider()
     {
         return array(
             array('foo'),
@@ -81,7 +81,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of invalid classes.
      */
-    static public function invalidClassProvider()
+    public static function invalidClassProvider()
     {
         return array(
             array('\stdClass'),
@@ -93,7 +93,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of invalid drivers and driver classes ([0] => driver, [1] => driverClass).
      */
-    static public function validDriverAndDriverClassProvider()
+    public static function validDriverAndDriverClassProvider()
     {
         $provider = array();
 
@@ -111,7 +111,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of valid drivers and connection classes ([0] => driver, [1] => connectionClass).
      */
-    static public function validDriverAndConnectionClassProvider()
+    public static function validDriverAndConnectionClassProvider()
     {
         $provider = array();
 
@@ -129,7 +129,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of valid drivers and invalid connection classes ([0] => driver, [1] => connectionClass).
      */
-    static public function validDriverAndInvalidConnectionClassProvider()
+    public static function validDriverAndInvalidConnectionClassProvider()
     {
         $provider = array();
 

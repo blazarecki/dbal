@@ -20,5 +20,4 @@ namespace Fridge\DBAL\Exception;
  */
 class SchemaManagerException extends Exception
 {
-
 }

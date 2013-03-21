@@ -671,15 +671,12 @@ class QueryBuilder
             case self::SELECT:
                 $query = $this->getSelectQuery();
                 break;
-
             case self::INSERT:
                 $query = $this->getInsertQuery();
                 break;
-
             case self::UPDATE:
                 $query = $this->getUpdateQuery();
                 break;
-
             case self::DELETE:
                 $query = $this->getDeleteQuery();
                 break;

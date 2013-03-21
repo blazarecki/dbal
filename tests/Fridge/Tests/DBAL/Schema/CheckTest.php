@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Query\Expression\ExpressionBuilder;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Query\Expression\ExpressionBuilder;
 
 /**
  * Check tests.

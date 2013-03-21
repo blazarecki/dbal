@@ -11,13 +11,13 @@
 
 namespace Fridge\Tests\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Comparator\SchemaComparator,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Schema\View,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Comparator\SchemaComparator;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Schema comparator test.

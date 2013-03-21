@@ -25,5 +25,5 @@ interface ConstraintInterface
      *
      * @return string The constraint name.
      */
-    function getName();
+    public function getName();
 }

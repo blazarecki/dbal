@@ -28,63 +28,63 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return \Fridge\DBAL\Driver\Connection\NativeConnectionInterface The low-level connection.
      */
-    function getNativeConnection();
+    public function getNativeConnection();
 
     /**
      * Gets the driver used by the connection.
      *
      * @return \Fridge\DBAL\Driver\DriverInterface The connection driver.
      */
-    function getDriver();
+    public function getDriver();
 
     /**
      * Convenient method allowing to retrieve the driver platform.
      *
      * @return \Fridge\DBAL\Platform\PlatformInterface The driver platform.
      */
-    function getPlatform();
+    public function getPlatform();
 
     /**
      * Convenient method allowing to retrieve the driver schema manager using this connection.
      *
      * @return \Fridge\DBAL\SchemaManager\SchemaManagerInterface The driver schema manager using the connection.
      */
-    function getSchemaManager();
+    public function getSchemaManager();
 
     /**
      * Creates a query builder using this connection.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder using the connection.
      */
-    function createQueryBuilder();
+    public function createQueryBuilder();
 
     /**
      * Gets the expression builder.
      *
      * @return \Fridge\DBAL\Query\Expression\ExpressionBuilder The expression builder.
      */
-    function getExpressionBuilder();
+    public function getExpressionBuilder();
 
     /**
      * Gets the connection configuration.
      *
      * @return \Fridge\DBAL\Configuration The connection configuration.
      */
-    function getConfiguration();
+    public function getConfiguration();
 
     /**
      * Gets the connection parameters like it was passed to the constructor.
      *
      * @return array The connection parameters.
      */
-    function getParameters();
+    public function getParameters();
 
     /**
      * Sets the connection parameters.
      *
      * @param array $parameters The connection parameters.
      */
-    function setParameters(array $parameters);
+    public function setParameters(array $parameters);
 
     /**
      * Gets a connection parameter.
@@ -93,7 +93,7 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return mixed The connection parameter value.
      */
-    function getParameter($parameter);
+    public function getParameter($parameter);
 
     /**
      * Sets a connection parameter.
@@ -101,35 +101,35 @@ interface ConnectionInterface extends NativeConnectionInterface
      * @param string $parameter The connection parameter name.
      * @param mixed  $value     The connection parameter value.
      */
-    function setParameter($parameter, $value);
+    public function setParameter($parameter, $value);
 
     /**
      * Gets the database username.
      *
      * @return string The connection username if it is defined else NULL.
      */
-    function getUsername();
+    public function getUsername();
 
     /**
      * Sets the database username.
      *
      * @param string $username The database username.
      */
-    function setUsername($username);
+    public function setUsername($username);
 
     /**
      * Gets the database password.
      *
      * @return string The connection password if it is defined else NULL.
      */
-    function getPassword();
+    public function getPassword();
 
     /**
      * Sets the database password.
      *
      * @param string $password The database password.
      */
-    function setPassword($password);
+    public function setPassword($password);
 
     /**
      * Gets the database name. If it is not defined in the parameters, a request to the database will be done
@@ -137,103 +137,103 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return string The database name.
      */
-    function getDatabase();
+    public function getDatabase();
 
     /**
      * Sets the database name.
      *
      * @param string $database The database name.
      */
-    function setDatabase($database);
+    public function setDatabase($database);
 
     /**
      * Gets the connection host.
      *
      * @return string The connection host if it is defined else NULL.
      */
-    function getHost();
+    public function getHost();
 
     /**
      * Sets the connection host.
      *
      * @param string $host The connection host.
      */
-    function setHost($host);
+    public function setHost($host);
 
     /**
      * Gets the connection port.
      *
      * @return integer The connection port if it is defined else NULL.
      */
-    function getPort();
+    public function getPort();
 
     /**
      * Sets the connection port
      *
      * @param integer $port The connection port.
      */
-    function setPort($port);
+    public function setPort($port);
 
     /**
      * Gets the connection driver options.
      *
      * @return array The connection driver options.
      */
-    function getDriverOptions();
+    public function getDriverOptions();
 
     /**
      * Sets the connection driver options.
      *
      * @param array $options The connection driver options.
      */
-    function setDriverOptions(array $options);
+    public function setDriverOptions(array $options);
 
     /**
      * Gets the transaction level.
      *
      * @return integer The transaction level.
      */
-    function getTransactionLevel();
+    public function getTransactionLevel();
 
     /**
      * Gets the transaction isolation.
      *
      * @return integer The transaction isolation.
      */
-    function getTransactionIsolation();
+    public function getTransactionIsolation();
 
     /**
      * Sets the transaction isolation.
      *
      * @param integer $isolation The transaction isolation.
      */
-    function setTransactionIsolation($isolation);
+    public function setTransactionIsolation($isolation);
 
     /**
      * Sets the connection charset.
      *
      * @param string $charset The connection charset.
      */
-    function setCharset($charset);
+    public function setCharset($charset);
 
     /**
      * Checks if the connection with the database has been established.
      *
      * @return boolean TRUE if the connection has been established else FALSE.
      */
-    function isConnected();
+    public function isConnected();
 
     /**
      * Establishes the connection with the database.
      *
      * @return boolean TRUE if the connection is established else FALSE.
      */
-    function connect();
+    public function connect();
 
     /**
      * Closes the connection with the database.
      */
-    function close();
+    public function close();
 
     /**
      * Prepares/executes an SQL query and returns the result as an associative array.
@@ -244,7 +244,7 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return array The result as an associative array.
      */
-    function fetchAll($query, array $parameters = array(), array $types = array());
+    public function fetchAll($query, array $parameters = array(), array $types = array());
 
     /**
      * Prepares/executes an SQL query and returns the first row as a numeric indexed array.
@@ -255,7 +255,7 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return array The first row of the result as a numerically indexed array.
      */
-    function fetchArray($query, array $parameters = array(), array $types = array());
+    public function fetchArray($query, array $parameters = array(), array $types = array());
 
     /**
      * Prepares/executes an SQL query and returns the first row as an associative array.
@@ -266,7 +266,7 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return array The first row of the query as an associative array.
      */
-    function fetchAssoc($query, array $parameters = array(), array $types = array());
+    public function fetchAssoc($query, array $parameters = array(), array $types = array());
 
     /**
      * Prepares/executes an SQL query and returns the value of a single column of the first row.
@@ -278,7 +278,7 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return mixed The value of a single column of the first row of the result.
      */
-    function fetchColumn($query, array $parameters = array(), array $types = array(), $column = 0);
+    public function fetchColumn($query, array $parameters = array(), array $types = array(), $column = 0);
 
     /**
      * Executes a SELECT query with the given parameters and types.
@@ -289,7 +289,7 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The statement.
      */
-    function executeQuery($query, array $parameters = array(), array $types = array());
+    public function executeQuery($query, array $parameters = array(), array $types = array());
 
     /**
      * Inserts a table row.
@@ -300,22 +300,24 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return integer The number of affected rows.
      */
-    function insert($tableName, array $datas, array $types = array());
+    public function insert($tableName, array $datas, array $types = array());
 
     /**
      * Updates table rows.
      *
      * @param string $tableName                The table name to update on.
      * @param array  $datas                    Associative array that describes column name => value pairs.
-     * @param array  $dataTypes                Associative array that describes column name => type pairs (PDO or DBAL).
+     * @param array  $dataTypes                Associative array that describes column name => type pairs
+     *                                         (PDO or DBAL).
      * @param string $expression               The update where expression.
-     * @param array  $expressionParameters     Associative array that describes expression parameter name => value pairs.
-     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type pairs.
-     *                                          (PDO or DBAL).
+     * @param array  $expressionParameters     Associative array that describes expression parameter name => value
+     *                                         pairs.
+     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type
+     *                                         pairs (PDO or DBAL).
      *
      * @return integer The number of affected rows.
      */
-    function update(
+    public function update(
         $tableName,
         array $datas,
         array $dataTypes = array(),
@@ -329,13 +331,14 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @param string $tableName                The table name to delete on.
      * @param string $expression               The delete where expression.
-     * @param array  $expressionParameters     Associative array that describes expression parameter name => value pairs.
-     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type pairs.
-     *                                          (PDO or DBAL).
+     * @param array  $expressionParameters     Associative array that describes expression parameter name => value
+     *                                         pairs.
+     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type
+     *                                         pairs (PDO or DBAL).
      *
      * @return integer The number of affected rows.
      */
-    function delete(
+    public function delete(
         $tableName,
         $expression = null,
         array $expressionParameters = array(),
@@ -351,5 +354,5 @@ interface ConnectionInterface extends NativeConnectionInterface
      *
      * @return integer The number of affected rows.
      */
-    function executeUpdate($query, array $parameters = array(), array $types = array());
+    public function executeUpdate($query, array $parameters = array(), array $types = array());
 }

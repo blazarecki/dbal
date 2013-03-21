@@ -11,9 +11,9 @@
 
 namespace Fridge\DBAL\Driver;
 
-use Fridge\DBAL\Connection\ConnectionInterface,
-    Fridge\DBAL\Platform\MySQLPlatform,
-    Fridge\DBAL\SchemaManager\MySQLSchemaManager;
+use Fridge\DBAL\Connection\ConnectionInterface;
+use Fridge\DBAL\Platform\MySQLPlatform;
+use Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 
 /**
  * PDO MySQL driver.

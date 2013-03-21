@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Schema;
 
-use Fridge\DBAL\Exception\SchemaException,
-    Fridge\DBAL\Type\TypeInterface;
+use Fridge\DBAL\Exception\SchemaException;
+use Fridge\DBAL\Type\TypeInterface;
 
 /**
  * Describes a database column.

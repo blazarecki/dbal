@@ -64,7 +64,7 @@ class Type
     const TIME = 'time';
 
     /** @var array */
-    static protected $mappedTypeClasses = array(
+    protected static $mappedTypeClasses = array(
         self::TARRAY       => 'Fridge\DBAL\Type\ArrayType',
         self::BIGINTEGER   => 'Fridge\DBAL\Type\BigIntegerType',
         self::BLOB         => 'Fridge\DBAL\Type\BlobType',
@@ -82,7 +82,7 @@ class Type
     );
 
     /** @var array */
-    static protected $mappedTypeInstances = array();
+    protected static $mappedTypeInstances = array();
 
     /**
      * Checks if a type exists.
@@ -91,7 +91,7 @@ class Type
      *
      * @return boolean TRUE if the type exists else FALSE.
      */
-    static public function hasType($type)
+    public static function hasType($type)
     {
         return isset(static::$mappedTypeClasses[$type]);
     }
@@ -105,7 +105,7 @@ class Type
      *
      * @return \Fridge\DBAL\Type\TypeInterface The type.
      */
-    static public function getType($type)
+    public static function getType($type)
     {
         if (!isset(static::$mappedTypeInstances[$type])) {
             if (!static::hasType($type)) {
@@ -127,7 +127,7 @@ class Type
      * @throws \Fridge\DBAL\Exception\TypeException If the type already exists, if the class can not be found or if
      *                                              the class does not implement the TypeInterface.
      */
-    static public function addType($type, $class)
+    public static function addType($type, $class)
     {
         if (static::hasType($type)) {
             throw TypeException::typeAlreadyExists($type);
@@ -153,7 +153,7 @@ class Type
      * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist, if the class can not be found or if
      *                                              the class does not implement the TypeInterface.
      */
-    static public function overrideType($type, $class)
+    public static function overrideType($type, $class)
     {
         if (!static::hasType($type)) {
             throw TypeException::typeDoesNotExist($type);
@@ -181,7 +181,7 @@ class Type
      *
      * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist.
      */
-    static public function removeType($type)
+    public static function removeType($type)
     {
         if (!static::hasType($type)) {
             throw TypeException::typeDoesNotExist($type);

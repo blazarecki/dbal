@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Event;
 
-use Fridge\DBAL\Debug\QueryDebugger,
-    Symfony\Component\EventDispatcher\Event;
+use Fridge\DBAL\Debug\QueryDebugger;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Debug query event which wraps the query debugger.

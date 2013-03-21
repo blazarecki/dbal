@@ -11,10 +11,9 @@
 
 namespace Fridge\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Exception\TypeException,
-    Fridge\DBAL\Platform\PlatformInterface;
+use Fridge\DBAL\Exception\TypeException;
+use Fridge\DBAL\Platform\PlatformInterface;
+use PDO;
 
 /**
  * Array type.

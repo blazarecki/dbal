@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager;
 
-use Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager,
-    Fridge\Tests\ConnectionUtility,
-    Fridge\Tests\Fixture\PostgreSQLFixture;
+use Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager;
+use Fridge\Tests\ConnectionUtility;
+use Fridge\Tests\Fixture\PostgreSQLFixture;
 
 /**
  * PDO PostgreSQL schema manager test.
@@ -25,7 +25,7 @@ class PDOPostgreSQLSchemaManagerTest extends AbstractSchemaManagerTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
             self::$fixture = new PostgreSQLFixture();
@@ -42,7 +42,9 @@ class PDOPostgreSQLSchemaManagerTest extends AbstractSchemaManagerTest
     protected function setUp()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            $this->schemaManager = new PostgreSQLSchemaManager(ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL));
+            $this->schemaManager = new PostgreSQLSchemaManager(
+                ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL)
+            );
         }
 
         parent::setUp();

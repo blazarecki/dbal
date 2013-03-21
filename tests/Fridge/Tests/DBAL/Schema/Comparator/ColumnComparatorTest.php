@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema\Comparator\ColumnComparator,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Comparator\ColumnComparator;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Column comparator test.

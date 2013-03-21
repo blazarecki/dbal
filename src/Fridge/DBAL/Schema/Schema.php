@@ -69,8 +69,7 @@ class Schema extends AbstractAsset
         array $foreignKeys = array(),
         array $indexes = array(),
         array $checks = array()
-    )
-    {
+    ) {
         $table = new Table($name);
 
         foreach ($columns as $column) {

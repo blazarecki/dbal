@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\ArrayType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\ArrayType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Array type test.
@@ -44,7 +43,10 @@ class ArrayTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('a:1:{s:3:"foo";s:3:"bar";}', $this->type->convertToDatabaseValue(array('foo' => 'bar'), $this->platformMock));
+        $this->assertSame(
+            'a:1:{s:3:"foo";s:3:"bar";}',
+            $this->type->convertToDatabaseValue(array('foo' => 'bar'), $this->platformMock)
+        );
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -54,7 +56,10 @@ class ArrayTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertSame(array('foo' => 'bar'), $this->type->convertToPHPValue('a:1:{s:3:"foo";s:3:"bar";}', $this->platformMock));
+        $this->assertSame(
+            array('foo' => 'bar'),
+            $this->type->convertToPHPValue('a:1:{s:3:"foo";s:3:"bar";}', $this->platformMock)
+        );
     }
 
     /**

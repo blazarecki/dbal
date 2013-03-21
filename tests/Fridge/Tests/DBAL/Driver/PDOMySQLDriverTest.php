@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Driver;
 
-use Fridge\DBAL\Driver\PDOMySQLDriver,
-    Fridge\Tests\PHPUnitUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Fridge\DBAL\Driver\PDOMySQLDriver;
+use Fridge\Tests\PHPUnitUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * PDO MySQL driver test.
@@ -25,7 +25,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
             self::$fixture = new MySQLFixture(PHPUnitUtility::PDO_MYSQL);

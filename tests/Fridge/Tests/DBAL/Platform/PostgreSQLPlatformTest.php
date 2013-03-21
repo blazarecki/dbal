@@ -11,15 +11,15 @@
 
 namespace Fridge\Tests\DBAL\Platform;
 
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Platform\PostgreSQLPlatform,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Platform\PostgreSQLPlatform;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Postgre SQL platform test.

@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\Fixture;
 
-use \PDO,
-    Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Schema\View;
+use PDO;
 
 /**
  * MySQL fixture.

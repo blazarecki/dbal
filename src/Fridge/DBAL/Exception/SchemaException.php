@@ -25,7 +25,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID ASSET NAME" exception.
      */
-    static public function invalidAssetName($asset)
+    public static function invalidAssetName($asset)
     {
         return new static(sprintf('The %s name must be a string.', $asset));
     }
@@ -37,7 +37,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN AUTO INCREMENT FLAG" exception.
      */
-    static public function invalidColumnAutoIncrementFlag($column)
+    public static function invalidColumnAutoIncrementFlag($column)
     {
         return new static(sprintf('The auto increment flag of the column "%s" must be a boolean.', $column));
     }
@@ -49,7 +49,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN COMMENT" exception.
      */
-    static public function invalidColumnComment($column)
+    public static function invalidColumnComment($column)
     {
         return new static(sprintf('The comment of the column "%s" must be a string.', $column));
     }
@@ -61,7 +61,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN FIXED FLAG" exception.
      */
-    static public function invalidColumnFixedFlag($column)
+    public static function invalidColumnFixedFlag($column)
     {
         return new static(sprintf('The fixed flag of the column "%s" must be a boolean.', $column));
     }
@@ -73,7 +73,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN LENGTH" exception.
      */
-    static public function invalidColumnLength($column)
+    public static function invalidColumnLength($column)
     {
         return new static(sprintf('The length of the column "%s" must be a positive integer.', $column));
     }
@@ -85,7 +85,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN NOT NULL FLAG" exception.
      */
-    static public function invalidColumnNotNullFlag($column)
+    public static function invalidColumnNotNullFlag($column)
     {
         return new static(sprintf('The not null flag of the column "%s" must be a boolean.', $column));
     }
@@ -98,7 +98,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN PROPERTY" exception.
      */
-    static public function invalidColumnProperty($column, $property)
+    public static function invalidColumnProperty($column, $property)
     {
         return new static(sprintf('The property "%s" of the column "%s" does not exist.', $property, $column));
     }
@@ -110,7 +110,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN PRECISION" exception.
      */
-    static public function invalidColumnPrecision($column)
+    public static function invalidColumnPrecision($column)
     {
         return new static(sprintf('The precision of the column "%s" must be a positive integer.', $column));
     }
@@ -122,7 +122,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN SCALE" exception.
      */
-    static public function invalidColumnScale($column)
+    public static function invalidColumnScale($column)
     {
         return new static(sprintf('The scale of the column "%s" must be a positive integer.', $column));
     }
@@ -134,7 +134,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN UNSIGNED FLAG" exception.
      */
-    static public function invalidColumnUnsignedFlag($column)
+    public static function invalidColumnUnsignedFlag($column)
     {
         return new static(sprintf('The unsigned flag of the column "%s" must be a boolean.', $column));
     }
@@ -146,7 +146,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID FOREIGN KEY FOREIGN COLUMN NAME" exception.
      */
-    static public function invalidForeignKeyForeignColumnName($foreignKey)
+    public static function invalidForeignKeyForeignColumnName($foreignKey)
     {
         return new static(sprintf('The foreign column name of the foreign key "%s" must be a string.', $foreignKey));
     }
@@ -158,7 +158,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID FOREIGN KEY FOREIGN TABLE NAME" exception.
      */
-    static public function invalidForeignKeyForeignTableName($foreignKey)
+    public static function invalidForeignKeyForeignTableName($foreignKey)
     {
         return new static(sprintf('The foreign table name of the foreign key "%s" must be a string.', $foreignKey));
     }
@@ -170,7 +170,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID FOREIGN KEY LOCAL COLUMN NAME" exception.
      */
-    static public function invalidForeignKeyLocalColumnName($foreignKey)
+    public static function invalidForeignKeyLocalColumnName($foreignKey)
     {
         return new static(sprintf('The local column name of the foreign key "%s" must be a string.', $foreignKey));
     }
@@ -182,7 +182,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID INDEX COLUMN NAME" exception.
      */
-    static public function invalidIndexColumnName($index)
+    public static function invalidIndexColumnName($index)
     {
         return new static(sprintf('The column name of the index "%s" must be a string.', $index));
     }
@@ -194,7 +194,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID INDEX UNIQUE FLAG" exception.
      */
-    static public function invalidIndexUniqueFlag($index)
+    public static function invalidIndexUniqueFlag($index)
     {
         return new static(sprintf('The unique flag of the index "%s" must be a boolean.', $index));
     }
@@ -206,7 +206,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID PRIMARY KEY COLUMN NAME" exception.
      */
-    static public function invalidPrimaryKeyColumnName($primaryKey)
+    public static function invalidPrimaryKeyColumnName($primaryKey)
     {
         return new static(sprintf('The column name of the primary key "%s" must be a string.', $primaryKey));
     }
@@ -218,7 +218,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID SEQUENCE INITIAL VALUE" exception.
      */
-    static public function invalidSequenceInitialValue($sequence)
+    public static function invalidSequenceInitialValue($sequence)
     {
         return new static(sprintf('The initial value of the sequence "%s" must be a positive integer.', $sequence));
     }
@@ -230,9 +230,9 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID SEQUENCE INCREMENT SIZE" exception.
      */
-    static public function invalidSequenceIncrementSize($sequence)
+    public static function invalidSequenceIncrementSize($sequence)
     {
-       return new static(sprintf('The increment size of the sequence "%s" must be a positive integer.', $sequence));
+        return new static(sprintf('The increment size of the sequence "%s" must be a positive integer.', $sequence));
     }
 
     /**
@@ -242,7 +242,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "INVALID VIEW SQL" exception.
      */
-    static public function invalidViewSQL($view)
+    public static function invalidViewSQL($view)
     {
         return new static(sprintf('The SQL query of the view "%s" must be a string.', $view));
     }
@@ -255,7 +255,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE COLUMN ALREADY EXISTS" exception.
      */
-    static public function tableColumnAlreadyExists($table, $column)
+    public static function tableColumnAlreadyExists($table, $column)
     {
         return new static(sprintf('The column "%s" of the table "%s" already exists.', $column, $table));
     }
@@ -268,7 +268,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE COLUMN DOES NOT EXIST" exception.
      */
-    static public function tableColumnDoesNotExist($table, $column)
+    public static function tableColumnDoesNotExist($table, $column)
     {
         return new static(sprintf('The column "%s" of the table "%s" does not exist.', $column, $table));
     }
@@ -280,7 +280,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE PRIMARY KEY ALREADY EXISTS" exception.
      */
-    static public function tablePrimaryKeyAlreadyExists($table)
+    public static function tablePrimaryKeyAlreadyExists($table)
     {
         return new static(sprintf('The table "%s" has already a primary key.', $table));
     }
@@ -292,7 +292,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE PRIMARY KEY DOES NOT EXIST" exception.
      */
-    static public function tablePrimaryKeyDoesNotExist($table)
+    public static function tablePrimaryKeyDoesNotExist($table)
     {
         return new static(sprintf('The table "%s" has no primary key.', $table));
     }
@@ -305,7 +305,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE FOREIGN KEY ALREADY EXISTS" exception.
      */
-    static public function tableForeignKeyAlreadyExists($table, $foreignKey)
+    public static function tableForeignKeyAlreadyExists($table, $foreignKey)
     {
         return new static(sprintf('The foreign key "%s" of the table "%s" already exists.', $foreignKey, $table));
     }
@@ -318,7 +318,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE FOREIGN KEY DOES NOT EXIST" exception.
      */
-    static public function tableForeignKeyDoesNotExist($table, $foreignKey)
+    public static function tableForeignKeyDoesNotExist($table, $foreignKey)
     {
         return new static(sprintf('The foreign key "%s" of the table "%s" does not exist.', $foreignKey, $table));
     }
@@ -331,7 +331,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE INDEX ALREADY EXISTS" exception.
      */
-    static public function tableIndexAlreadyExists($table, $index)
+    public static function tableIndexAlreadyExists($table, $index)
     {
         return new static(sprintf('The index "%s" of the table "%s" already exists.', $index, $table));
     }
@@ -344,7 +344,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE INDEX DOES NOT EXIST" exception.
      */
-    static public function tableIndexDoesNotExist($table, $index)
+    public static function tableIndexDoesNotExist($table, $index)
     {
         return new static(sprintf('The index "%s" of the table "%s" does not exist.', $index, $table));
     }
@@ -357,7 +357,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "SCHEMA TABLE ALREADY EXISTS" exception.
      */
-    static public function schemaTableAlreadyExists($schema, $table)
+    public static function schemaTableAlreadyExists($schema, $table)
     {
         return new static(sprintf('The table "%s" of the schema "%s" already exists.', $table, $schema));
     }
@@ -370,7 +370,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "SCHEMA TABLE DOES NOT EXIST" exception.
      */
-    static public function schemaTableDoesNotExist($schema, $table)
+    public static function schemaTableDoesNotExist($schema, $table)
     {
         return new static(sprintf('The table "%s" of the schema "%s" does not exist.', $table, $schema));
     }
@@ -383,7 +383,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "SCHEMA SEQUENCE ALREADY EXISTS" exception.
      */
-    static public function schemaSequenceAlreadyExists($schema, $sequence)
+    public static function schemaSequenceAlreadyExists($schema, $sequence)
     {
         return new static(sprintf('The sequence "%s" of the schema "%s" already exists.', $sequence, $schema));
     }
@@ -396,7 +396,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "SCHEMA SEQUENCE DOES NOT EXIST" exception.
      */
-    static public function schemaSequenceDoesNotExist($schema, $sequence)
+    public static function schemaSequenceDoesNotExist($schema, $sequence)
     {
         return new static(sprintf('The sequence "%s" of the schema "%s" does not exist.', $sequence, $schema));
     }
@@ -409,7 +409,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "SCHEMA VIEW ALREADY EXISTS" exception.
      */
-    static public function schemaViewAlreadyExists($schema, $view)
+    public static function schemaViewAlreadyExists($schema, $view)
     {
         return new static(sprintf('The view "%s" of the schema "%s" already exists.', $view, $schema));
     }
@@ -422,7 +422,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "SCHEMA VIEW DOES NOT EXIST" exception.
      */
-    static public function schemaViewDoesNotExist($schema, $view)
+    public static function schemaViewDoesNotExist($schema, $view)
     {
         return new static(sprintf('The view "%s" of the schema "%s" does not exist.', $view, $schema));
     }
@@ -435,7 +435,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE CHECK DOES NOT EXIST" exception.
      */
-    static public function tableCheckDoesNotExist($table, $check)
+    public static function tableCheckDoesNotExist($table, $check)
     {
         return new static(sprintf('The check "%s" of the table "%s" does not exist.', $check, $table));
     }
@@ -448,7 +448,7 @@ class SchemaException extends Exception
      *
      * @return \Fridge\DBAL\Exception\SchemaException The "TABLE CHECK ALREADY EXISTS" exception.
      */
-    static public function tableCheckAlreadyExists($table, $check)
+    public static function tableCheckAlreadyExists($table, $check)
     {
         return new static(sprintf('The check "%s" of the table "%s" already exists.', $check, $table));
     }

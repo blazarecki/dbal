@@ -11,12 +11,11 @@
 
 namespace Fridge\Tests\DBAL\Connection;
 
-use \Exception,
-    \PDO;
-
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Event\Events,
-    Fridge\DBAL\Type\Type;
+use Exception;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Event\Events;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Executes the functional connection test suite on a specific database.
@@ -26,7 +25,7 @@ use Fridge\DBAL\Connection\Connection,
 abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    static protected $fixture;
+    protected static $fixture;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     protected $connection;
@@ -34,7 +33,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->create();
@@ -44,7 +43,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function tearDownAfterClass()
+    public static function tearDownAfterClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->drop();
@@ -355,36 +354,44 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithNamedParameters()
     {
-        $this->assertSame(1, $this->connection->executeUpdate(
+        $count = $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithNamedParameters(),
             self::$fixture->getNamedQueryParameters()
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testExecuteUpdateWithNamedTypedParameters()
     {
-        $this->assertSame(1, $this->connection->executeUpdate(
+        $count = $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithNamedParameters(),
             self::$fixture->getNamedTypedQueryParameters(),
             self::$fixture->getNamedQueryTypes()
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testExecuteUpdateWithPositionalParameters()
     {
-        $this->assertSame(1, $this->connection->executeUpdate(
+        $count = $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithPositionalParameters(),
             self::$fixture->getPositionalQueryParameters()
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testExecuteUpdateWithPositionalTypedParameters()
     {
-        $this->assertSame(1, $this->connection->executeUpdate(
+        $count = $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithPositionalParameters(),
             self::$fixture->getPositionalTypedQueryParameters(),
             self::$fixture->getPositionalQueryTypes()
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testFetchAll()
@@ -392,9 +399,9 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         $expected = array(self::$fixture->getQueryResult());
 
         $results = $this->connection->fetchAll(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedTypedQueryParameters(),
-                self::$fixture->getNamedQueryTypes()
+            self::$fixture->getQueryWithNamedParameters(),
+            self::$fixture->getNamedTypedQueryParameters(),
+            self::$fixture->getNamedQueryTypes()
         );
 
         $this->assertCount(count($expected), $results);
@@ -445,72 +452,66 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testInsertWithTypedParameters()
     {
-        $this->assertSame(1, $this->connection->insert(
+        $count = $this->connection->insert(
             'tcolumns',
             self::$fixture->getNamedTypedQueryParameters(),
             self::$fixture->getNamedQueryTypes()
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testInsertWithPartialTypedParameters()
     {
-        $this->assertSame(1, $this->connection->insert(
+        $count = $this->connection->insert(
             'tcolumns',
             self::$fixture->getNamedTypedQueryParameters(),
             self::$fixture->getPartialNamedQueryTypes()
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testUpdateWithoutExpression()
     {
-        $datas = array_merge(
-            self::$fixture->getNamedTypedQueryParameters(),
-            array('carray' => array('bar' => 'foo'))
-        );
+        $datas = array_merge(self::$fixture->getNamedTypedQueryParameters(), array('carray' => array('bar' => 'foo')));
+        $count = $this->connection->update('tcolumns', $datas, self::$fixture->getNamedQueryTypes());
 
-        $this->assertSame(1, $this->connection->update(
-            'tcolumns',
-            $datas,
-            self::$fixture->getNamedQueryTypes()
-        ));
+        $this->assertSame(1, $count);
     }
 
     public function testUpdateWithTypedPositionalExpressionParameters()
     {
         $originalDatas = self::$fixture->getNamedTypedQueryParameters();
+        $datas = array_merge($originalDatas, array('carray' => array('bar' => 'foo')));
 
-        $datas = array_merge(
-            $originalDatas,
-            array('carray' => array('bar' => 'foo'))
-        );
-
-        $this->assertSame(1, $this->connection->update(
+        $count = $this->connection->update(
             'tcolumns',
             $datas,
             self::$fixture->getNamedQueryTypes(),
             'carray = ?',
             array($originalDatas['carray']),
             array(Type::TARRAY)
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testUpdateWithTypedNamedExpressionParameters()
     {
         $originalDatas = self::$fixture->getNamedTypedQueryParameters();
+        $datas = array_merge($originalDatas, array('carray' => array('bar' => 'foo')));
 
-        $datas = array_merge(
-            $originalDatas,
-            array('carray' => array('bar' => 'foo'))
-        );
-
-        $this->assertSame(1, $this->connection->update(
+        $count = $this->connection->update(
             'tcolumns',
             $datas,
             self::$fixture->getNamedQueryTypes(),
             'carray = :carrayParameter',
             array('carrayParameter' => $originalDatas['carray']),
             array('carrayParameter' => Type::TARRAY)
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testDeleteWithoutExpression()
@@ -520,12 +521,14 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteWithTypedExpressionParameters()
     {
-        $this->assertSame(1, $this->connection->delete(
+        $count = $this->connection->delete(
             'tcolumns',
             'carray = :carrayParameter',
             array('carrayParameter' => array('foo' => 'bar')),
             array('carrayParameter' => Type::TARRAY)
-        ));
+        );
+
+        $this->assertSame(1, $count);
     }
 
     public function testBeginTransaction()

@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Platform\PlatformInterface,
-    Fridge\DBAL\Schema\Diff\TableDiff;
+use Fridge\DBAL\Platform\PlatformInterface;
+use Fridge\DBAL\Schema\Diff\TableDiff;
 
 /**
  * Collects queries to alter tables.

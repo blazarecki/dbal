@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Driver\Connection;
 
-use \PDO;
+use PDO;
 
 /**
  * {@inheritdoc}

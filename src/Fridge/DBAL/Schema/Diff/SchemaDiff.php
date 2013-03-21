@@ -64,8 +64,7 @@ class SchemaDiff extends AbstractAssetDiff
         array $droppedSequences = array(),
         array $createdViews = array(),
         array $droppedViews = array()
-    )
-    {
+    ) {
         parent::__construct($oldSchema, $newSchema);
 
         $this->createdTables = $createdTables;

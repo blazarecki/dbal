@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Driver\Connection;
 
-use \PDO;
+use PDO;
 
 /**
  * Low-level class representing a database connection.
@@ -27,28 +27,28 @@ interface NativeConnectionInterface
      *
      * @return boolean TRUE if the transaction has been started else FALSE.
      */
-    function beginTransaction();
+    public function beginTransaction();
 
     /**
      * Saves a transaction.
      *
      * @return boolean TRUE if the transaction has been saved else FALSE.
      */
-    function commit();
+    public function commit();
 
     /**
      * Cancels a transaction.
      *
      * @return boolean TRUE if the transaction has been canceled else FALSE.
      */
-    function rollBack();
+    public function rollBack();
 
     /**
      * Checks if a transaction has been started.
      *
      * @return boolean TRUE if a transaction has been started else FALSE.
      */
-    function inTransaction();
+    public function inTransaction();
 
     /**
      * Quotes a string.
@@ -58,14 +58,14 @@ interface NativeConnectionInterface
      *
      * @return string The quoted string.
      */
-    function quote($string, $type = PDO::PARAM_STR);
+    public function quote($string, $type = PDO::PARAM_STR);
 
     /**
      * Executes an SQL query.
      *
      * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The executed query.
      */
-    function query();
+    public function query();
 
     /**
      * Prepares an SQL statement in order to be executed.
@@ -74,7 +74,7 @@ interface NativeConnectionInterface
      *
      * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The prepared statement.
      */
-    function prepare($statement);
+    public function prepare($statement);
 
     /**
      * Executes an SQL statement.
@@ -83,7 +83,7 @@ interface NativeConnectionInterface
      *
      * @return integer The number of affected rows.
      */
-    function exec($statement);
+    public function exec($statement);
 
     /**
      * Gets the last generated ID or sequence value.
@@ -92,19 +92,19 @@ interface NativeConnectionInterface
      *
      * @return string The last generated ID or sequence value.
      */
-    function lastInsertId($name = null);
+    public function lastInsertId($name = null);
 
     /**
      * Gets the last error code associated with the last operation.
      *
      * @return string The last error code associated with the last operation.
      */
-    function errorCode();
+    public function errorCode();
 
     /**
      * Gets the last error info associated with the last operation.
      *
      * @return string The last error code associated with the last operation.
      */
-    function errorInfo();
+    public function errorInfo();
 }

@@ -11,14 +11,14 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Exception\PlatformException,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Diff\SchemaDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Exception\PlatformException;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Type\Type;
 
 /**
  * MySQL Platform.
@@ -167,7 +167,8 @@ class MySQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  column_name AS name,'.
                '  column_type AS type,'.
-               '  IF (column_type REGEXP '.$this->quote('.*unsigned.*').', true, NULL) AS '.$this->quoteIdentifier('unsigned').','.
+               '  IF (column_type REGEXP '.$this->quote('.*unsigned.*').', true, NULL) AS '.
+               $this->quoteIdentifier('unsigned').','.
                '  IF (is_nullable = '.$this->quote('NO').', TRUE, FALSE) AS not_null,'.
                '  column_default AS '.$this->quoteIdentifier('default').','.
                '  IF (extra = '.$this->quote('auto_increment').', TRUE, NULL) AS auto_increment,'.
@@ -389,7 +390,7 @@ class MySQLPlatform extends AbstractPlatform
      * @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
      *
      * @param null|integer $length The length of the type.
-     * 
+     *
      * @throws \Fridge\DBAL\Exception\PlatformException If the length is not a strict positive integer.
      *
      * @return string The prefix.

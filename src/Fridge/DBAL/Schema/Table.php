@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Schema;
 
-use Fridge\DBAL\Exception\SchemaException,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Exception\SchemaException;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Describes a database table.
@@ -56,8 +56,7 @@ class Table extends AbstractAsset
         array $foreignKeys = array(),
         array $indexes = array(),
         array $checks = array()
-    )
-    {
+    ) {
         parent::__construct($name);
 
         $this->setColumns($columns);
@@ -345,8 +344,7 @@ class Table extends AbstractAsset
         $onDelete = ForeignKey::RESTRICT,
         $onUpdate = ForeignKey::RESTRICT,
         $name = null
-    )
-    {
+    ) {
         if ($foreignTable instanceof Table) {
             $foreignTable = $foreignTable->getName();
         }

@@ -11,21 +11,20 @@
 
 namespace Fridge\Tests\Fixture;
 
-use \DateTime,
-    \Exception,
-    \stdClass;
-
-use Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Schema\View,
-    Fridge\DBAL\Type\Type,
-    Fridge\Tests\PHPUnitUtility;
+use DateTime;
+use Exception;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Type\Type;
+use Fridge\Tests\PHPUnitUtility;
+use stdClass;
 
 /**
  * {@inheritdoc}
@@ -245,129 +244,88 @@ abstract class AbstractFixture implements FixtureInterface
 
         switch ($table) {
             case 'tcolumns':
-                $columns = array(
-                    new Column('carray', Type::getType(Type::TARRAY), array(
-                        'comment' => 'comment',
-                    )),
-                    new Column('cbiginteger', Type::getType(Type::BIGINTEGER), array(
-                        'length'   => 20,
-                        'unsigned' => true,
-                        'default'  => 1000000000,
-                        'comment'  => 'comment',
-                    )),
-                    new Column('cblob', Type::getType(Type::BLOB), array(
-                        'comment'  => 'comment',
-                    )),
-                    new Column('cboolean', Type::getType(Type::BOOLEAN), array(
-                        'default' => true,
-                        'comment' => 'comment',
-                    )),
-                    new Column('cdatetime', Type::getType(Type::DATETIME), array(
-                        'default' => new DateTime('2012-01-01 12:12:12'),
-                        'comment' => 'comment',
-                    )),
-                    new Column('cdate', Type::getType(Type::DATE), array(
-                        'default' => new DateTime('2012-01-01'),
-                        'comment' => 'comment',
-                    )),
-                    new Column('cdecimal', Type::getType(Type::DECIMAL), array(
-                        'precision' => 5,
-                        'scale'     => 2,
-                        'default'   => 1.1,
-                        'comment'   => 'comment',
-                    )),
-                    new Column('cfloat', Type::getType(Type::FLOAT), array(
-                        'default' => 1.1,
-                        'comment' => 'comment',
-                    )),
-                    new Column('cinteger', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'unsigned' => true,
-                        'default'  => 1,
-                        'comment'  => 'comment',
-                    )),
+                return array(
+                    new Column('carray', Type::getType(Type::TARRAY), array('comment' => 'comment')),
+                    new Column(
+                        'cbiginteger',
+                        Type::getType(Type::BIGINTEGER),
+                        array('length' => 20, 'unsigned' => true, 'default' => 1000000000, 'comment' => 'comment')
+                    ),
+                    new Column('cblob', Type::getType(Type::BLOB), array('comment'  => 'comment')),
+                    new Column(
+                        'cboolean',
+                        Type::getType(Type::BOOLEAN),
+                        array('default' => true, 'comment' => 'comment')
+                    ),
+                    new Column(
+                        'cdatetime',
+                        Type::getType(Type::DATETIME),
+                        array('default' => new DateTime('2012-01-01 12:12:12'), 'comment' => 'comment')
+                    ),
+                    new Column(
+                        'cdate',
+                        Type::getType(Type::DATE),
+                        array('default' => new DateTime('2012-01-01'), 'comment' => 'comment')
+                    ),
+                    new Column(
+                        'cdecimal',
+                        Type::getType(Type::DECIMAL),
+                        array('precision' => 5, 'scale' => 2, 'default' => 1.1, 'comment' => 'comment')
+                    ),
+                    new Column('cfloat', Type::getType(Type::FLOAT), array('default' => 1.1, 'comment' => 'comment')),
+                    new Column(
+                        'cinteger',
+                        Type::getType(Type::INTEGER),
+                        array('length' => 11, 'unsigned' => true, 'default' => 1, 'comment' => 'comment')
+                    ),
                     new Column('cobject', Type::getType(Type::OBJECT)),
-                    new Column('csmallinteger', Type::getType(Type::SMALLINTEGER), array(
-                        'length'   => 6,
-                        'unsigned' => true,
-                        'default'  => 1,
-                        'comment'  => 'comment',
-                    )),
-                    new Column('cstring', Type::getType(Type::STRING), array(
-                        'length'  => 20,
-                        'default' => 'foo',
-                        'comment' => 'comment',
-                    )),
-                    new Column('ctext', Type::getType(Type::TEXT), array(
-                        'comment' => 'comment',
-                    )),
-                    new Column('ctime', Type::getType(Type::TIME), array(
-                        'default' => new DateTime('12:12:12'),
-                        'comment' => 'comment',
-                    )),
+                    new Column(
+                        'csmallinteger',
+                        Type::getType(Type::SMALLINTEGER),
+                        array('length' => 6, 'unsigned' => true, 'default' => 1, 'comment' => 'comment')
+                    ),
+                    new Column(
+                        'cstring',
+                        Type::getType(Type::STRING),
+                        array('length' => 20, 'default' => 'foo', 'comment' => 'comment')
+                    ),
+                    new Column('ctext', Type::getType(Type::TEXT), array('comment' => 'comment')),
+                    new Column(
+                        'ctime',
+                        Type::getType(Type::TIME),
+                        array('default' => new DateTime('12:12:12'), 'comment' => 'comment')
+                    ),
                 );
-                break;
-
             case 'tprimarykeylock':
-                $columns = array(
-                    new Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'         => 11,
-                        'not_null'       => true,
-                        'auto_increment' => true,
-                    )),
-                    new Column('c2', Type::getType(Type::STRING), array(
-                        'length'   => 20,
-                        'not_null' => true,
-                    )),
+                return array(
+                    new Column(
+                        'c1',
+                        Type::getType(Type::INTEGER),
+                        array('length' => 11, 'not_null' => true, 'auto_increment' => true)
+                    ),
+                    new Column('c2', Type::getType(Type::STRING), array('length' => 20, 'not_null' => true)),
                 );
-                break;
-
             case 'tprimarykeyunlock':
-                $columns = array(
-                    new Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'not_null' => true,
-                    )),
+                return array(
+                    new Column('c1', Type::getType(Type::INTEGER), array('length' => 11, 'not_null' => true)),
                 );
-                break;
-
             case 'tforeignkey':
-                $columns = array(
-                    new Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'not_null' => true,
-                    )),
-                    new Column('c2', Type::getType(Type::STRING), array(
-                        'length'   => 20,
-                        'not_null' => true,
-                    )),
+                return array(
+                    new Column('c1', Type::getType(Type::INTEGER), array('length' => 11, 'not_null' => true)),
+                    new Column('c2', Type::getType(Type::STRING), array('length' => 20, 'not_null' => true)),
                 );
-                break;
-
             case 'tindex':
-                $columns = array(
-                    new Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'not_null' => true,
-                    )),
-                    new Column('c2', Type::getType(Type::STRING), array(
-                        'length'   => 20,
-                        'not_null' => true,
-                    )),
+                return array(
+                    new Column('c1', Type::getType(Type::INTEGER), array('length' => 11, 'not_null' => true)),
+                    new Column('c2', Type::getType(Type::STRING), array('length' => 20, 'not_null' => true)),
                 );
-                break;
-
             case 'tcheck':
-                $columns = array(
-                    new Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'not_null' => true,
-                    )),
+                return array(
+                    new Column('c1', Type::getType(Type::INTEGER), array('length' => 11, 'not_null' => true)),
                 );
-                break;
+            default:
+                return array();
         }
-
-        return $columns;
     }
 
     /**
@@ -375,19 +333,12 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTablePrimaryKey($table)
     {
-        $primaryKey = null;
-
         switch ($table) {
             case 'tprimarykeylock':
-                $primaryKey = new PrimaryKey('pk1', array('c1', 'c2'));
-                break;
-
+                return new PrimaryKey('pk1', array('c1', 'c2'));
             case 'tprimarykeyunlock':
-                $primaryKey = new PrimaryKey('pk2', array('c1'));
-                break;
+                return new PrimaryKey('pk2', array('c1'));
         }
-
-        return $primaryKey;
     }
 
     /**
@@ -395,11 +346,9 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTableForeignKeys($table)
     {
-        $foreignKeys = array();
-
         switch ($table) {
             case 'tforeignkey':
-                $foreignKeys = array(
+                return array(
                     new ForeignKey(
                         'fk1',
                         array('c1', 'c2'),
@@ -409,10 +358,9 @@ abstract class AbstractFixture implements FixtureInterface
                         ForeignKey::CASCADE
                     ),
                 );
-                break;
+            default:
+                return array();
         }
-
-        return $foreignKeys;
     }
 
     /**
@@ -420,32 +368,18 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTableIndexes($table)
     {
-        $indexes = array();
-
         switch ($table) {
             case 'tprimarykeylock':
-                $indexes = array(new Index('pk1', array('c1', 'c2'), true));
-                break;
-
+                return array(new Index('pk1', array('c1', 'c2'), true));
             case 'tprimarykeyunlock':
-                $indexes = array(new Index('pk2', array('c1'), true));
-                break;
-
+                return array(new Index('pk2', array('c1'), true));
             case 'tforeignkey':
-                $indexes = array(
-                    new Index('_fk1', array('c1', 'c2')),
-                );
-                break;
-
+                return array(new Index('_fk1', array('c1', 'c2')));
             case 'tindex':
-                $indexes = array(
-                    new Index('idx1', array('c1', 'c2'), true),
-                    new Index('idx2', array('c1')),
-                );
-                break;
+                return array(new Index('idx1', array('c1', 'c2'), true), new Index('idx2', array('c1')));
+            default:
+                return array();
         }
-
-        return $indexes;
     }
 
     /**
@@ -453,17 +387,12 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTableChecks($table)
     {
-        $checks = array();
-
         switch ($table) {
             case 'tcheck':
-                $checks = array(
-                    new Check('ck1', 'c1 > 0'),
-                );
-                break;
+                return array(new Check('ck1', 'c1 > 0'));
+            default:
+                return array();
         }
-
-        return $checks;
     }
 
     /**
@@ -534,9 +463,12 @@ abstract class AbstractFixture implements FixtureInterface
     public function getUpdateQueryWithNamedParameters()
     {
         $columns = array_keys($this->getNamedQueryParameters());
-        $values = array_map(function ($placeholder) {
-            return sprintf(':%s', $placeholder);
-        }, $columns);
+        $values = array_map(
+            function ($placeholder) {
+                return sprintf(':%s', $placeholder);
+            },
+            $columns
+        );
 
         return 'INSERT INTO tcolumns '.
                '('.implode(', ', $columns).') '.

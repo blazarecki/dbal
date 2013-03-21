@@ -81,11 +81,13 @@ class PostgreSQLSchemaManager extends AbstractSchemaManager
 
         $datas = $this->getConnection()->fetchAssoc($sql);
 
-        return parent::getGenericSequence(array(
-            'name'           => $sequence['name'],
-            'initial_value'  => $datas['initial_value'],
-            'increment_size' => $datas['increment_size'],
-        ));
+        return parent::getGenericSequence(
+            array(
+                'name'           => $sequence['name'],
+                'initial_value'  => $datas['initial_value'],
+                'increment_size' => $datas['increment_size'],
+            )
+        );
     }
 
     /**
@@ -144,13 +146,11 @@ class PostgreSQLSchemaManager extends AbstractSchemaManager
             case 'real':
                 $length = null;
                 break;
-
             case 'char':
             case 'varchar':
                 $precision = null;
                 $scale = null;
                 break;
-
             default:
                 $length = null;
                 $precision = null;
@@ -158,19 +158,21 @@ class PostgreSQLSchemaManager extends AbstractSchemaManager
                 break;
         }
 
-        return parent::getGenericTableColumn(array(
-            'name'           => $column['name'],
-            'type'           => $databaseType,
-            'length'         => $length,
-            'precision'      => $precision,
-            'scale'          => $scale,
-            'unsigned'       => null,
-            'fixed'          => ($databaseType === 'char') ? true : null,
-            'not_null'       => $column['not_null'],
-            'default'        => $default,
-            'auto_increment' => null,
-            'comment'        => !empty($column['comment']) ? $column['comment'] : null,
-        ));
+        return parent::getGenericTableColumn(
+            array(
+                'name'           => $column['name'],
+                'type'           => $databaseType,
+                'length'         => $length,
+                'precision'      => $precision,
+                'scale'          => $scale,
+                'unsigned'       => null,
+                'fixed'          => ($databaseType === 'char') ? true : null,
+                'not_null'       => $column['not_null'],
+                'default'        => $default,
+                'auto_increment' => null,
+                'comment'        => !empty($column['comment']) ? $column['comment'] : null,
+            )
+        );
     }
 
     /**

@@ -11,16 +11,16 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Diff\TableDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\SchemaManager\SQLCollector\AlterTableSQLCollector,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Diff\TableDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\SchemaManager\SQLCollector\AlterTableSQLCollector;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Alter table SQL collector test.

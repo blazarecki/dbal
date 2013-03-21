@@ -26,7 +26,7 @@ class TypeException extends Exception
      *
      * @return \Fridge\DBAL\Exception\TypeException The "CONVERSION TO PHP FAILED" exception.
      */
-    static public function conversionToPHPFailed($value, $type)
+    public static function conversionToPHPFailed($value, $type)
     {
         return new static(sprintf('The value "%s" can not be converted to the type "%s".', $value, $type));
     }
@@ -38,7 +38,7 @@ class TypeException extends Exception
      *
      * @return \Fridge\DBAL\Exception\TypeException The "TYPE ALREADY EXISTS" exception.
      */
-    static public function typeAlreadyExists($type)
+    public static function typeAlreadyExists($type)
     {
         return new static(sprintf('The type "%s" already exists.', $type));
     }
@@ -50,7 +50,7 @@ class TypeException extends Exception
      *
      * @return \Fridge\DBAL\Exception\TypeException The "TYPE DOES NOT EXIST" exception.
      */
-    static public function typeDoesNotExist($type)
+    public static function typeDoesNotExist($type)
     {
         return new static(sprintf('The type "%s" does not exist.', $type));
     }
@@ -62,7 +62,7 @@ class TypeException extends Exception
      *
      * @return \Fridge\DBAL\Exception\TypeException The "TYPE MUST IMPLEMENT TYPE INTERFACE" exception.
      */
-    static public function typeMustImplementTypeInterface($type)
+    public static function typeMustImplementTypeInterface($type)
     {
         return new static(sprintf('The type "%s" must implement the Fridge\DBAL\Type\TypeInterface.', $type));
     }

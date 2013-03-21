@@ -11,12 +11,12 @@
 
 namespace Fridge\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Diff\TableDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Diff\TableDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Table;
 
 /**
  * Table comparator.

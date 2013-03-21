@@ -11,11 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Driver\Connection;
 
-use \Exception;
-
-use Fridge\DBAL\Driver\Connection\MysqliConnection,
-    Fridge\Tests\PHPUnitUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Exception;
+use Fridge\DBAL\Driver\Connection\MysqliConnection;
+use Fridge\Tests\PHPUnitUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * Mysqli connection tests.
@@ -25,7 +24,7 @@ use Fridge\DBAL\Driver\Connection\MysqliConnection,
 class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    static protected $fixture;
+    protected static $fixture;
 
     /** @var \Fridge\DBAL\Driver\Connection\MysqliConnection */
     protected $connection;
@@ -33,7 +32,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
             self::$fixture = new MySQLFixture(PHPUnitUtility::MYSQLI);
@@ -44,7 +43,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function tearDownAfterCLass()
+    public static function tearDownAfterCLass()
     {
         if (self::$fixture !== null) {
             self::$fixture->drop();
@@ -143,7 +142,11 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new MysqliConnection(array('charset' => 'utf8'), $settings['username'], $settings['password']);
+        $this->connection = new MysqliConnection(
+            array('charset' => 'utf8'),
+            $settings['username'],
+            $settings['password']
+        );
 
         $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
@@ -155,7 +158,11 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new MysqliConnection(array('charset' => 'foo'), $settings['username'], $settings['password']);
+        $this->connection = new MysqliConnection(
+            array('charset' => 'foo'),
+            $settings['username'],
+            $settings['password']
+        );
     }
 
     /**
