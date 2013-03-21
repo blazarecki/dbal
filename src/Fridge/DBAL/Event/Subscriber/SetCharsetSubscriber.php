@@ -48,7 +48,7 @@ class SetCharsetSubscriber implements EventSubscriberInterface
     /**
      * Method used when the post connect event is triggered.
      *
-     * @param Fridge\DBAL\Event\PostConnectEvent $event The post connect event.
+     * @param \Fridge\DBAL\Event\PostConnectEvent $event The post connect event.
      */
     public function postConnect(PostConnectEvent $event)
     {
