@@ -47,7 +47,7 @@ abstract class AbstractPlatform implements PlatformInterface
     protected $fallbackMappedType;
 
     /** @var array */
-    protected $mandatoryTypes;
+    protected $customTypes;
 
     /**
      * Platform constructor.
@@ -59,7 +59,7 @@ abstract class AbstractPlatform implements PlatformInterface
         $this->useStrictTypeMapping = true;
         $this->fallbackMappedType = Type::TEXT;
 
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
     }
 
     /**
@@ -177,43 +177,43 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMandatoryType($type)
+    public function hasCustomType($type)
     {
-        return in_array($type, $this->mandatoryTypes);
+        return in_array($type, $this->customTypes);
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\PlatformException If the mandatory type already exists.
      * @throws \Fridge\DBAL\Exception\TypeException     If the type does not exist.
+     * @throws \Fridge\DBAL\Exception\PlatformException If the custom type already exists.
      */
-    public function addMandatoryType($type)
+    public function addCustomType($type)
     {
-        if ($this->hasMandatoryType($type)) {
-            throw PlatformException::mandatoryTypeAlreadyExists($type);
-        }
-
         if (!Type::hasType($type)) {
             throw TypeException::typeDoesNotExist($type);
         }
 
-        $this->mandatoryTypes[] = $type;
+        if ($this->hasCustomType($type)) {
+            throw PlatformException::customTypeAlreadyExists($type);
+        }
+
+        $this->customTypes[] = $type;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\PlatformException If the mandatory type does not exist.
+     * @throws \Fridge\DBAL\Exception\PlatformException If the custom type does not exist.
      */
-    public function removeMandatoryType($type)
+    public function removeCustomType($type)
     {
-        if (!$this->hasMandatoryType($type)) {
-            throw PlatformException::mandatoryTypeDoesNotExist($type);
+        if (!$this->hasCustomType($type)) {
+            throw PlatformException::customTypeDoesNotExist($type);
         }
 
-        $index = array_search($type, $this->mandatoryTypes);
-        unset($this->mandatoryTypes[$index]);
+        $index = array_search($type, $this->customTypes);
+        unset($this->customTypes[$index]);
     }
 
     /**
@@ -707,7 +707,7 @@ abstract class AbstractPlatform implements PlatformInterface
         $queries = array('ALTER TABLE '.$table.' ADD COLUMN '.$this->getColumnSQLDeclaration($column));
 
         if (!$this->supportInlineTableColumnComment()
-            && ($this->hasMandatoryType($column->getType()->getName())
+            && ($this->hasCustomType($column->getType()->getName())
             || ($column->getComment() !== null))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
         }
@@ -820,7 +820,7 @@ abstract class AbstractPlatform implements PlatformInterface
         );
 
         if (!$this->supportInlineTableColumnComment()
-            && ($this->hasMandatoryType($columnDiff->getNewAsset()->getType()->getName())
+            && ($this->hasCustomType($columnDiff->getNewAsset()->getType()->getName())
             || ($columnDiff->getNewAsset()->getComment() !== null))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
         }
@@ -1000,11 +1000,11 @@ abstract class AbstractPlatform implements PlatformInterface
     abstract protected function initializeMappedTypes();
 
     /**
-     * Initializes the mandatory types.
+     * Initializes the custom types.
      */
-    protected function initializeMandatoryTypes()
+    protected function initializeCustomTypes()
     {
-        $this->mandatoryTypes = array(Type::TARRAY, Type::OBJECT);
+        $this->customTypes = array(Type::TARRAY, Type::OBJECT);
     }
 
     /**
@@ -1099,7 +1099,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($this->supportInlineTableColumnComment()
-            && ($this->hasMandatoryType($column->getType()->getName())
+            && ($this->hasCustomType($column->getType()->getName())
             || ($column->getComment() !== null))
         ) {
             $columnDeclaration .= ' COMMENT '.$this->getColumnCommentSQLDeclaration($column);
@@ -1203,7 +1203,7 @@ abstract class AbstractPlatform implements PlatformInterface
         $queries = array();
 
         foreach ($columns as $column) {
-            if ($this->hasMandatoryType($column->getType()->getName()) || ($column->getComment() !== null)) {
+            if ($this->hasCustomType($column->getType()->getName()) || ($column->getComment() !== null)) {
                 $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
             }
         }
@@ -1235,7 +1235,7 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $comment = $column->getComment();
 
-        if ($this->hasMandatoryType($column->getType()->getName())) {
+        if ($this->hasCustomType($column->getType()->getName())) {
             $comment .= '(FridgeType::'.strtoupper($column->getType()->getName()).')';
         }
 

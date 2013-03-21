@@ -327,7 +327,7 @@ class PostgreSQLPlatform extends AbstractPlatform
 
         if (in_array('comment', $columnDiff->getDifferences())
             || (in_array('type', $columnDiff->getDifferences())
-            && $this->hasMandatoryType($columnDiff->getNewAsset()->getType()->getName()))) {
+            && $this->hasCustomType($columnDiff->getNewAsset()->getType()->getName()))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
         }
 

@@ -98,27 +98,27 @@ interface PlatformInterface
     public function setFallbackMappedType($fallbackMappedType);
 
     /**
-     * Checks if a mandatory type exists.
+     * Checks if a custom type exists.
      *
-     * @param string $type The type.
+     * @param string $type The custom type.
      *
-     * @return boolean TRUE if the mandatory type exists else FALSE.
+     * @return boolean TRUE if the custom type exists else FALSE.
      */
-    public function hasMandatoryType($type);
+    public function hasCustomType($type);
 
     /**
-     * Adds a mandatory type.
+     * Adds a custom type.
      *
-     * @param string $type The type.
+     * @param string $type The custom type.
      */
-    public function addMandatoryType($type);
+    public function addCustomType($type);
 
     /**
-     * Removes a mandatory type.
+     * Removes a custom type.
      *
-     * @param string $type The type.
+     * @param string $type The custom type.
      */
-    public function removeMandatoryType($type);
+    public function removeCustomType($type);
 
     /**
      * Gets the big integer SQL declaration.

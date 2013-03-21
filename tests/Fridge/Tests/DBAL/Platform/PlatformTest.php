@@ -83,9 +83,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the platform mandatory types.
      */
-    protected function initializeMandatoryTypes()
+    protected function initializeCustomTypes()
     {
-        $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'mandatoryTypes');
+        $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'customTypes');
         $property->setAccessible(true);
 
         $property->setValue($this->platform, array(Type::INTEGER));
@@ -227,60 +227,60 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->setFallbackMappedType('foo');
     }
 
-    public function testHasMandatoryType()
+    public function testHasCustomType()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->assertTrue($this->platform->hasMandatoryType(Type::INTEGER));
-        $this->assertFalse($this->platform->hasMandatoryType('foo'));
+        $this->assertTrue($this->platform->hasCustomType(Type::INTEGER));
+        $this->assertFalse($this->platform->hasCustomType('foo'));
     }
 
-    public function testAddMandatoryTypeWithValidValue()
+    public function testAddCustomTypeWithValidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->addMandatoryType(Type::SMALLINTEGER);
+        $this->platform->addCustomType(Type::SMALLINTEGER);
 
-        $this->assertTrue($this->platform->hasMandatoryType(Type::SMALLINTEGER));
+        $this->assertTrue($this->platform->hasCustomType(Type::SMALLINTEGER));
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "integer" already exists.
+     * @expectedExceptionMessage The custom type "integer" already exists.
      */
-    public function testAddMandatoryTypeWithInvalidValue()
+    public function testAddCustomTypeWithInvalidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->addMandatoryType(Type::INTEGER);
+        $this->platform->addCustomType(Type::INTEGER);
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\TypeException
      */
-    public function testAddMandatoryTypeWithInvalidType()
+    public function testAddCustomTypeWithInvalidType()
     {
-        $this->platform->addMandatoryType('foo');
+        $this->platform->addCustomType('foo');
     }
 
-    public function testRemoveMandatoryTypeWithValidValue()
+    public function testRemoveCustomTypeWithValidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->removeMandatoryType(Type::INTEGER);
+        $this->platform->removeCustomType(Type::INTEGER);
 
-        $this->assertFalse($this->platform->hasMandatoryType(Type::INTEGER));
+        $this->assertFalse($this->platform->hasCustomType(Type::INTEGER));
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "foo" does not exist.
+     * @expectedExceptionMessage The custom type "foo" does not exist.
      */
-    public function testRemoveMandatoryTypeWithInvalidValue()
+    public function testRemoveCustomTypeWithInvalidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->removeMandatoryType('foo');
+        $this->platform->removeCustomType('foo');
     }
 
     public function testBigIntegerSQLDeclaration()
