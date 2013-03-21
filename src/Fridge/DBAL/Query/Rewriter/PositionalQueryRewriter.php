@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Query\Rewriter;
 
-use Fridge\DBAL\Exception\Query\Rewriter\QueryRewriterException;
+use Fridge\DBAL\Exception\QueryRewriterException;
 
 /**
  * {@inheritdoc}
@@ -119,7 +119,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      * @param integer $index                 The query parameter index (indexed by 0).
      * @param array   $placeholdersPositions The cached placeholders positions.
      *
-     * @throws \Fridge\DBAL\Exception\Query\Rewriter\QueryRewriterException If the placeholder does not exist.
+     * @throws \Fridge\DBAL\Exception\QueryRewriterException If the placeholder does not exist.
      *
      * @return integer The placeholder position.
      */
