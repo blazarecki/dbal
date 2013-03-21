@@ -21,6 +21,9 @@ class Events
     /** @const The post connect event */
     const POST_CONNECT = 'POST_CONNECT';
 
+    /** @const The debug query event */
+    const DEBUG_QUERY = 'DEBUG_QUERY';
+
     /**
      * Disabled constructor.
      *

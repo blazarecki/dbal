@@ -166,6 +166,62 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testExecuteQueryDoesNotDispatchEventWithoutDebug()
+    {
+        $this->connection->connect();
+
+        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $eventDispatcherMock
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+
+        $this->connection->executeQuery(self::$fixture->getQuery());
+    }
+
+    public function testExecuteQueryDoesNotDispatchEventWithoutListeners()
+    {
+        $this->connection->connect();
+
+        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $eventDispatcherMock
+            ->expects($this->any())
+            ->method('hasListeners')
+            ->with($this->equalTo(Events::DEBUG_QUERY))
+            ->will($this->returnValue(false));
+
+        $eventDispatcherMock
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->connection->getConfiguration()->setDebug(true);
+        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+
+        $this->connection->executeQuery(self::$fixture->getQuery());
+    }
+
+    public function testExecuteQueryDispatchEventWithDebugAndListeners()
+    {
+        $this->connection->connect();
+
+        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $eventDispatcherMock
+            ->expects($this->any())
+            ->method('hasListeners')
+            ->with($this->equalTo(Events::DEBUG_QUERY))
+            ->will($this->returnValue(true));
+
+        $eventDispatcherMock
+            ->expects($this->once())
+            ->method('dispatch');
+
+        $this->connection->getConfiguration()->setDebug(true);
+        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+
+        $this->connection->executeQuery(self::$fixture->getQuery());
+    }
+
     public function testExecuteQueryWithNamedParameters()
     {
         $this->assertQueryResult(
@@ -236,25 +292,65 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testExecuteQueryWithLogger()
-    {
-        $loggerMock = $this->getMock('Monolog\Logger', array(), array('foo'));
-        $loggerMock
-            ->expects($this->once())
-            ->method('isHandling')
-            ->will($this->returnValue(true));
-        $loggerMock
-            ->expects($this->once())
-            ->method('addDebug');
-
-        $this->connection->getConfiguration()->setLogger($loggerMock);
-
-        $this->connection->executeQuery(self::$fixture->getQuery());
-    }
-
     public function testExecuteUpdateWithoutParameters()
     {
         $this->assertSame(1, $this->connection->executeUpdate(self::$fixture->getUpdateQuery()));
+    }
+
+    public function testExecuteUpdateDoesNotDispatchEventWithoutDebug()
+    {
+        $this->connection->connect();
+
+        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $eventDispatcherMock
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+
+        $this->connection->executeUpdate(self::$fixture->getUpdateQuery());
+    }
+
+    public function testExecuteUpdateDoesNotDispatchEventWithoutListeners()
+    {
+        $this->connection->connect();
+
+        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $eventDispatcherMock
+            ->expects($this->any())
+            ->method('hasListeners')
+            ->with($this->equalTo(Events::DEBUG_QUERY))
+            ->will($this->returnValue(false));
+
+        $eventDispatcherMock
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $this->connection->getConfiguration()->setDebug(true);
+        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+
+        $this->connection->executeUpdate(self::$fixture->getUpdateQuery());
+    }
+
+    public function testExecuteUpdateDispatchEventWithDebugAndListeners()
+    {
+        $this->connection->connect();
+
+        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $eventDispatcherMock
+            ->expects($this->any())
+            ->method('hasListeners')
+            ->with($this->equalTo(Events::DEBUG_QUERY))
+            ->will($this->returnValue(true));
+
+        $eventDispatcherMock
+            ->expects($this->once())
+            ->method('dispatch');
+
+        $this->connection->getConfiguration()->setDebug(true);
+        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+
+        $this->connection->executeUpdate(self::$fixture->getUpdateQuery());
     }
 
     public function testExecuteUpdateWithNamedParameters()
@@ -289,25 +385,6 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             self::$fixture->getPositionalTypedQueryParameters(),
             self::$fixture->getPositionalQueryTypes()
         ));
-    }
-
-    public function testExecuteUpdateWithLogger()
-    {
-        $loggerMock = $this->getMock('Monolog\Logger', array(), array('foo'));
-        $loggerMock
-            ->expects($this->once())
-            ->method('isHandling')
-            ->will($this->returnValue(true));
-        $loggerMock
-            ->expects($this->once())
-            ->method('addDebug');
-
-        $this->connection->getConfiguration()->setLogger($loggerMock);
-
-        $this->connection->executeUpdate(
-            self::$fixture->getUpdateQueryWithNamedParameters(),
-            self::$fixture->getNamedQueryParameters()
-        );
     }
 
     public function testFetchAll()

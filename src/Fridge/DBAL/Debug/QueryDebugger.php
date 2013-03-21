@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Logging;
+namespace Fridge\DBAL\Debug;
 
 /**
- * Debugs the execution time of a query.
+ * Debugs the execution time of a query (it is designed for a unique usage).
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Debugger
+class QueryDebugger
 {
     /** @var string */
     protected $query;
@@ -34,13 +34,13 @@ class Debugger
     protected $start;
 
     /**
-     * Starts the debug.
+     * Creates & starts the debug.
      *
      * @param string $query     The debugged query
      * @param array $parameters The debugged parameters.
      * @param array $types      The debugged types.
      */
-    public function start($query, array $parameters, array $types)
+    public function __construct($query, array $parameters, array $types)
     {
         $this->start = microtime(true);
         $this->query = $query;
@@ -94,30 +94,5 @@ class Debugger
     public function getTime()
     {
         return $this->time;
-    }
-
-    /**
-     * Converts the debugger result to a string.
-     *
-     * @return string The debugger result
-     */
-    public function toString()
-    {
-        return sprintf('The query "%s" has been executed in %f ms.', $this->getQuery(), $this->getTime());
-    }
-
-    /**
-     * Converts the debugger result to an array.
-     *
-     * @return array The debugger result
-     */
-    public function toArray()
-    {
-        return array(
-            'query'      => $this->getQuery(),
-            'parameters' => $this->getParameters(),
-            'types'      => $this->getTypes(),
-            'time'       => $this->getTime()
-        );
     }
 }

@@ -11,8 +11,7 @@
 
 namespace Fridge\DBAL;
 
-use Monolog\Logger,
-    Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Describes the connection configuration. It wraps a powerfull logger (Monolog)
@@ -22,8 +21,8 @@ use Monolog\Logger,
  */
 class Configuration
 {
-    /** @var \Monolog\Logger */
-    protected $logger;
+    /** @var boolean */
+    protected $debug;
 
     /** @var \Symfony\Component\EventDispatcher\EventDispatcher */
     protected $eventDispatcher;
@@ -31,41 +30,37 @@ class Configuration
     /**
      * Creates a configuration.
      *
-     * @param \Monolog\Logger                                    $logger          The logger.
+     * @param boolean                                            $debug           The debug flag.
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher The event dispatcher.
      */
-    public function __construct(Logger $logger = null, EventDispatcher $eventDispatcher = null)
+    public function __construct($debug = false, EventDispatcher $eventDispatcher = null)
     {
-        if ($logger === null) {
-            $logger = new Logger('Fridge DBAL');
-        }
-
         if ($eventDispatcher === null) {
             $eventDispatcher = new EventDispatcher();
         }
 
-        $this->logger = $logger;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->setDebug($debug);
+        $this->setEventDispatcher($eventDispatcher);
     }
 
     /**
-     * Gets the logger.
+     * Gets the configuration debug flag.
      *
-     * @return \Monolog\Logger The logger.
+     * @return boolean TRUE if the connection is debugged else FALSE.
      */
-    public function getLogger()
+    public function getDebug()
     {
-        return $this->logger;
+        return $this->debug;
     }
 
     /**
-     * Sets the logger.
+     * Sets the configuration debug flag.
      *
-     * @param \Monolog\Logger $logger The logger.
+     * @param boolean $debug TRUE if the connection is debugged else FALSE.
      */
-    public function setLogger(Logger $logger)
+    public function setDebug($debug)
     {
-        $this->logger = $logger;
+        $this->debug = (bool) $debug;
     }
 
     /**
