@@ -315,7 +315,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getVarcharSQLDeclaration(array $options)
+    public function getVarcharSQLDeclaration(array $options = array())
     {
         if (!isset($options['length'])) {
             $options['length'] = $this->getDefaultVarcharLength();

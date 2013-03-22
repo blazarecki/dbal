@@ -127,7 +127,7 @@ interface PlatformInterface
      *
      * @return string The big integer SQL declaration.
      */
-    public function getBigIntegerSQLDeclaration(array $options);
+    public function getBigIntegerSQLDeclaration(array $options = array());
 
     /**
      * Gets the blob SQL declaration.
@@ -136,7 +136,7 @@ interface PlatformInterface
      *
      * @return string The blob SQL declaration.
      */
-    public function getBlobSQLDeclaration(array $options);
+    public function getBlobSQLDeclaration(array $options = array());
 
     /**
      * Gets the boolean SQL declaration.
@@ -145,7 +145,7 @@ interface PlatformInterface
      *
      * @return string The boolean SQL declaration.
      */
-    public function getBooleanSQLDeclaration(array $options);
+    public function getBooleanSQLDeclaration(array $options = array());
 
     /**
      * Gets the clob SQL declaration.
@@ -154,7 +154,7 @@ interface PlatformInterface
      *
      * @return string The clob SQL declaration.
      */
-    public function getClobSQLDeclaration(array $options);
+    public function getClobSQLDeclaration(array $options = array());
 
     /**
      * Gets the date SQL declaration.
@@ -163,7 +163,7 @@ interface PlatformInterface
      *
      * @return string The date SQL declaration.
      */
-    public function getDateSQLDeclaration(array $options);
+    public function getDateSQLDeclaration(array $options = array());
 
     /**
      * Gets the date time SQL declaration.
@@ -172,7 +172,7 @@ interface PlatformInterface
      *
      * @return string The date time SQL declaration.
      */
-    public function getDateTimeSQLDeclaration(array $options);
+    public function getDateTimeSQLDeclaration(array $options = array());
 
     /**
      * Gets the decimal SQL declaration.
@@ -181,7 +181,7 @@ interface PlatformInterface
      *
      * @return string The decimal SQL declaration.
      */
-    public function getDecimalSQLDeclaration(array $options);
+    public function getDecimalSQLDeclaration(array $options = array());
 
     /**
      * Gets the float SQL declaration.
@@ -190,7 +190,7 @@ interface PlatformInterface
      *
      * @return string The float SQL declaration.
      */
-    public function getFloatSQLDeclaration(array $options);
+    public function getFloatSQLDeclaration(array $options = array());
 
     /**
      * Gets the integer SQL declaration.
@@ -199,7 +199,7 @@ interface PlatformInterface
      *
      * @return string The integer SQL declaration.
      */
-    public function getIntegerSQLDeclaration(array $options);
+    public function getIntegerSQLDeclaration(array $options = array());
 
     /**
      * Gets the small integer SQL declaration.
@@ -208,7 +208,7 @@ interface PlatformInterface
      *
      * @return string The small integer SQL declaration.
      */
-    public function getSmallIntegerSQLDeclaration(array $options);
+    public function getSmallIntegerSQLDeclaration(array $options = array());
 
     /**
      * Gets the time SQL declaration.
@@ -217,7 +217,7 @@ interface PlatformInterface
      *
      * @return string The time SQL declaration.
      */
-    public function getTimeSQLDeclaration(array $options);
+    public function getTimeSQLDeclaration(array $options = array());
 
     /**
      * Gets the varchar SQL declaration.
@@ -226,7 +226,7 @@ interface PlatformInterface
      *
      * @return string The varchar SQL declaration.
      */
-    public function getVarcharSQLDeclaration(array $options);
+    public function getVarcharSQLDeclaration(array $options = array());
 
     /**
      * Gets the default decimal precision.
