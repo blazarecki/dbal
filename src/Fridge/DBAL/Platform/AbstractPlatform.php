@@ -611,7 +611,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table checks.
      */
-    public function getSelectTableCheckSQLQuery($table, $database)
+    public function getSelectTableChecksSQLQuery($table, $database)
     {
         throw PlatformException::methodNotSupported(__METHOD__);
     }

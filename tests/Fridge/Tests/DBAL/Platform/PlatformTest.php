@@ -521,7 +521,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testSelectTableChecksSQLQuery()
     {
-        $this->platform->getSelectTableCheckSQLQuery('foo', 'bar');
+        $this->platform->getSelectTableChecksSQLQuery('foo', 'bar');
     }
 
     public function testCreateDatabaseSQLQueries()

@@ -106,7 +106,7 @@ class UnsupportedSavepointPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableCheckSQLQuery($table, $database)
+    public function getSelectTableChecksSQLQuery($table, $database)
     {
 
     }

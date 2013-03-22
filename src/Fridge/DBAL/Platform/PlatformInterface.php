@@ -481,7 +481,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table check constraints.
      */
-    public function getSelectTableCheckSQLQuery($table, $database);
+    public function getSelectTableChecksSQLQuery($table, $database);
 
     /**
      * Gets the create database SQL queries.
