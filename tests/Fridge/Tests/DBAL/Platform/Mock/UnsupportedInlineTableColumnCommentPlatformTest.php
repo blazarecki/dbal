@@ -70,7 +70,7 @@ class UnsupportedInlineTableColumnCommentPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportInlineTableColumnComment()
+    public function supportInlineTableColumnComments()
     {
         return false;
     }

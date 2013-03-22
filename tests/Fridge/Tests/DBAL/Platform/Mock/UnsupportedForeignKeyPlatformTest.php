@@ -98,7 +98,7 @@ class UnsupportedForeignKeyPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportForeignKey()
+    public function supportForeignKeys()
     {
         return false;
     }

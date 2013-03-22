@@ -94,7 +94,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportSequence()
+    public function supportSequences()
     {
         return false;
     }
@@ -102,7 +102,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportCheck()
+    public function supportChecks()
     {
         return false;
     }

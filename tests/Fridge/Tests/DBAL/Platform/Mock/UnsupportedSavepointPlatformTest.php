@@ -74,7 +74,7 @@ class UnsupportedSavepointPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportSavepoint()
+    public function supportSavepoints()
     {
         return false;
     }

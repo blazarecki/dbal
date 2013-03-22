@@ -308,7 +308,7 @@ class Connection implements ConnectionInterface
      */
     public function setTransactionIsolation($isolation)
     {
-        if (!$this->getPlatform()->supportTransactionIsolation()) {
+        if (!$this->getPlatform()->supportTransactionIsolations()) {
             throw ConnectionException::transactionIsolationNotSupported();
         }
 

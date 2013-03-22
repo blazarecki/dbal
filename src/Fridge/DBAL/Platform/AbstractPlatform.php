@@ -397,7 +397,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportSavepoint()
+    public function supportSavepoints()
     {
         return true;
     }
@@ -405,7 +405,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportTransactionIsolation()
+    public function supportTransactionIsolations()
     {
         return true;
     }
@@ -413,7 +413,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportSequence()
+    public function supportSequences()
     {
         return true;
     }
@@ -421,7 +421,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportView()
+    public function supportViews()
     {
         return true;
     }
@@ -429,7 +429,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportPrimaryKey()
+    public function supportPrimaryKeys()
     {
         return true;
     }
@@ -437,7 +437,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportForeignKey()
+    public function supportForeignKeys()
     {
         return true;
     }
@@ -445,7 +445,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportIndex()
+    public function supportIndexes()
     {
         return true;
     }
@@ -453,7 +453,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportCheck()
+    public function supportChecks()
     {
         return true;
     }
@@ -461,7 +461,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportInlineTableColumnComment()
+    public function supportInlineTableColumnComments()
     {
         return true;
     }
@@ -473,7 +473,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateSavepointSQLQuery($savepoint)
     {
-        if (!$this->supportSavepoint()) {
+        if (!$this->supportSavepoints()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -487,7 +487,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getReleaseSavepointSQLQuery($savepoint)
     {
-        if (!$this->supportSavepoint()) {
+        if (!$this->supportSavepoints()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -501,7 +501,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getRollbackSavepointSQLQuery($savepoint)
     {
-        if (!$this->supportSavepoint()) {
+        if (!$this->supportSavepoints()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -631,7 +631,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateSequenceSQLQueries(Sequence $sequence)
     {
-        if (!$this->supportSequence()) {
+        if (!$this->supportSequences()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -650,7 +650,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateViewSQLQueries(View $view)
     {
-        if (!$this->supportView()) {
+        if (!$this->supportViews()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -664,7 +664,7 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $queries = array();
 
-        if (!$this->supportInlineTableColumnComment()) {
+        if (!$this->supportInlineTableColumnComments()) {
             $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
         }
 
@@ -706,7 +706,7 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $queries = array('ALTER TABLE '.$table.' ADD COLUMN '.$this->getColumnSQLDeclaration($column));
 
-        if (!$this->supportInlineTableColumnComment()
+        if (!$this->supportInlineTableColumnComments()
             && ($this->hasCustomType($column->getType()->getName())
             || ($column->getComment() !== null))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
@@ -768,7 +768,7 @@ abstract class AbstractPlatform implements PlatformInterface
             return array('ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index));
         }
 
-        if (!$this->supportIndex()) {
+        if (!$this->supportIndexes()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -819,7 +819,7 @@ abstract class AbstractPlatform implements PlatformInterface
             $this->getColumnSQLDeclaration($columnDiff->getNewAsset())
         );
 
-        if (!$this->supportInlineTableColumnComment()
+        if (!$this->supportInlineTableColumnComments()
             && ($this->hasCustomType($columnDiff->getNewAsset()->getType()->getName())
             || ($columnDiff->getNewAsset()->getComment() !== null))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
@@ -843,7 +843,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropSequenceSQLQueries(Sequence $sequence)
     {
-        if (!$this->supportSequence()) {
+        if (!$this->supportSequences()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -857,7 +857,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropViewSQLQueries(View $view)
     {
-        if (!$this->supportView()) {
+        if (!$this->supportViews()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -913,7 +913,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
-        if (!$this->supportPrimaryKey()) {
+        if (!$this->supportPrimaryKeys()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -927,7 +927,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
-        if (!$this->supportForeignKey()) {
+        if (!$this->supportForeignKeys()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -941,7 +941,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropIndexSQLQueries(Index $index, $table)
     {
-        if (!$this->supportIndex()) {
+        if (!$this->supportIndexes()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -959,7 +959,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropCheckSQLQueries(Check $check, $table)
     {
-        if (!$this->supportCheck()) {
+        if (!$this->supportChecks()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -1098,7 +1098,7 @@ abstract class AbstractPlatform implements PlatformInterface
             $columnDeclaration .= ' DEFAULT '.$this->quote($default);
         }
 
-        if ($this->supportInlineTableColumnComment()
+        if ($this->supportInlineTableColumnComments()
             && ($this->hasCustomType($column->getType()->getName())
             || ($column->getComment() !== null))
         ) {
@@ -1119,7 +1119,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getPrimaryKeySQLDeclaration(PrimaryKey $primaryKey)
     {
-        if (!$this->supportPrimaryKey()) {
+        if (!$this->supportPrimaryKeys()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -1137,7 +1137,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getForeignKeySQLDeclaration(ForeignKey $foreignKey)
     {
-        if (!$this->supportForeignKey()) {
+        if (!$this->supportForeignKeys()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -1161,7 +1161,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getIndexSQLDeclaration(Index $index)
     {
-        if (!$this->supportIndex()) {
+        if (!$this->supportIndexes()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
@@ -1183,7 +1183,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getCheckSQLDeclaration(Check $check)
     {
-        if (!$this->supportCheck()) {
+        if (!$this->supportChecks()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 

@@ -107,7 +107,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getSequences($database = null)
     {
-        if (!$this->getConnection()->getPlatform()->supportSequence()) {
+        if (!$this->getConnection()->getPlatform()->supportSequences()) {
             return array();
         }
 
@@ -126,7 +126,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getViews($database = null)
     {
-        if (!$this->getConnection()->getPlatform()->supportView()) {
+        if (!$this->getConnection()->getPlatform()->supportViews()) {
             return array();
         }
 
@@ -212,7 +212,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTablePrimaryKey($table, $database = null)
     {
-        if (!$this->getConnection()->getPlatform()->supportPrimaryKey()) {
+        if (!$this->getConnection()->getPlatform()->supportPrimaryKeys()) {
             return;
         }
 
@@ -233,7 +233,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTableForeignKeys($table, $database = null)
     {
-        if (!$this->getConnection()->getPlatform()->supportForeignKey()) {
+        if (!$this->getConnection()->getPlatform()->supportForeignKeys()) {
             return array();
         }
 
@@ -252,7 +252,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTableIndexes($table, $database = null)
     {
-        if (!$this->getConnection()->getPlatform()->supportIndex()) {
+        if (!$this->getConnection()->getPlatform()->supportIndexes()) {
             return array();
         }
 
@@ -271,7 +271,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTableChecks($table, $database = null)
     {
-        if (!$this->getConnection()->getPlatform()->supportCheck()) {
+        if (!$this->getConnection()->getPlatform()->supportChecks()) {
             return array();
         }
 

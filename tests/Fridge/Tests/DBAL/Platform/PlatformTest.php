@@ -404,24 +404,24 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Y-m-d H:i:s', $this->platform->getDateTimeFormat());
     }
 
-    public function testSupportSavepoint()
+    public function testSupportSavepoints()
     {
-        $this->assertTrue($this->platform->supportSavepoint());
+        $this->assertTrue($this->platform->supportSavepoints());
     }
 
-    public function testSupportTransactionIsolation()
+    public function testSupportTransactionIsolations()
     {
-        $this->assertTrue($this->platform->supportTransactionIsolation());
+        $this->assertTrue($this->platform->supportTransactionIsolations());
     }
 
-    public function testSupportSequence()
+    public function testSupportSequences()
     {
-        $this->assertTrue($this->platform->supportSequence());
+        $this->assertTrue($this->platform->supportSequences());
     }
 
-    public function testSupportInlineTableComment()
+    public function testSupportInlineTableComments()
     {
-        $this->assertTrue($this->platform->supportInlineTableColumnComment());
+        $this->assertTrue($this->platform->supportInlineTableColumnComments());
     }
 
     public function testCreateSavepointSQLQuery()

@@ -145,7 +145,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             $this->connection->getTransactionIsolation()
         );
 
-        if (!$this->connection->getPlatform()->supportTransactionIsolation()) {
+        if (!$this->connection->getPlatform()->supportTransactionIsolations()) {
             $this->setExpectedException('Fridge\DBAL\Exception\ConnectionException');
         }
 
@@ -594,7 +594,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         } catch (Exception $e) {
             $this->connection->rollBack();
 
-            if ($this->connection->getPlatform()->supportSavepoint()) {
+            if ($this->connection->getPlatform()->supportSavepoints()) {
                 $this->fail($e->getMessage());
             }
         }

@@ -132,7 +132,7 @@ class UnsupportedIndexPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportIndex()
+    public function supportIndexes()
     {
         return false;
     }

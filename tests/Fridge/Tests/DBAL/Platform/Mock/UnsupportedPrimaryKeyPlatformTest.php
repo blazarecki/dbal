@@ -98,7 +98,7 @@ class UnsupportedPrimaryKeyPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportPrimaryKey()
+    public function supportPrimaryKeys()
     {
         return false;
     }

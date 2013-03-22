@@ -285,67 +285,67 @@ interface PlatformInterface
     public function getDateTimeFormat();
 
     /**
-     * Checks if the platform supports savepoint.
+     * Checks if the platform supports savepoints.
      *
-     * @return boolean TRUE if the platform supports savepoint else FALSE.
+     * @return boolean TRUE if the platform supports savepoints else FALSE.
      */
-    public function supportSavepoint();
+    public function supportSavepoints();
 
     /**
-     * Checks if the platform supports transaction isolation.
+     * Checks if the platform supports transaction isolations.
      *
-     * @return boolean TRUE if the platform supports transaction isolation else FALSE.
+     * @return boolean TRUE if the platform supports transaction isolations else FALSE.
      */
-    public function supportTransactionIsolation();
+    public function supportTransactionIsolations();
 
     /**
-     * Checks if the platform supports sequence.
+     * Checks if the platform supports sequences.
      *
-     * @return boolean TRUE if the platform supports sequence else FALSE
+     * @return boolean TRUE if the platform supports sequences else FALSE.
      */
-    public function supportSequence();
+    public function supportSequences();
 
     /**
-     * Checks if the platform supports view.
+     * Checks if the platform supports views.
      *
-     * @return boolean TRUE if the platform supports view else FALSE.
+     * @return boolean TRUE if the platform supports views else FALSE.
      */
-    public function supportView();
+    public function supportViews();
 
     /**
-     * Checks if the platform supports primary key.
+     * Checks if the platform supports primary keys.
      *
-     * @return boolean TRUE if the platform supports primary key else FALSE.
+     * @return boolean TRUE if the platform supports primary keys else FALSE.
      */
-    public function supportPrimaryKey();
+    public function supportPrimaryKeys();
 
     /**
-     * Checks if the platform supports foreign key.
+     * Checks if the platform supports foreign keys.
      *
-     * @return boolean TRUE if the platform supports foreign key else FALSE.
+     * @return boolean TRUE if the platform supports foreign keys else FALSE.
      */
-    public function supportForeignKey();
+    public function supportForeignKeys();
 
     /**
-     * Checks if the platform supports index.
+     * Checks if the platform supports indexes.
      *
-     * @return boolean TRUE if the platform supports index else FALSE.
+     * @return boolean TRUE if the platform supports indexes else FALSE.
      */
-    public function supportIndex();
+    public function supportIndexes();
 
     /**
-     * Checks if the platform support check.
+     * Checks if the platform support checks.
      *
-     * @return boolean TRUE if the platform supports check else FALSE.
+     * @return boolean TRUE if the platform supports checks else FALSE.
      */
-    public function supportCheck();
+    public function supportChecks();
 
     /**
-     * Checks if the platform supports inline table column comment.
+     * Checks if the platform supports inline table column comments.
      *
-     * @return boolean TRUE if the platform supports inline table column comment else FALSE.
+     * @return boolean TRUE if the platform supports inline table column comments else FALSE.
      */
-    public function supportInlineTableColumnComment();
+    public function supportInlineTableColumnComments();
 
     /**
      * Gets the set charset SQL query.

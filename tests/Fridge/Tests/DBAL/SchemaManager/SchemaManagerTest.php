@@ -58,7 +58,7 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->platformMock
             ->expects($this->once())
-            ->method('supportView')
+            ->method('supportViews')
             ->will($this->returnValue(false));
 
         $this->assertEmpty($this->schemaManager->getViews());
@@ -68,7 +68,7 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->platformMock
             ->expects($this->once())
-            ->method('supportPrimaryKey')
+            ->method('supportPrimaryKeys')
             ->will($this->returnValue(false));
 
         $this->assertNull($this->schemaManager->getTablePrimaryKey('foo'));
@@ -78,7 +78,7 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->platformMock
             ->expects($this->once())
-            ->method('supportForeignKey')
+            ->method('supportForeignKeys')
             ->will($this->returnValue(false));
 
         $this->assertEmpty($this->schemaManager->getTableForeignKeys('foo'));
@@ -88,7 +88,7 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->platformMock
             ->expects($this->once())
-            ->method('supportIndex')
+            ->method('supportIndexes')
             ->will($this->returnValue(false));
 
         $this->assertEmpty($this->schemaManager->getTableIndexes('foo'));

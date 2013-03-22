@@ -74,7 +74,7 @@ class UnsupportedViewPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportView()
+    public function supportViews()
     {
         return false;
     }
