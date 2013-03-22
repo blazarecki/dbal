@@ -1068,7 +1068,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Gets the columns SQL declaration.
      *
-     * @param array $columns The columns.
+     * @param array $columns The columns (An array of `Fridge\DBAL\Schema\Column`).
      *
      * @return string The columns SQL declaration.
      */
@@ -1198,7 +1198,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Gets the create column comments SQL queries.
      *
-     * @param array  $columns The columns.
+     * @param array  $columns The columns (An array of `Fridge\DBAL\Schema\Column`).
      * @param string $table   The table name.
      *
      * @return array The create column comments SQL queries.
@@ -1232,7 +1232,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Gets the column comment SQL declaration.
      *
-     * @param Schema\Column $column The colum,.
+     * @param \Fridge\DBAL\Schema\Column $column The column.
      *
      * @return string The column comment SQL declaration.
      */
