@@ -27,14 +27,6 @@ class UnsupportedTransactionIsolationPlatformTest extends \PHPUnit_Framework_Tes
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
-    {
-        $this->platform = new UnsupportedTransactionIsolationPlatformMock();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown()
     {
         unset($this->platform);
@@ -43,8 +35,18 @@ class UnsupportedTransactionIsolationPlatformTest extends \PHPUnit_Framework_Tes
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testSetTransactionIsolationSQLQuery()
+    public function testSetTransactionIsolationSQLQueryWithUnsupportedOne()
     {
+        $this->platform = new UnsupportedTransactionIsolationPlatformMock();
+        $this->platform->getSetTransactionIsolationSQLQuery(Connection::TRANSACTION_READ_COMMITTED);
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSetTransactionIsolationSQLQueryWithForgottenOne()
+    {
+        $this->platform = new ForgottenTransactionIsolationPlatformMock();
         $this->platform->getSetTransactionIsolationSQLQuery(Connection::TRANSACTION_READ_COMMITTED);
     }
 }
@@ -67,89 +69,33 @@ class UnsupportedTransactionIsolationPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectDatabaseSQLQuery()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectDatabasesSQLQuery()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectSequencesSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableChecksSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableColumnsSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableIndexesSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableNamesSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectViewsSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSetTransactionIsolationSQLQuery($isolation)
     {
         return 'SET '.$this->getTransactionIsolationSQLDeclaration($isolation);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initializeMappedTypes()
+    {
+
+    }
+}
+
+/**
+ * Forgotten transaction isolation platform mock.
+ *
+ * @author GeLo <geloen.eric@gmail.com>
+ */
+class ForgottenTransactionIsolationPlatformMock extends AbstractPlatform
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function supportTransactionIsolations()
+    {
+        return false;
     }
 
     /**
