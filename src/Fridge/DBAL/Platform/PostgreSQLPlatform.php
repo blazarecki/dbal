@@ -285,13 +285,19 @@ class PostgreSQLPlatform extends AbstractPlatform
     {
         $queries = array();
 
-        $alterTableQuery = 'ALTER TABLE '.$table;
-        $alterColumnQuery = $alterTableQuery.' ALTER COLUMN '.$columnDiff->getNewAsset()->getName();
-
         if ($columnDiff->getOldAsset()->getName() !== $columnDiff->getNewAsset()->getName()) {
-            $queries[] = $alterTableQuery.' RENAME COLUMN '.$columnDiff->getOldAsset()->getName().
-                         ' TO '.$columnDiff->getNewAsset()->getName();
+            $queries[] = $this->getAlterTableSQLQuery(
+                $table,
+                'RENAME COLUMN',
+                $columnDiff->getOldAsset()->getName().' TO '.$columnDiff->getNewAsset()->getName()
+            );
         }
+
+        $alterColumnSQLQuerySnippet = $this->getAlterTableSQLQuery(
+            $table,
+            'ALTER COLUMN',
+            $columnDiff->getNewAsset()->getName()
+        );
 
         if (in_array('type', $columnDiff->getDifferences())
             || in_array('length', $columnDiff->getDifferences())
@@ -302,7 +308,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                 $columnDiff->getNewAsset()->toArray()
             );
 
-            $queries[] = $alterColumnQuery.' TYPE '.$typeDeclaration;
+            $queries[] = $alterColumnSQLQuerySnippet.' TYPE '.$typeDeclaration;
         }
 
         if (in_array('not_null', $columnDiff->getDifferences())) {
@@ -312,7 +318,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                 $notNullDeclaration = ' DROP NOT NULL';
             }
 
-            $queries[] = $alterColumnQuery.$notNullDeclaration;
+            $queries[] = $alterColumnSQLQuerySnippet.$notNullDeclaration;
         }
 
         if (in_array('default', $columnDiff->getDifferences())) {
@@ -322,7 +328,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                 $defaultDeclaration = ' DROP DEFAULT';
             }
 
-            $queries[] = $alterColumnQuery.$defaultDeclaration;
+            $queries[] = $alterColumnSQLQuerySnippet.$defaultDeclaration;
         }
 
         if (in_array('comment', $columnDiff->getDifferences())

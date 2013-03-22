@@ -712,7 +712,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateColumnSQLQueries(Column $column, $table)
     {
-        $queries = array('ALTER TABLE '.$table.' ADD COLUMN '.$this->getColumnSQLDeclaration($column));
+        $queries = array($this->getAlterTableSQLQuery($table, 'ADD COLUMN', $this->getColumnSQLDeclaration($column)));
 
         if (!$this->supportInlineTableColumnComments()
             && ($this->hasCustomType($column->getType()->getName())
@@ -754,7 +754,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreatePrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
-        return array('ALTER TABLE '.$table.' ADD '.$this->getPrimaryKeySQLDeclaration($primaryKey));
+        return array($this->getAlterTableSQLQuery($table, 'ADD', $this->getPrimaryKeySQLDeclaration($primaryKey)));
     }
 
     /**
@@ -762,7 +762,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
-        return array('ALTER TABLE '.$table.' ADD '.$this->getForeignKeySQLDeclaration($foreignKey));
+        return array($this->getAlterTableSQLQuery($table, 'ADD', $this->getForeignKeySQLDeclaration($foreignKey)));
     }
 
     /**
@@ -773,18 +773,14 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getCreateIndexSQLQueries(Index $index, $table)
     {
         if ($index->isUnique()) {
-            return array('ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index));
+            return array($this->getAlterTableSQLQuery($table, 'ADD', $this->getIndexSQLDeclaration($index)));
         }
 
         if (!$this->supportIndexes()) {
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return array(
-            'CREATE INDEX '.$index->getName().
-            ' ON '.$table.
-            ' ('.implode(', ', $index->getColumnNames()).')'
-        );
+        return array('CREATE INDEX '.$index->getName().' ON '.$table.' ('.implode(', ', $index->getColumnNames()).')');
     }
 
     /**
@@ -792,7 +788,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateCheckSQLQueries(Check $check, $table)
     {
-        return array('ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check));
+        return array($this->getAlterTableSQLQuery($table, 'ADD', $this->getCheckSQLDeclaration($check)));
     }
 
     /**
@@ -812,8 +808,11 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getRenameTableSQLQueries(TableDiff $tableDiff)
     {
         return array(
-            'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
-            ' RENAME TO '.$tableDiff->getNewAsset()->getName()
+            $this->getAlterTableSQLQuery(
+                $tableDiff->getOldAsset()->getName(),
+                'RENAME TO',
+                $tableDiff->getNewAsset()->getName()
+            ),
         );
     }
 
@@ -823,8 +822,11 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table)
     {
         $queries = array(
-            'ALTER TABLE '.$table.' ALTER COLUMN '.$columnDiff->getOldAsset()->getName().' '.
-            $this->getColumnSQLDeclaration($columnDiff->getNewAsset())
+            $this->getAlterTableSQLQuery(
+                $table,
+                'ALTER COLUMN',
+                $columnDiff->getOldAsset()->getName().' '.$this->getColumnSQLDeclaration($columnDiff->getNewAsset())
+            ),
         );
 
         if (!$this->supportInlineTableColumnComments()
@@ -885,7 +887,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropColumnSQLQueries(Column $column, $table)
     {
-        return array('ALTER TABLE '.$table.' DROP COLUMN '.$column->getName());
+        return array($this->getAlterTableSQLQuery($table, 'DROP COLUMN', $column->getName()));
     }
 
     /**
@@ -925,7 +927,7 @@ abstract class AbstractPlatform implements PlatformInterface
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName());
+        return array($this->getAlterTableSQLQuery($table, 'DROP CONSTRAINT', $primaryKey->getName()));
     }
 
     /**
@@ -939,7 +941,7 @@ abstract class AbstractPlatform implements PlatformInterface
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName());
+        return array($this->getAlterTableSQLQuery($table, 'DROP CONSTRAINT', $foreignKey->getName()));
     }
 
     /**
@@ -954,7 +956,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($index->isUnique()) {
-            return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName());
+            return array($this->getAlterTableSQLQuery($table, 'DROP CONSTRAINT', $index->getName()));
         }
 
         return array('DROP INDEX '.$index->getName());
@@ -971,7 +973,7 @@ abstract class AbstractPlatform implements PlatformInterface
             throw PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName());
+        return array($this->getAlterTableSQLQuery($table, 'DROP CONSTRAINT', $check->getName()));
     }
 
     /**
@@ -1253,6 +1255,22 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return $this->quote($comment);
+    }
+
+    /**
+     * Gets an alter table SQL query.
+     *
+     * @param string $table      The table name.
+     * @param string $action     The alter table action (ADD, DROP, ...).
+     * @param string $expression The alter table expression.
+     *
+     * @return string The alter table query.
+     */
+    protected function getAlterTableSQLQuery($table, $action, $expression = null)
+    {
+        $alterTable = 'ALTER TABLE '.$table.' '.$action;
+
+        return $expression !== null ? $alterTable.' '.$expression : $alterTable;
     }
 
     /**
