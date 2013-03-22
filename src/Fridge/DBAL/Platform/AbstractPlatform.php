@@ -1040,12 +1040,17 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @param string $isolation The transaction isolation.
      *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the transactions isolcation is not supported.
      * @throws \Fridge\DBAL\Exception\PlatformException If the isolation does not exist.
      *
      * @return string The transaction isolation SQL declaration.
      */
     protected function getTransactionIsolationSQLDeclaration($isolation)
     {
+        if (!$this->supportTransactionIsolations()) {
+            throw PlatformException::methodNotSupported(__METHOD__);
+        }
+
         $availableIsolations = array(
             Connection::TRANSACTION_READ_COMMITTED,
             Connection::TRANSACTION_READ_UNCOMMITTED,
