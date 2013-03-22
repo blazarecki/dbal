@@ -11,9 +11,8 @@
 
 namespace Fridge\DBAL\Type;
 
-use \PDO;
-
 use Fridge\DBAL\Platform\PlatformInterface;
+use PDO;
 
 /**
  * Boolean type.

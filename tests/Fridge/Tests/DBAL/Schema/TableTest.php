@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Table test.

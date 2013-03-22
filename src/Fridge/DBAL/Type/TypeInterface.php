@@ -30,7 +30,7 @@ interface TypeInterface
      *
      * @return string The type SQL declaration.
      */
-    function getSQLDeclaration(PlatformInterface $platform, array $options = array());
+    public function getSQLDeclaration(PlatformInterface $platform, array $options = array());
 
     /**
      * Converts a PHP value to this database value.
@@ -40,7 +40,7 @@ interface TypeInterface
      *
      * @return mixed The database value.
      */
-    function convertToDatabaseValue($value, PlatformInterface $platform);
+    public function convertToDatabaseValue($value, PlatformInterface $platform);
 
     /**
      * Converts a database value to this PHP value.
@@ -50,19 +50,19 @@ interface TypeInterface
      *
      * @return mixed The PHP value.
      */
-    function convertToPHPValue($value, PlatformInterface $platform);
+    public function convertToPHPValue($value, PlatformInterface $platform);
 
     /**
      * Gets the binding type.
      *
      * @return integer The Binding type.
      */
-    function getBindingType();
+    public function getBindingType();
 
     /**
      * Gets the type name.
      *
      * @return string The type name.
      */
-    function getName();
+    public function getName();
 }

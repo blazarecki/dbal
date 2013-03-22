@@ -25,7 +25,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of valid types.
      */
-    static public function validTypeProvider()
+    public static function validTypeProvider()
     {
         return array(
             array(Type::TARRAY),

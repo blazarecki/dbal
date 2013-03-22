@@ -23,19 +23,19 @@ interface DiffInterface
      *
      * @return boolean TRUE if the diff has difference else FALSE.
      */
-    function hasDifference();
+    public function hasDifference();
 
     /**
      * Checks if the diff has name difference.
      *
      * @return boolean TRUE if the diff has name difference else FALSE.
      */
-    function hasNameDifference();
+    public function hasNameDifference();
 
     /**
      * Checks if the diff has only name difference.
      *
      * @return boolean TRUE if the diff has only name difference else FALSE.
      */
-    function hasNameDifferenceOnly();
+    public function hasNameDifferenceOnly();
 }

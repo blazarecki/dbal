@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\DecimalType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\DecimalType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Decimal type test.

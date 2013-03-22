@@ -11,9 +11,9 @@
 
 namespace Fridge\DBAL\Event\Subscriber;
 
-use Fridge\DBAL\Event\Events,
-    Fridge\DBAL\Event\PostConnectEvent,
-    Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Fridge\DBAL\Event\Events;
+use Fridge\DBAL\Event\PostConnectEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Sets the character sets of a connection after a database connection.
@@ -58,7 +58,7 @@ class SetCharsetSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             Events::POST_CONNECT => 'postConnect',

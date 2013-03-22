@@ -11,9 +11,9 @@
 
 namespace Fridge\DBAL\Driver;
 
-use Fridge\DBAL\Connection\ConnectionInterface,
-    Fridge\DBAL\Platform\PostgreSQLPlatform,
-    Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager;
+use Fridge\DBAL\Connection\ConnectionInterface;
+use Fridge\DBAL\Platform\PostgreSQLPlatform;
+use Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager;
 
 /**
  * PDO PostgreSQL driver.

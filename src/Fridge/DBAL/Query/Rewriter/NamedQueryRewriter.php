@@ -41,7 +41,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array 0 => The rewritten query, 1 => The rewritten parameters, 2 => The rewritten types.
      */
-    static public function rewrite($query, array $parameters, array $types)
+    public static function rewrite($query, array $parameters, array $types)
     {
         if (empty($types)) {
             return array($query, $parameters, $types);
@@ -107,7 +107,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array The placeholder positions.
      */
-    static protected function determinePlaceholderPositions($query, $placeholder)
+    protected static function determinePlaceholderPositions($query, $placeholder)
     {
         // Placeholder positions.
         $placeholderPositions = array();
@@ -122,7 +122,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
         $placeolderPositionLimit = strlen($query) - $placeholderLength + 1;
 
         // Iterache each query char to find the placeholder.
-        for ($placeholderPosition = 0 ; $placeholderPosition < $placeolderPositionLimit ; $placeholderPosition++) {
+        for ($placeholderPosition = 0; $placeholderPosition < $placeolderPositionLimit; $placeholderPosition++) {
 
             // Switch the escaped flag if the current query char is a escape delimiter.
             if (in_array($query[$placeholderPosition], array('\'', '"'))) {
@@ -159,11 +159,11 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array The new placeholders.
      */
-    static protected function generateNewPlaceholders($placeholder, $count)
+    protected static function generateNewPlaceholders($placeholder, $count)
     {
         $newPlaceholders = array();
 
-        for ($index = 1 ; $index <= $count ; $index++) {
+        for ($index = 1; $index <= $count; $index++) {
             $newPlaceholders[] = $placeholder.$index;
         }
 
@@ -189,13 +189,12 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return string The rewritten query.
      */
-    static protected function rewriteQuery(
+    protected static function rewriteQuery(
         $query,
         array $placeholderPositions,
         $placeholderLength,
         array $newPlaceholders
-    )
-    {
+    ) {
         // The position gap produced by the rewrite.
         $positionGap = 0;
 
@@ -238,13 +237,12 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array 0 => The rewritten parameters, 1 => The rewritten types.
      */
-    static protected function rewriteParameterAndType(
+    protected static function rewriteParameterAndType(
         array $parameters,
         array $types,
         $parameter,
         array $newPlaceholders
-    )
-    {
+    ) {
         // Extract the fridge type.
         $type = static::extractType($types[$parameter]);
 

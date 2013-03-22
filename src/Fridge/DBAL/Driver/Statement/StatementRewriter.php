@@ -102,25 +102,25 @@ class StatementRewriter
         $statementLength = strlen($this->statement);
 
         // Iterate each statement char.
-        for ($placeholderPosition = 0 ; $placeholderPosition < $statementLength ; $placeholderPosition++) {
+        for ($placeholderPos = 0; $placeholderPos < $statementLength; $placeholderPos++) {
 
             // Switch the literal flag if the current statement char is a literal delimiter.
-            if (in_array($this->statement[$placeholderPosition], array('\'', '"'))) {
+            if (in_array($this->statement[$placeholderPos], array('\'', '"'))) {
                 $literal = !$literal;
             }
 
             // Check if we are not in a literal section and the current statement char is a double colon.
-            if (!$literal && $this->statement[$placeholderPosition] === ':') {
+            if (!$literal && $this->statement[$placeholderPos] === ':') {
 
                 // Determine placeholder length.
                 $placeholderLength = 1;
-                while (isset($this->statement[$placeholderPosition + $placeholderLength])
-                    && $this->isValidPlaceholderCharacter($this->statement[$placeholderPosition + $placeholderLength])) {
+                while (isset($this->statement[$placeholderPos + $placeholderLength])
+                    && $this->isValidPlaceholderCharacter($this->statement[$placeholderPos + $placeholderLength])) {
                     $placeholderLength++;
                 }
 
                 // Extract placeholder from the statement.
-                $placeholder = substr($this->statement, $placeholderPosition, $placeholderLength);
+                $placeholder = substr($this->statement, $placeholderPos, $placeholderLength);
 
                 // Initialize rewrites parameters.
                 if (!isset($this->parameters[$placeholder])) {
@@ -131,9 +131,9 @@ class StatementRewriter
                 $this->parameters[$placeholder][] = $positionalParameter;
 
                 // Rewrite statement.
-                $this->statement = substr($this->statement, 0, $placeholderPosition).
+                $this->statement = substr($this->statement, 0, $placeholderPos).
                     '?'.
-                    substr($this->statement, $placeholderPosition + $placeholderLength);
+                    substr($this->statement, $placeholderPos + $placeholderLength);
 
                 // Decrement statement length.
                 $statementLength = $statementLength - $placeholderLength + 1;

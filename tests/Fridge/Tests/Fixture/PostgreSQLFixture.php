@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\Fixture;
 
-use \PDO,
-    Fridge\DBAL\Type\Type,
-    Fridge\Tests\PHPUnitUtility;
+use Fridge\DBAL\Type\Type;
+use Fridge\Tests\PHPUnitUtility;
+use PDO;
 
 /**
  * PostgreSQL fixture.

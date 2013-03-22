@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\Connection;
 
-use Fridge\Tests\ConnectionUtility,
-    Fridge\Tests\Fixture\PostgreSQLFixture;
+use Fridge\Tests\ConnectionUtility;
+use Fridge\Tests\Fixture\PostgreSQLFixture;
 
 /**
  * PDO PostgreSQL functional connection test.
@@ -24,7 +24,7 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
             self::$fixture = new PostgreSQLFixture();

@@ -11,11 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Query\Rewriter;
 
-use \DateTime;
-
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Query\Rewriter\PositionalQueryRewriter,
-    Fridge\DBAL\Type\Type;
+use DateTime;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Query\Rewriter\PositionalQueryRewriter;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Positional query rewriter test.

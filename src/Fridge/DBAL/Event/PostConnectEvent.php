@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Event;
 
-use Fridge\DBAL\Connection\ConnectionInterface,
-    Symfony\Component\EventDispatcher\Event;
+use Fridge\DBAL\Connection\ConnectionInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is dispatched after a connection has been established with the database.

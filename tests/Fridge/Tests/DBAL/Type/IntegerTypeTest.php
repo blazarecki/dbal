@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\IntegerType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\IntegerType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Integer type test.

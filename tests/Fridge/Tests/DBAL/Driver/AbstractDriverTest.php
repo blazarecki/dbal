@@ -21,7 +21,7 @@ namespace Fridge\Tests\DBAL\Driver;
 abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    static protected $fixture;
+    protected static $fixture;
 
     /** @var \Fridge\DBAL\Driver\DriverInterface */
     protected $driver;
@@ -29,7 +29,7 @@ abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->create();
@@ -39,7 +39,7 @@ abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    static public function tearDownAfterClass()
+    public static function tearDownAfterClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->drop();

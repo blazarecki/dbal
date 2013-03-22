@@ -11,11 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \DateTime,
-    \PDO;
-
-use Fridge\DBAL\Type\DateType,
-    Fridge\DBAL\Type\Type;
+use DateTime;
+use Fridge\DBAL\Type\DateType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Date type test.
@@ -50,7 +49,10 @@ class DateTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('2012-01-01', $this->type->convertToDatabaseValue(new DateTime('2012-01-01 01:23:45'), $this->platformMock));
+        $this->assertSame(
+            '2012-01-01',
+            $this->type->convertToDatabaseValue(new DateTime('2012-01-01 01:23:45'), $this->platformMock)
+        );
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -60,7 +62,10 @@ class DateTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertEquals(new DateTime('2012-01-01'), $this->type->convertToPHPValue('2012-01-01', $this->platformMock));
+        $this->assertEquals(
+            new DateTime('2012-01-01'),
+            $this->type->convertToPHPValue('2012-01-01', $this->platformMock)
+        );
     }
 
     /**

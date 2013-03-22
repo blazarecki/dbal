@@ -11,11 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Query\Rewriter;
 
-use \DateTime;
-
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Query\Rewriter\NamedQueryRewriter,
-    Fridge\DBAL\Type\Type;
+use DateTime;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Query\Rewriter\NamedQueryRewriter;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Named query rewriter test.

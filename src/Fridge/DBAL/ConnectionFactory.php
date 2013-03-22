@@ -25,7 +25,7 @@ class ConnectionFactory
     const VERSION = '1.0.0-dev';
 
     /** @var array */
-    static protected $mappedDriverClasses = array(
+    protected static $mappedDriverClasses = array(
         'pdo_mysql' => 'Fridge\DBAL\Driver\PDOMySQLDriver',
         'pdo_pgsql' => 'Fridge\DBAL\Driver\PDOPostgreSQLDriver',
         'mysqli'    => 'Fridge\DBAL\Driver\MysqliDriver',
@@ -36,7 +36,7 @@ class ConnectionFactory
      *
      * @return array The available drivers.
      */
-    static public function getAvailableDrivers()
+    public static function getAvailableDrivers()
     {
         return array_keys(static::$mappedDriverClasses);
     }
@@ -77,7 +77,7 @@ class ConnectionFactory
      *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The DBAL Connection.
      */
-    static public function create(array $parameters, Configuration $configuration = null)
+    public static function create(array $parameters, Configuration $configuration = null)
     {
         if (isset($parameters['driver_class'])) {
             if (!in_array('Fridge\DBAL\Driver\DriverInterface', class_implements($parameters['driver_class']))) {
@@ -96,7 +96,10 @@ class ConnectionFactory
         }
 
         if (isset($parameters['connection_class'])) {
-            if (!in_array('Fridge\DBAL\Connection\ConnectionInterface', class_implements($parameters['connection_class']))) {
+            if (!in_array(
+                'Fridge\DBAL\Connection\ConnectionInterface',
+                class_implements($parameters['connection_class'])
+            )) {
                 throw FactoryException::connectionMustImplementConnectionInterface($parameters['connection_class']);
             }
 

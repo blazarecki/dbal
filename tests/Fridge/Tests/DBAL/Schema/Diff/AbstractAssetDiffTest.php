@@ -88,4 +88,3 @@ class AbstractAssetDiffTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($assetDiff->hasNameDifferenceOnly());
     }
 }
-

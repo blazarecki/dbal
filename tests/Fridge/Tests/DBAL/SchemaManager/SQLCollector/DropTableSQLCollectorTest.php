@@ -11,11 +11,11 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\SchemaManager\SQLCollector\DropTableSQLCollector,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\SchemaManager\SQLCollector\DropTableSQLCollector;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Drop table SQL collector test.

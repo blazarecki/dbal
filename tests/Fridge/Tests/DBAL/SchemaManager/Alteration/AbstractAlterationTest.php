@@ -21,7 +21,7 @@ namespace Fridge\Tests\DBAL\SchemaManager\Alteration;
 abstract class AbstractAlterationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    static protected $fixture;
+    protected static $fixture;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     protected $connection;

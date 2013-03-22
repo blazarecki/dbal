@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Event\Subscriber;
 
-use Fridge\DBAL\Event\Events,
-    Fridge\DBAL\Event\PostConnectEvent,
-    Fridge\DBAL\Event\Subscriber\SetCharsetSubscriber;
+use Fridge\DBAL\Event\Events;
+use Fridge\DBAL\Event\PostConnectEvent;
+use Fridge\DBAL\Event\Subscriber\SetCharsetSubscriber;
 
 /**
  * MySQLSessionInit test.

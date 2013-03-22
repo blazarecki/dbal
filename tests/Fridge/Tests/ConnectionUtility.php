@@ -36,7 +36,7 @@ class ConnectionUtility
      *
      * @return boolean TRUE if the connection can be tested else FALSE.
      */
-    static public function hasConnection($driver)
+    public static function hasConnection($driver)
     {
         return PHPUnitUtility::hasSettings($driver);
     }
@@ -48,7 +48,7 @@ class ConnectionUtility
      *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The connection if it can be tested else NULL.
      */
-    static public function getConnection($driver)
+    public static function getConnection($driver)
     {
         if (!self::hasConnection($driver)) {
             return null;

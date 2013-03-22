@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Schema\Diff;
 
-use Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Table;
 
 /**
  * Describes the difference between to two tables.
@@ -85,8 +85,7 @@ class TableDiff extends AbstractAssetDiff
         array $droppedIndexes = array(),
         array $createdChecks = array(),
         array $droppedChecks = array()
-    )
-    {
+    ) {
         parent::__construct($oldTable, $newTable);
 
         $this->createdColumns = $createdColumns;

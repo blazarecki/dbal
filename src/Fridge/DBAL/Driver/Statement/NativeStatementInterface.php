@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Driver\Statement;
 
-use \PDO;
+use PDO;
 
 /**
  * Low-level class representing a prepared SQL statement.
@@ -31,7 +31,7 @@ interface NativeStatementInterface
      *
      * @return boolean TRUE if the parameter has been binded to the PHP variable else FALSE.
      */
-    function bindParam($parameter, &$variable, $type = PDO::PARAM_STR);
+    public function bindParam($parameter, &$variable, $type = PDO::PARAM_STR);
 
     /**
      * Binds a value to a parameter.
@@ -42,7 +42,7 @@ interface NativeStatementInterface
      *
      * @return boolean TRUE if the value has been binded to the parameter else FALSE.
      */
-    function bindValue($parameter, $value, $type = PDO::PARAM_STR);
+    public function bindValue($parameter, $value, $type = PDO::PARAM_STR);
 
     /**
      * Executes the statement.
@@ -51,14 +51,14 @@ interface NativeStatementInterface
      *
      * @return boolean TRUE if the statement has been excuted else FALSE.
      */
-    function execute($parameters = array());
+    public function execute($parameters = array());
 
     /**
      * Gets the number of rows affected by the last SQL statement.
      *
      * @return integer The number of rows affected by the last SQL statement.
      */
-    function rowCount();
+    public function rowCount();
 
     /**
      * Fetches all rows from the result set.
@@ -67,7 +67,7 @@ interface NativeStatementInterface
      *
      * @return array All rows from the result set.
      */
-    function fetchAll($fetchMode = PDO::FETCH_BOTH);
+    public function fetchAll($fetchMode = PDO::FETCH_BOTH);
 
     /**
      * Fetches the next row from the result set.
@@ -76,7 +76,7 @@ interface NativeStatementInterface
      *
      * @return mixed The next row from the result set.
      */
-    function fetch($fetchMode = PDO::FETCH_BOTH);
+    public function fetch($fetchMode = PDO::FETCH_BOTH);
 
     /**
      * Fetches the value of a single column from the next row of the result set.
@@ -85,7 +85,7 @@ interface NativeStatementInterface
      *
      * @return mixed The value of the single column from the next row of the result set.
      */
-    function fetchColumn($columnIndex = 0);
+    public function fetchColumn($columnIndex = 0);
 
     /**
      * Sets the default fetch mode.
@@ -94,33 +94,33 @@ interface NativeStatementInterface
      *
      * @return boolean TRUE if the default fetch mode has been setted else FALSE.
      */
-    function setFetchMode($fetchMode);
+    public function setFetchMode($fetchMode);
 
     /**
      * Returns the number of columns in the result set.
      *
      * @return integer The number of columns in the result set.
      */
-    function columnCount();
+    public function columnCount();
 
     /**
      * Closes the cursor in order to be able to execute the statement again.
      *
      * @return boolean TRUE if the cursor has been closed else FALSE.
      */
-    function closeCursor();
+    public function closeCursor();
 
     /**
      * Gets the last error code associated with the last operation on the statement.
      *
      * @return string The last error code associated with the last operation on the statement.
      */
-    function errorCode();
+    public function errorCode();
 
     /**
      * Gets the last error info associated with the last operation on the statement.
      *
      * @return string The last error info associated with the last operation on the statement.
      */
-    function errorInfo();
+    public function errorInfo();
 }

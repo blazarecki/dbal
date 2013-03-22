@@ -11,10 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Query;
 
-use Fridge\DBAL\Query\QueryBuilder,
-    Fridge\DBAL\Query\Expression\Expression,
-    Fridge\DBAL\Query\Expression\ExpressionBuilder,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Query\QueryBuilder;
+use Fridge\DBAL\Query\Expression\Expression;
+use Fridge\DBAL\Query\Expression\ExpressionBuilder;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Query builder test.
@@ -92,7 +92,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testParts()
     {
-        $this->assertSame(array(
+        $expected = array(
             'select'   => array(),
             'from'     => array(),
             'join'     => array(),
@@ -103,7 +103,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             'order_by' => array(),
             'offset'   => null,
             'limit'    => null,
-        ), $this->queryBuilder->getParts());
+        );
+
+        $this->assertSame($expected, $this->queryBuilder->getParts());
     }
 
     public function testEmptySelect()
@@ -465,7 +467,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             ->set('f.foo', ':foo')
             ->where('f.a = b.b');
 
-        $this->assertSame('UPDATE f FROM foo f, bar b SET f.foo = :foo WHERE f.a = b.b', $this->queryBuilder->getQuery());
+        $this->assertSame(
+            'UPDATE f FROM foo f, bar b SET f.foo = :foo WHERE f.a = b.b',
+            $this->queryBuilder->getQuery()
+        );
     }
 
     public function testDeleteWithAlias()
@@ -536,7 +541,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->queryBuilder->resetParts();
 
-        $this->assertSame(array(
+        $expected = array(
             'select'   => array(),
             'from'     => array(),
             'join'     => array(),
@@ -547,7 +552,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             'order_by' => array(),
             'offset'   => null,
             'limit'    => null,
-        ), $this->queryBuilder->getParts());
+        );
+
+        $this->assertSame($expected, $this->queryBuilder->getParts());
     }
 
     public function testResetParts()

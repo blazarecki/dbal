@@ -11,21 +11,20 @@
 
 namespace Fridge\Tests\DBAL\Platform;
 
-use \ReflectionMethod;
-
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Platform\MySQLPlatform,
-    Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Diff\SchemaDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Platform\MySQLPlatform;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Type\Type;
+use ReflectionMethod;
 
 /**
  * MySQL Platform test.
@@ -220,7 +219,8 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getSelectSequencesSQLQuery" is not supported.
+     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getSelectSequencesSQLQuery" is not
+     *                            supported.
      */
     public function testSelectSequenceSQLQuery()
     {
@@ -237,7 +237,8 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getCreateSequenceSQLQueries" is not supported.
+     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getCreateSequenceSQLQueries" is not
+     *                            supported.
      */
     public function testCreateSequenceSQLQueries()
     {

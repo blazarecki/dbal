@@ -11,21 +11,20 @@
 
 namespace Fridge\DBAL\Connection;
 
-use \PDO;
-
-use Fridge\DBAL\Configuration,
-    Fridge\DBAL\Debug\QueryDebugger,
-    Fridge\DBAL\Driver\DriverInterface,
-    Fridge\DBAL\Driver\Statement\NativeStatementInterface,
-    Fridge\DBAL\Event\DebugQueryEvent,
-    Fridge\DBAL\Event\Events,
-    Fridge\DBAL\Event\PostConnectEvent,
-    Fridge\DBAL\Exception\ConnectionException,
-    Fridge\DBAL\Query\Expression\ExpressionBuilder,
-    Fridge\DBAL\Query\QueryBuilder,
-    Fridge\DBAL\Query\Rewriter\QueryRewriter,
-    Fridge\DBAL\Statement\Statement,
-    Fridge\DBAL\Type\TypeUtility;
+use Fridge\DBAL\Configuration;
+use Fridge\DBAL\Debug\QueryDebugger;
+use Fridge\DBAL\Driver\DriverInterface;
+use Fridge\DBAL\Driver\Statement\NativeStatementInterface;
+use Fridge\DBAL\Event\DebugQueryEvent;
+use Fridge\DBAL\Event\Events;
+use Fridge\DBAL\Event\PostConnectEvent;
+use Fridge\DBAL\Exception\ConnectionException;
+use Fridge\DBAL\Query\Expression\ExpressionBuilder;
+use Fridge\DBAL\Query\QueryBuilder;
+use Fridge\DBAL\Query\Rewriter\QueryRewriter;
+use Fridge\DBAL\Statement\Statement;
+use Fridge\DBAL\Type\TypeUtility;
+use PDO;
 
 /**
  * {@inheritdoc}
@@ -462,8 +461,7 @@ class Connection implements ConnectionInterface
         $expression = null,
         array $expressionParameters = array(),
         array $expressionParameterTypes = array()
-    )
-    {
+    ) {
         $isPositional = empty($expressionParameters) || is_int(key($expressionParameters));
 
         $queryBuilder = $this->createQueryBuilder()
@@ -504,8 +502,7 @@ class Connection implements ConnectionInterface
         $expression = null,
         array $expressionParameters = array(),
         array $expressionParameterTypes = array()
-    )
-    {
+    ) {
         $queryBuilder = $this->createQueryBuilder()->delete($tableName);
 
         if ($expression !== null) {
@@ -565,7 +562,9 @@ class Connection implements ConnectionInterface
         if ($this->transactionLevel === 1) {
             $this->getNativeConnection()->beginTransaction();
         } else {
-            $this->getNativeConnection()->exec($this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName()));
+            $this->getNativeConnection()->exec(
+                $this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName())
+            );
         }
     }
 
@@ -581,7 +580,9 @@ class Connection implements ConnectionInterface
         } elseif ($this->transactionLevel === 1) {
             $this->getNativeConnection()->commit();
         } else {
-            $this->getNativeConnection()->exec($this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName()));
+            $this->getNativeConnection()->exec(
+                $this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName())
+            );
         }
 
         $this->transactionLevel--;
@@ -599,7 +600,9 @@ class Connection implements ConnectionInterface
         } elseif ($this->transactionLevel === 1) {
             $this->getNativeConnection()->rollBack();
         } else {
-            $this->getNativeConnection()->exec($this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName()));
+            $this->getNativeConnection()->exec(
+                $this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName())
+            );
         }
 
         $this->transactionLevel--;

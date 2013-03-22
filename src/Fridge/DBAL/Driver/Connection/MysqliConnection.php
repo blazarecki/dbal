@@ -11,11 +11,10 @@
 
 namespace Fridge\DBAL\Driver\Connection;
 
-use \mysqli,
-    \PDO;
-
-use Fridge\DBAL\Driver\Statement\MysqliStatement,
-    Fridge\DBAL\Exception\MysqliException;
+use Fridge\DBAL\Driver\Statement\MysqliStatement;
+use Fridge\DBAL\Exception\MysqliException;
+use mysqli;
+use PDO;
 
 /**
  * {@inheritdoc}

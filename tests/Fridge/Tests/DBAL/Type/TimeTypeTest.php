@@ -11,11 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \DateTime,
-    \PDO;
-
-use Fridge\DBAL\Type\TimeType,
-    Fridge\DBAL\Type\Type;
+use DateTime;
+use Fridge\DBAL\Type\TimeType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Time type test.
@@ -50,7 +49,10 @@ class TimeTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('01:23:45', $this->type->convertToDatabaseValue(new DateTime('01:23:45'), $this->platformMock));
+        $this->assertSame(
+            '01:23:45',
+            $this->type->convertToDatabaseValue(new DateTime('01:23:45'), $this->platformMock)
+        );
     }
 
     public function testConvertToDatabaseValueWithNullValue()

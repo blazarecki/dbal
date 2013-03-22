@@ -32,7 +32,7 @@ class QueryRewriter
      *
      * @return array 0 => The rewritten query, 1 => The rewritten query parameters, 2 => The rewritten query types.
      */
-    static public function rewrite($query, array $parameters, array $types)
+    public static function rewrite($query, array $parameters, array $types)
     {
         if (is_int(key($types))) {
             return PositionalQueryRewriter::rewrite($query, $parameters, $types);

@@ -78,7 +78,7 @@ abstract class AbstractAsset
         $hash = null;
         $dictionary = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
-        for ($i = 0 ; $i < ($maxLength - strlen($prefix)) ; $i++) {
+        for ($i = 0; $i < ($maxLength - strlen($prefix)); $i++) {
             $hash .= $dictionary[mt_rand(0, strlen($dictionary) - 1)];
         }
 

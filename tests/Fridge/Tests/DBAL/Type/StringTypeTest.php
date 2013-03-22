@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\StringType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\StringType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * String type test.

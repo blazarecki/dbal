@@ -11,9 +11,9 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Type\Type;
 
 /**
  * PostgreSQL platform.
@@ -176,7 +176,8 @@ class PostgreSQLPlatform extends AbstractPlatform
                ' FROM pg_constraint co'.
                ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = '.$this->quote($table).')'.
                ' INNER JOIN pg_attribute a ON (c.oid = a.attrelid AND a.attnum > 0)'.
-               ' INNER JOIN pg_index i ON (c.oid = i.indrelid AND a.attnum = any(i.indkey) AND i.indisprimary = '.$this->quote('t').')';
+               ' INNER JOIN pg_index i ON (c.oid = i.indrelid AND a.attnum = any(i.indkey) AND i.indisprimary = '.
+               $this->quote('t').')';
     }
 
     /**

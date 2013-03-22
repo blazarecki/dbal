@@ -11,18 +11,18 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\ConstraintInterface,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Diff\SchemaDiff,
-    Fridge\DBAL\Schema\Diff\TableDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\ConstraintInterface;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+use Fridge\DBAL\Schema\Diff\TableDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\View;
 
 /**
  * A platform allows to know each specific database behaviors.
@@ -40,7 +40,7 @@ interface PlatformInterface
      *
      * @return boolean TRUE if the mapped type exists else FALSE.
      */
-    function hasMappedType($type);
+    public function hasMappedType($type);
 
     /**
      * Gets a mapped type.
@@ -49,7 +49,7 @@ interface PlatformInterface
      *
      * @return string The mapped type.
      */
-    function getMappedType($type);
+    public function getMappedType($type);
 
     /**
      * Adds a mapped type.
@@ -57,7 +57,7 @@ interface PlatformInterface
      * @param string $databaseType The database type.
      * @param string $fridgeType   The fridge type.
      */
-    function addMappedType($databaseType, $fridgeType);
+    public function addMappedType($databaseType, $fridgeType);
 
     /**
      * Overrides a mapped type.
@@ -65,14 +65,14 @@ interface PlatformInterface
      * @param string $databaseType The database type.
      * @param string $fridgeType   The fridge type.
      */
-    function overrideMappedType($databaseType, $fridgeType);
+    public function overrideMappedType($databaseType, $fridgeType);
 
     /**
      * Removes a mapped type.
      *
      * @param string $type The mapped type to remove.
      */
-    function removeMappedType($type);
+    public function removeMappedType($type);
 
     /**
      * Checks/sets if the platform uses a strict mapped type strategy.
@@ -81,21 +81,21 @@ interface PlatformInterface
      *
      * @return boolean TRUE if the platform uses stric mapped type strategy else FALSE.
      */
-    function useStrictMappedType($strictMappedType = null);
+    public function useStrictMappedType($strictMappedType = null);
 
     /**
      * Gets the fallback mapped type.
      *
      * @return string The fallback mapped type.
      */
-    function getFallbackMappedType();
+    public function getFallbackMappedType();
 
     /**
      * Sets the fallback mapped type.
      *
      * @param string $fallbackMappedType The fallback mapped type.
      */
-    function setFallbackMappedType($fallbackMappedType);
+    public function setFallbackMappedType($fallbackMappedType);
 
     /**
      * Checks if a mandatory type exists.
@@ -104,21 +104,21 @@ interface PlatformInterface
      *
      * @return boolean TRUE if the mandatory type exists else FALSE.
      */
-    function hasMandatoryType($type);
+    public function hasMandatoryType($type);
 
     /**
      * Adds a mandatory type.
      *
      * @param string $type The type.
      */
-    function addMandatoryType($type);
+    public function addMandatoryType($type);
 
     /**
      * Removes a mandatory type.
      *
      * @param string $type The type.
      */
-    function removeMandatoryType($type);
+    public function removeMandatoryType($type);
 
     /**
      * Gets the big integer SQL declaration.
@@ -127,7 +127,7 @@ interface PlatformInterface
      *
      * @return string The big integer SQL declaration.
      */
-    function getBigIntegerSQLDeclaration(array $options);
+    public function getBigIntegerSQLDeclaration(array $options);
 
     /**
      * Gets the blob SQL declaration.
@@ -136,7 +136,7 @@ interface PlatformInterface
      *
      * @return string The blob SQL declaration.
      */
-    function getBlobSQLDeclaration(array $options);
+    public function getBlobSQLDeclaration(array $options);
 
     /**
      * Gets the boolean SQL declaration.
@@ -145,7 +145,7 @@ interface PlatformInterface
      *
      * @return string The boolean SQL declaration.
      */
-    function getBooleanSQLDeclaration(array $options);
+    public function getBooleanSQLDeclaration(array $options);
 
     /**
      * Gets the clob SQL declaration.
@@ -154,7 +154,7 @@ interface PlatformInterface
      *
      * @return string The clob SQL declaration.
      */
-    function getClobSQLDeclaration(array $options);
+    public function getClobSQLDeclaration(array $options);
 
     /**
      * Gets the date SQL declaration.
@@ -163,7 +163,7 @@ interface PlatformInterface
      *
      * @return string The date SQL declaration.
      */
-    function getDateSQLDeclaration(array $options);
+    public function getDateSQLDeclaration(array $options);
 
     /**
      * Gets the date time SQL declaration.
@@ -172,7 +172,7 @@ interface PlatformInterface
      *
      * @return string The date time SQL declaration.
      */
-    function getDateTimeSQLDeclaration(array $options);
+    public function getDateTimeSQLDeclaration(array $options);
 
     /**
      * Gets the decimal SQL declaration.
@@ -181,7 +181,7 @@ interface PlatformInterface
      *
      * @return string The decimal SQL declaration.
      */
-    function getDecimalSQLDeclaration(array $options);
+    public function getDecimalSQLDeclaration(array $options);
 
     /**
      * Gets the float SQL declaration.
@@ -190,7 +190,7 @@ interface PlatformInterface
      *
      * @return string The float SQL declaration.
      */
-    function getFloatSQLDeclaration(array $options);
+    public function getFloatSQLDeclaration(array $options);
 
     /**
      * Gets the integer SQL declaration.
@@ -199,7 +199,7 @@ interface PlatformInterface
      *
      * @return string The integer SQL declaration.
      */
-    function getIntegerSQLDeclaration(array $options);
+    public function getIntegerSQLDeclaration(array $options);
 
     /**
      * Gets the small integer SQL declaration.
@@ -208,7 +208,7 @@ interface PlatformInterface
      *
      * @return string The small integer SQL declaration.
      */
-    function getSmallIntegerSQLDeclaration(array $options);
+    public function getSmallIntegerSQLDeclaration(array $options);
 
     /**
      * Gets the time SQL declaration.
@@ -217,7 +217,7 @@ interface PlatformInterface
      *
      * @return string The time SQL declaration.
      */
-    function getTimeSQLDeclaration(array $options);
+    public function getTimeSQLDeclaration(array $options);
 
     /**
      * Gets the varchar SQL declaration.
@@ -226,126 +226,126 @@ interface PlatformInterface
      *
      * @return string The varchar SQL declaration.
      */
-    function getVarcharSQLDeclaration(array $options);
+    public function getVarcharSQLDeclaration(array $options);
 
     /**
      * Gets the default decimal precision.
      *
      * @return integer The default decimal precision.
      */
-    function getDefaultDecimalPrecision();
+    public function getDefaultDecimalPrecision();
 
     /**
      * Gets the default decimal scale.
      *
      * @return integer The default decimal scale.
      */
-    function getDefaultDecimalScale();
+    public function getDefaultDecimalScale();
 
     /**
      * Gets the default varchar length.
      *
      * @return integer The default varchar length.
      */
-    function getDefaultVarcharLength();
+    public function getDefaultVarcharLength();
 
     /**
      * Gets the default platform transaction isolation.
      *
      * @return string The default platform transaction isolation.
      */
-    function getDefaultTransactionIsolation();
+    public function getDefaultTransactionIsolation();
 
     /**
      * Gets the max varchar length.
      *
      * @return integer The max varchar length.
      */
-    function getMaxVarcharLength();
+    public function getMaxVarcharLength();
 
     /**
      * Gets the date format.
      *
      * @return string The date format.
      */
-    function getDateFormat();
+    public function getDateFormat();
 
     /**
      * Gets the time format.
      *
      * @return string The time format.
      */
-    function getTimeFormat();
+    public function getTimeFormat();
 
     /**
      * Gets the date time format.
      *
      * @return string The date time format.
      */
-    function getDateTimeFormat();
+    public function getDateTimeFormat();
 
     /**
      * Checks if the platform supports savepoint.
      *
      * @return boolean TRUE if the platform supports savepoint else FALSE.
      */
-    function supportSavepoint();
+    public function supportSavepoint();
 
     /**
      * Checks if the platform supports transaction isolation.
      *
      * @return boolean TRUE if the platform supports transaction isolation else FALSE.
      */
-    function supportTransactionIsolation();
+    public function supportTransactionIsolation();
 
     /**
      * Checks if the platform supports sequence.
      *
      * @return boolean TRUE if the platform supports sequence else FALSE
      */
-    function supportSequence();
+    public function supportSequence();
 
     /**
      * Checks if the platform supports view.
      *
      * @return boolean TRUE if the platform supports view else FALSE.
      */
-    function supportView();
+    public function supportView();
 
     /**
      * Checks if the platform supports primary key.
      *
      * @return boolean TRUE if the platform supports primary key else FALSE.
      */
-    function supportPrimaryKey();
+    public function supportPrimaryKey();
 
     /**
      * Checks if the platform supports foreign key.
      *
      * @return boolean TRUE if the platform supports foreign key else FALSE.
      */
-    function supportForeignKey();
+    public function supportForeignKey();
 
     /**
      * Checks if the platform supports index.
      *
      * @return boolean TRUE if the platform supports index else FALSE.
      */
-    function supportIndex();
+    public function supportIndex();
 
     /**
      * Checks if the platform support check.
      *
      * @return boolean TRUE if the platform supports check else FALSE.
      */
-    function supportCheck();
+    public function supportCheck();
 
     /**
      * Checks if the platform supports inline table column comment.
      *
      * @return boolean TRUE if the platform supports inline table column comment else FALSE.
      */
-    function supportInlineTableColumnComment();
+    public function supportInlineTableColumnComment();
 
     /**
      * Gets the set charset SQL query.
@@ -354,7 +354,7 @@ interface PlatformInterface
      *
      * @return string The set charset SQL query.
      */
-    function getSetCharsetSQLQuery($charset);
+    public function getSetCharsetSQLQuery($charset);
 
     /**
      * Gets the create savepoint SQL query.
@@ -363,7 +363,7 @@ interface PlatformInterface
      *
      * @return string The create savepoint SQL query.
      */
-    function getCreateSavepointSQLQuery($savepoint);
+    public function getCreateSavepointSQLQuery($savepoint);
 
     /**
      * Gets the release savepoint SQL query.
@@ -372,7 +372,7 @@ interface PlatformInterface
      *
      * @return string The release savepoint SQL query.
      */
-    function getReleaseSavepointSQLQuery($savepoint);
+    public function getReleaseSavepointSQLQuery($savepoint);
 
     /**
      * Gets the rollback savepoint SQL query.
@@ -381,7 +381,7 @@ interface PlatformInterface
      *
      * @return string The rollback savepoint SQL query.
      */
-    function getRollbackSavepointSQLQuery($savepoint);
+    public function getRollbackSavepointSQLQuery($savepoint);
 
     /**
      * Gets the set transaction isolation SQL query.
@@ -390,21 +390,21 @@ interface PlatformInterface
      *
      * @return string The set transaction isolation SQL query.
      */
-    function getSetTransactionIsolationSQLQuery($isolation);
+    public function getSetTransactionIsolationSQLQuery($isolation);
 
     /**
      * Gets the select query to fetch the current database.
      *
      * @return string The select query to fetch the current database.
      */
-    function getSelectDatabaseSQLQuery();
+    public function getSelectDatabaseSQLQuery();
 
     /**
      * Gets the select query to fetch databases.
      *
      * @return string The select query to fetch databases.
      */
-    function getSelectDatabasesSQLQuery();
+    public function getSelectDatabasesSQLQuery();
 
     /**
      * Gets the select query to fetch sequences.
@@ -413,7 +413,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch sequences.
      */
-    function getSelectSequencesSQLQuery($database);
+    public function getSelectSequencesSQLQuery($database);
 
     /**
      * Gets the select views to fetch views.
@@ -422,7 +422,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch views.
      */
-    function getSelectViewsSQLQuery($database);
+    public function getSelectViewsSQLQuery($database);
 
     /**
      * Gets the select query to fetch table names.
@@ -431,7 +431,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table names.
      */
-    function getSelectTableNamesSQLQuery($database);
+    public function getSelectTableNamesSQLQuery($database);
 
     /**
      * Gets the select query to fetch table columns.
@@ -441,7 +441,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table columns.
      */
-    function getSelectTableColumnsSQLQuery($table, $database);
+    public function getSelectTableColumnsSQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table primary key.
@@ -451,7 +451,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table primary key.
      */
-    function getSelectTablePrimaryKeySQLQuery($table, $database);
+    public function getSelectTablePrimaryKeySQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table foreign keys.
@@ -461,7 +461,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table foreign keys.
      */
-    function getSelectTableForeignKeysSQLQuery($table, $database);
+    public function getSelectTableForeignKeysSQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table indexes.
@@ -471,7 +471,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table indexes.
      */
-    function getSelectTableIndexesSQLQuery($table, $database);
+    public function getSelectTableIndexesSQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table check constraints.
@@ -481,7 +481,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table check constraints.
      */
-    function getSelectTableCheckSQLQuery($table, $database);
+    public function getSelectTableCheckSQLQuery($table, $database);
 
     /**
      * Gets the create database SQL queries.
@@ -490,7 +490,7 @@ interface PlatformInterface
      *
      * @return array The create database SQL queries.
      */
-    function getCreateDatabaseSQLQueries($database);
+    public function getCreateDatabaseSQLQueries($database);
 
     /**
      * Gets the create sequence SQL queries.
@@ -499,7 +499,7 @@ interface PlatformInterface
      *
      * @return array The create sequence SQL queries.
      */
-    function getCreateSequenceSQLQueries(Sequence $sequence);
+    public function getCreateSequenceSQLQueries(Sequence $sequence);
 
     /**
      * Gets the create view SQL queries.
@@ -508,7 +508,7 @@ interface PlatformInterface
      *
      * @return array The create view SQL queries.
      */
-    function getCreateViewSQLQueries(View $view);
+    public function getCreateViewSQLQueries(View $view);
 
     /**
      * Gets the create table SQL queries.
@@ -524,7 +524,7 @@ interface PlatformInterface
      *
      * @return array The create table SQL queries.
      */
-    function getCreateTableSQLQueries(Table $table, array $flags = array());
+    public function getCreateTableSQLQueries(Table $table, array $flags = array());
 
     /**
      * Gets the create table column SQL queries.
@@ -534,7 +534,7 @@ interface PlatformInterface
      *
      * @return array The create table column SQL queries.
      */
-    function getCreateColumnSQLQueries(Column $column, $table);
+    public function getCreateColumnSQLQueries(Column $column, $table);
 
     /**
      * Gets the create constraint SQL queries.
@@ -544,7 +544,7 @@ interface PlatformInterface
      *
      * @return array The create constraint SQL queries.
      */
-    function getCreateConstraintSQLQueries(ConstraintInterface $constraint, $table);
+    public function getCreateConstraintSQLQueries(ConstraintInterface $constraint, $table);
 
     /**
      * Gets the create primary key SQL queries.
@@ -554,7 +554,7 @@ interface PlatformInterface
      *
      * @return array The create primary key SQL queries.
      */
-    function getCreatePrimaryKeySQLQueries(PrimaryKey $primaryKey, $table);
+    public function getCreatePrimaryKeySQLQueries(PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the create foreign key SQL queries.
@@ -564,7 +564,7 @@ interface PlatformInterface
      *
      * @return array The create foreign key SQL queries.
      */
-    function getCreateForeignKeySQLQueries(ForeignKey $foreignKey, $table);
+    public function getCreateForeignKeySQLQueries(ForeignKey $foreignKey, $table);
 
     /**
      * Gets the create index SQL queries.
@@ -574,7 +574,7 @@ interface PlatformInterface
      *
      * @return array The create index SQL queries.
      */
-    function getCreateIndexSQLQueries(Index $index, $table);
+    public function getCreateIndexSQLQueries(Index $index, $table);
 
     /**
      * Gets the create check constraint SQL queries.
@@ -584,7 +584,7 @@ interface PlatformInterface
      *
      * @return array The create check constraint SQL queries.
      */
-    function getCreateCheckSQLQueries(Check $check, $table);
+    public function getCreateCheckSQLQueries(Check $check, $table);
 
     /**
      * Gets the rename database SQL queries.
@@ -593,7 +593,7 @@ interface PlatformInterface
      *
      * @return array The rename database SQL queries.
      */
-    function getRenameDatabaseSQLQueries(SchemaDiff $schemaDiff);
+    public function getRenameDatabaseSQLQueries(SchemaDiff $schemaDiff);
 
     /**
      * Gets the rename table SQL queries.
@@ -602,7 +602,7 @@ interface PlatformInterface
      *
      * @return array The rename table SQL quueries.
      */
-    function getRenameTableSQLQueries(TableDiff $tableDiff);
+    public function getRenameTableSQLQueries(TableDiff $tableDiff);
 
     /**
      * Gets the alter table column SQL queries.
@@ -612,7 +612,7 @@ interface PlatformInterface
      *
      * @return array The alter table column SQL queries.
      */
-    function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table);
+    public function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table);
 
     /**
      * Gets the drop database SQL queries.
@@ -621,7 +621,7 @@ interface PlatformInterface
      *
      * @return array The drop database SQL queries.
      */
-    function getDropDatabaseSQLQueries($database);
+    public function getDropDatabaseSQLQueries($database);
 
     /**
      * Gets the drop sequence SQL queries.
@@ -630,7 +630,7 @@ interface PlatformInterface
      *
      * @return array The drop sequence SQL queries.
      */
-    function getDropSequenceSQLQueries(Sequence $sequence);
+    public function getDropSequenceSQLQueries(Sequence $sequence);
 
     /**
      * Gets the drop view SQL queries.
@@ -639,7 +639,7 @@ interface PlatformInterface
      *
      * @return array The drop view SQL queries.
      */
-    function getDropViewSQLQueries(View $view);
+    public function getDropViewSQLQueries(View $view);
 
     /**
      * Gets the drop table SQL queries.
@@ -648,7 +648,7 @@ interface PlatformInterface
      *
      * @return array The drop table SQL queries.
      */
-    function getDropTableSQLQueries(Table $table);
+    public function getDropTableSQLQueries(Table $table);
 
     /**
      * Gets the drop table column SQL queries.
@@ -658,7 +658,7 @@ interface PlatformInterface
      *
      * @return array The drop table column SQL queries.
      */
-    function getDropColumnSQLQueries(Column $column, $table);
+    public function getDropColumnSQLQueries(Column $column, $table);
 
     /**
      * Gets the drop constraint SQL queries.
@@ -668,7 +668,7 @@ interface PlatformInterface
      *
      * @return array The drop constraint SQL queries.
      */
-    function getDropConstraintSQLQueries(ConstraintInterface $constraint, $table);
+    public function getDropConstraintSQLQueries(ConstraintInterface $constraint, $table);
 
     /**
      * Gets the drop primary key SQL queries.
@@ -678,7 +678,7 @@ interface PlatformInterface
      *
      * @return array The drop primary key SQL queries.
      */
-    function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table);
+    public function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the drop foreign key SQL queries.
@@ -688,7 +688,7 @@ interface PlatformInterface
      *
      * @return array The drop foreign key SQL queries.
      */
-    function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table);
+    public function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table);
 
     /**
      * Gets the drop index SQL queries.
@@ -698,7 +698,7 @@ interface PlatformInterface
      *
      * @return array The drop index SQL queries.
      */
-    function getDropIndexSQLQueries(Index $index, $table);
+    public function getDropIndexSQLQueries(Index $index, $table);
 
     /**
      * Gets the drop check constraint SQL queries.
@@ -708,14 +708,14 @@ interface PlatformInterface
      *
      * @return array The drop index SQL queries.
      */
-    function getDropCheckSQLQueries(Check $check, $table);
+    public function getDropCheckSQLQueries(Check $check, $table);
 
     /**
      * Gets the quote identifier.
      *
      * @return string The quote identifier
      */
-    function getQuoteIdentifier();
+    public function getQuoteIdentifier();
 
     /**
      * Quotes identifiers.
@@ -724,7 +724,7 @@ interface PlatformInterface
      *
      * @return array The quoted identifiers.
      */
-    function quoteIdentifiers(array $identifiers);
+    public function quoteIdentifiers(array $identifiers);
 
     /**
      * Quotes an identifier.
@@ -733,5 +733,5 @@ interface PlatformInterface
      *
      * @return string The quoted identifier.
      */
-    function quoteIdentifier($identifier);
+    public function quoteIdentifier($identifier);
 }

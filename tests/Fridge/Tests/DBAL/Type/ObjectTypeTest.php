@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\ObjectType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\ObjectType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Object type test.
@@ -44,7 +43,10 @@ class ObjectTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->type->convertToDatabaseValue((object) array('foo' => 'bar'), $this->platformMock));
+        $this->assertSame(
+            'O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}',
+            $this->type->convertToDatabaseValue((object) array('foo' => 'bar'), $this->platformMock)
+        );
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -54,7 +56,10 @@ class ObjectTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertEquals((object) array('foo' => 'bar'), $this->type->convertToPHPValue('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->platformMock));
+        $this->assertEquals(
+            (object) array('foo' => 'bar'),
+            $this->type->convertToPHPValue('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->platformMock)
+        );
     }
 
     /**

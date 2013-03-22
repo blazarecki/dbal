@@ -25,7 +25,7 @@ class MysqliException extends Exception
      *
      * @return \Fridge\DBAL\Exception\MysqliException The "MAPPED TYPE DOES NOT EXIST" exception.
      */
-    static public function mappedTypeDoesNotExist($type)
+    public static function mappedTypeDoesNotExist($type)
     {
         return new static(sprintf('The mapped type "%s" does not exist.', $type));
     }
@@ -37,7 +37,7 @@ class MysqliException extends Exception
      *
      * @return \Fridge\DBAL\Exception\MysqliException The "FETCH MODE NOT SUPPORTED" exception.
      */
-    static public function fetchModeNotSupported($fetchMode)
+    public static function fetchModeNotSupported($fetchMode)
     {
         return new static(sprintf('The fetch mode "%s" is not supported.', $fetchMode));
     }

@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Driver;
 
-use Fridge\DBAL\Driver\PDOPostgreSQLDriver,
-    Fridge\Tests\PHPUnitUtility,
-    Fridge\Tests\Fixture\PostgreSQLFixture;
+use Fridge\DBAL\Driver\PDOPostgreSQLDriver;
+use Fridge\Tests\PHPUnitUtility;
+use Fridge\Tests\Fixture\PostgreSQLFixture;
 
 /**
  * PDO PostgreSQL driver test.
@@ -25,7 +25,7 @@ class PDOPostgreSQLDriverTest extends AbstractDriverTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_PGSQL)) {
             self::$fixture = new PostgreSQLFixture();

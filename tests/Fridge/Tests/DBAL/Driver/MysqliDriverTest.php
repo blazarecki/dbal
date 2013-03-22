@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Driver;
 
-use Fridge\DBAL\Driver\MysqliDriver,
-    Fridge\Tests\PHPUnitUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Fridge\DBAL\Driver\MysqliDriver;
+use Fridge\Tests\PHPUnitUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * Mysqli driver tests.
@@ -25,7 +25,7 @@ class MysqliDriverTest extends AbstractDriverTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
             self::$fixture = new MySQLFixture(PHPUnitUtility::MYSQLI);

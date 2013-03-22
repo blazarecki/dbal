@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Table;
 
-use Fridge\Tests\ConnectionUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Fridge\Tests\ConnectionUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * Mysqli table alteration test.
@@ -24,7 +24,7 @@ class MysqliAlterationTest extends AbstractMySQLAlterationTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
             self::$fixture = new MySQLFixture(ConnectionUtility::MYSQLI);

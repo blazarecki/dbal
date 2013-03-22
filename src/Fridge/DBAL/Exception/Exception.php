@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Exception;
 
-use \Exception as BaseException;
+use Exception as BaseException;
 
 /**
  * Fridge exception.
@@ -29,7 +29,7 @@ class Exception extends BaseException
      *
      * @return \Fridge\DBAL\Exception\Exception The "CLASS NOT FOUND" exception.
      */
-    static public function classNotFound($class)
+    public static function classNotFound($class)
     {
         return new static(sprintf('The class "%s" can not be found.', $class));
     }
@@ -41,7 +41,7 @@ class Exception extends BaseException
      *
      * @return \Fridge\DBAL\Exception\Exception The "METHOD NOT SUPPORTED" exception.
      */
-    static public function methodNotSupported($method)
+    public static function methodNotSupported($method)
     {
         return new static(sprintf('The method "%s" is not supported.', $method));
     }

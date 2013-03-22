@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Statement;
 
-use \PDO;
-
-use Fridge\DBAL\Statement\Statement,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Statement\Statement;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Statement test.

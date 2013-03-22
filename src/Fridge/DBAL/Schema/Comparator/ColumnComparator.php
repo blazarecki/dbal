@@ -11,8 +11,8 @@
 
 namespace Fridge\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
 
 /**
  * Column comparator.

@@ -11,10 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Platform\Mock;
 
-use Fridge\DBAL\Platform\AbstractPlatform,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Platform\AbstractPlatform;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Unsupported inline table column comment platform test.

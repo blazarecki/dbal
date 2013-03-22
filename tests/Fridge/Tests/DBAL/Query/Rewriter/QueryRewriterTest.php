@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Query\Rewriter;
 
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Query\Rewriter\QueryRewriter,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Query\Rewriter\QueryRewriter;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Query rewriter test.

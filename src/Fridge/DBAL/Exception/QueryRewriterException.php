@@ -27,7 +27,7 @@ class QueryRewriterException extends Exception
      * @return \Fridge\DBAL\Exception\Query\Rewriter\QueryRewriterException The "NAMED PLACEHOLDER DOES NOT EXIST"
      *                                                                      exception.
      */
-    static public function namedPlaceholderDoesNotExist($placeholder, $query)
+    public static function namedPlaceholderDoesNotExist($placeholder, $query)
     {
         return new static(sprintf(
             'The named placeholder "%s" does not exist in the query: "%s".',
@@ -45,7 +45,7 @@ class QueryRewriterException extends Exception
      * @return \Fridge\DBAL\Exception\Query\Rewriter\QueryRewriterException The "POSITIONAL PLACEHOLDER DOES NOT EXIST"
      *                                                                      exception.
      */
-    static public function positionalPlaceholderDoesNotExist($position, $query)
+    public static function positionalPlaceholderDoesNotExist($position, $query)
     {
         return new static(sprintf(
             'The positional placeholder (%d) does not exist in the query: "%s".',

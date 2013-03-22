@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Column test.

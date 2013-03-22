@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\SmallIntegerType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\SmallIntegerType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Small Integer type test.

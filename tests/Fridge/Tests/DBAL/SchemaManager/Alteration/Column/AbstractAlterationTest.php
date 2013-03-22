@@ -11,11 +11,11 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Column;
 
-use Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Comparator\ColumnComparator,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type,
-    Fridge\Tests\DBAL\SchemaManager\Alteration\AbstractAlterationTest as BaseAlteration;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Comparator\ColumnComparator;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Type\Type;
+use Fridge\Tests\DBAL\SchemaManager\Alteration\AbstractAlterationTest as BaseAlteration;
 
 /**
  * Base column alteration test case.
@@ -41,7 +41,7 @@ abstract class AbstractAlterationTest extends BaseAlteration
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->createDatabase();
@@ -51,7 +51,7 @@ abstract class AbstractAlterationTest extends BaseAlteration
     /**
      * {@inheritdoc}
      */
-    static public function tearDownAfterClass()
+    public static function tearDownAfterClass()
     {
         if (self::$fixture !== null) {
             self::$fixture->dropDatabase();

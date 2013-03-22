@@ -11,23 +11,22 @@
 
 namespace Fridge\DBAL\SchemaManager;
 
-use \Exception;
-
-use Fridge\DBAL\Connection\ConnectionInterface,
-    Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\ConstraintInterface,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Diff\SchemaDiff,
-    Fridge\DBAL\Schema\Diff\TableDiff,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Schema\View,
-    Fridge\DBAL\Type\Type;
+use Exception;
+use Fridge\DBAL\Connection\ConnectionInterface;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\ConstraintInterface;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+use Fridge\DBAL\Schema\Diff\TableDiff;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Type\Type;
 
 /**
  * {@inheritdoc}

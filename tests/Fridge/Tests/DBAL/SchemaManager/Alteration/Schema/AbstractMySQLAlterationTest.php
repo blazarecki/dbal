@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Schema;
 
-use Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Type\Type;
 
 /**
  * Base MySQL schema alteration test case
@@ -105,11 +105,9 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
         $this->newSchema
             ->getView($view->getName())
-            ->setSQL(sprintf(
-                'select `%s`.`foo`.`bar` AS `foo` from `%s`.`foo`',
-                $settings['dbname'],
-                $settings['dbname']
-            ));
+            ->setSQL(
+                sprintf('select `%s`.`foo`.`bar` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+            );
 
         $this->assertAlteration();
     }

@@ -11,10 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \PDO;
-
-use Fridge\DBAL\Type\BlobType,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\BlobType;
+use Fridge\DBAL\Type\Type;
+use PDO;
 
 /**
  * Blob type test.

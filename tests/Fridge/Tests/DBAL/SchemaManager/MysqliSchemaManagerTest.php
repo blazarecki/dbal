@@ -11,9 +11,9 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager;
 
-use Fridge\DBAL\SchemaManager\MySQLSchemaManager,
-    Fridge\Tests\ConnectionUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Fridge\DBAL\SchemaManager\MySQLSchemaManager;
+use Fridge\Tests\ConnectionUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * Mysqli schema manager tests.
@@ -25,7 +25,7 @@ class MysqliSchemaManagerTest extends AbstractMySQLSchemaManagerTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
             self::$fixture = new MySQLFixture(ConnectionUtility::MYSQLI);

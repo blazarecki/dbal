@@ -11,23 +11,22 @@
 
 namespace Fridge\Tests\DBAL\Platform;
 
-use \DateTime,
-    \ReflectionMethod;
-
-use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Schema\Check,
-    Fridge\DBAL\Schema\Column,
-    Fridge\DBAL\Schema\Diff\ColumnDiff,
-    Fridge\DBAL\Schema\Diff\SchemaDiff,
-    Fridge\DBAL\Schema\Diff\TableDiff,
-    Fridge\DBAL\Schema\ForeignKey,
-    Fridge\DBAL\Schema\Index,
-    Fridge\DBAL\Schema\PrimaryKey,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Schema\View,
-    Fridge\DBAL\Type\Type;
+use DateTime;
+use Fridge\DBAL\Connection\Connection;
+use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Column;
+use Fridge\DBAL\Schema\Diff\ColumnDiff;
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+use Fridge\DBAL\Schema\Diff\TableDiff;
+use Fridge\DBAL\Schema\ForeignKey;
+use Fridge\DBAL\Schema\Index;
+use Fridge\DBAL\Schema\PrimaryKey;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\Table;
+use Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Type\Type;
+use ReflectionMethod;
 
 /**
  * Platform test.
@@ -60,7 +59,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      *
      * @return array A list of transaction isolations.
      */
-    static public function transactionIsolationProvider()
+    public static function transactionIsolationProvider()
     {
         return array(
             array(Connection::TRANSACTION_READ_COMMITTED),

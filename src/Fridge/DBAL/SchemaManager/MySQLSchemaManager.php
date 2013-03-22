@@ -51,7 +51,6 @@ class MySQLSchemaManager extends AbstractSchemaManager
             case 'real':
                 $length = null;
                 break;
-
             case 'bigint':
             case 'int':
             case 'integer':
@@ -68,7 +67,6 @@ class MySQLSchemaManager extends AbstractSchemaManager
                 $precision = null;
                 $scale = null;
                 break;
-
             default:
                 $length = null;
                 $precision = null;
@@ -76,18 +74,20 @@ class MySQLSchemaManager extends AbstractSchemaManager
                 break;
         }
 
-        return parent::getGenericTableColumn(array(
-            'name'           => $column['name'],
-            'type'           => $databaseType,
-            'length'         => $length,
-            'precision'      => $precision,
-            'scale'          => $scale,
-            'unsigned'       => $column['unsigned'] ? true : null,
-            'fixed'          => ($databaseType === 'char') ? true : null,
-            'not_null'       => $column['not_null'],
-            'default'        => $default,
-            'auto_increment' => $column['auto_increment'] ? true : null,
-            'comment'        => !empty($column['comment']) ? $column['comment'] : null,
-        ));
+        return parent::getGenericTableColumn(
+            array(
+                'name'           => $column['name'],
+                'type'           => $databaseType,
+                'length'         => $length,
+                'precision'      => $precision,
+                'scale'          => $scale,
+                'unsigned'       => $column['unsigned'] ? true : null,
+                'fixed'          => ($databaseType === 'char') ? true : null,
+                'not_null'       => $column['not_null'],
+                'default'        => $default,
+                'auto_increment' => $column['auto_increment'] ? true : null,
+                'comment'        => !empty($column['comment']) ? $column['comment'] : null,
+            )
+        );
     }
 }

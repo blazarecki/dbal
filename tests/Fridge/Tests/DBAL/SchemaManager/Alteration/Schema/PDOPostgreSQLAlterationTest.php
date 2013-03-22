@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Schema;
 
-use Fridge\Tests\ConnectionUtility,
-    Fridge\Tests\Fixture\PostgreSQLFixture;
+use Fridge\Tests\ConnectionUtility;
+use Fridge\Tests\Fixture\PostgreSQLFixture;
 
 /**
  * PDO PostgreSQL schema alteration test.
@@ -24,7 +24,7 @@ class PDOPostgreSQLAlterationTest extends AbstractAlterationTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
             self::$fixture = new PostgreSQLFixture();

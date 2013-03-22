@@ -11,11 +11,10 @@
 
 namespace Fridge\DBAL\Statement;
 
-use \IteratorAggregate,
-    \PDO;
-
-use Fridge\DBAL\Connection\ConnectionInterface,
-    Fridge\DBAL\Type\TypeUtility;
+use Fridge\DBAL\Connection\ConnectionInterface;
+use Fridge\DBAL\Type\TypeUtility;
+use IteratorAggregate;
+use PDO;
 
 /**
  * {@inheritdoc}

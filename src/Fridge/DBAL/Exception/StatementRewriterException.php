@@ -25,7 +25,7 @@ class StatementRewriterException extends Exception
      *
      * @return \Fridge\DBAL\Exception\StatementRewriterException The "PARAMETER DOES NOT EXIST" exception.
      */
-    static public function parameterDoesNotExist($parameter)
+    public static function parameterDoesNotExist($parameter)
     {
         return new static(sprintf('The parameter "%s" does not exist.', $parameter));
     }

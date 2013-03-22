@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Driver\Statement;
 
-use \PDOStatement as BaseStatement;
+use PDOStatement as BaseStatement;
 
 /**
  * {@inheritdoc}

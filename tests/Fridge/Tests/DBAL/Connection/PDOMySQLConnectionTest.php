@@ -11,8 +11,8 @@
 
 namespace Fridge\Tests\DBAL\Connection;
 
-use Fridge\Tests\ConnectionUtility,
-    Fridge\Tests\Fixture\MySQLFixture;
+use Fridge\Tests\ConnectionUtility;
+use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * PDO MySQL functional connection test.
@@ -24,7 +24,7 @@ class PDOMySQLConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
             self::$fixture = new MySQLFixture(ConnectionUtility::PDO_MYSQL);

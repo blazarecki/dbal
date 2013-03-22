@@ -11,10 +11,10 @@
 
 namespace Fridge\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema\Diff\SchemaDiff,
-    Fridge\DBAL\Schema\Schema,
-    Fridge\DBAL\Schema\Sequence,
-    Fridge\DBAL\Schema\View;
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+use Fridge\DBAL\Schema\Schema;
+use Fridge\DBAL\Schema\Sequence;
+use Fridge\DBAL\Schema\View;
 
 /**
  * Schema comparator.

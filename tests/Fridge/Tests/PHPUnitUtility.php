@@ -29,7 +29,7 @@ class PHPUnitUtility
     const MYSQLI = 'MYSQLI_';
 
     /** @var array */
-    static protected $settings = array();
+    protected static $settings = array();
 
     /**
      * Checks if a group of settings exists in the PHPUnit XML configuration file.
@@ -38,7 +38,7 @@ class PHPUnitUtility
      *
      * @return boolean TRUE if the group of settings exists else FALSE.
      */
-    static public function hasSettings($prefix)
+    public static function hasSettings($prefix)
     {
         $settings = static::retrieveSettings($prefix);
 
@@ -52,7 +52,7 @@ class PHPUnitUtility
      *
      * @return array The group of settings.
      */
-    static public function getSettings($prefix)
+    public static function getSettings($prefix)
     {
         return static::retrieveSettings($prefix);
     }
@@ -65,7 +65,7 @@ class PHPUnitUtility
      *
      * @return array The group of settings.
      */
-    static protected function retrieveSettings($prefix)
+    protected static function retrieveSettings($prefix)
     {
         if (!isset(static::$settings[$prefix])) {
             static::$settings[$prefix] = static::getDefaultSettings();
@@ -90,7 +90,7 @@ class PHPUnitUtility
      *
      * @return array The default settings of a group of settings.
      */
-    static protected function getDefaultSettings()
+    protected static function getDefaultSettings()
     {
         return array(
             'driver'   => null,

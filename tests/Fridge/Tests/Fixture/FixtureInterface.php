@@ -25,91 +25,91 @@ interface FixtureInterface
     /**
      * Creates the fixture.
      */
-    function create();
+    public function create();
 
     /**
      * Drops the fixture.
      */
-    function drop();
+    public function drop();
 
     /**
      * Creates the fixture database.
      */
-    function createDatabase();
+    public function createDatabase();
 
     /**
      * Drops the fixture database.
      */
-    function dropDatabase();
+    public function dropDatabase();
 
     /**
      * Creates the fixture schema.
      */
-    function createSchema();
+    public function createSchema();
 
     /**
      * Drops the fixture schema.
      */
-    function dropSchema();
+    public function dropSchema();
 
     /**
      * Creates the fixture datas.
      */
-    function createDatas();
+    public function createDatas();
 
     /**
      * Drops the fixture datas.
      */
-    function dropDatas();
+    public function dropDatas();
 
     /**
      * Gets the PHPUnit settings.
      *
      * @return array The PHPUnit settings.
      */
-    function getSettings();
+    public function getSettings();
 
     /**
      * Gets the database.
      *
      * @return string The database.
      */
-    function getDatabase();
+    public function getDatabase();
 
     /**
      * Gets the schema.
      *
      * @return Fridge\DBAL\Schema\Schema The schema.
      */
-    function getSchema();
+    public function getSchema();
 
     /**
      * Gets the sequences.
      *
      * @return array The sequences.
      */
-    function getSequences();
+    public function getSequences();
 
     /**
      * Gets the views.
      *
      * @return array The views.
      */
-    function getViews();
+    public function getViews();
 
     /**
      * Gets the table names.
      *
      * @return array The table names.
      */
-    function getTableNames();
+    public function getTableNames();
 
     /**
      * Gets the tables.
      *
      * @return array The tables.
      */
-    function getTables();
+    public function getTables();
 
     /**
      * Gets a table.
@@ -118,7 +118,7 @@ interface FixtureInterface
      *
      * @return \Fridge\DBAL\Schema\Table The table.
      */
-    function getTable($name);
+    public function getTable($name);
 
     /**
      * Gets the table columns.
@@ -127,7 +127,7 @@ interface FixtureInterface
      *
      * @return array The table columns.
      */
-    function getTableColumns($table);
+    public function getTableColumns($table);
 
     /**
      * Gets the table primary key.
@@ -136,7 +136,7 @@ interface FixtureInterface
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The table primary key.
      */
-    function getTablePrimaryKey($table);
+    public function getTablePrimaryKey($table);
 
     /**
      * Gets the table foreign keys.
@@ -145,7 +145,7 @@ interface FixtureInterface
      *
      * @return array The table foreign keys.
      */
-    function getTableForeignKeys($table);
+    public function getTableForeignKeys($table);
 
     /**
      * Gets the table indexes.
@@ -154,7 +154,7 @@ interface FixtureInterface
      *
      * @return array The table indexes.
      */
-    function getTableIndexes($table);
+    public function getTableIndexes($table);
 
     /**
      * Gets the table checks.
@@ -163,110 +163,110 @@ interface FixtureInterface
      *
      * @return array The table checks.
      */
-    function getTableChecks($table);
+    public function getTableChecks($table);
 
     /**
      * Gets a query that can be executed on the database.
      *
      * @return string The query.
      */
-    function getQuery();
+    public function getQuery();
 
     /**
      * Gets a query with named parameters.
      *
      * @return string The query with named parameters.
      */
-    function getQueryWithNamedParameters();
+    public function getQueryWithNamedParameters();
 
     /**
      * Gets a query with positional parameters.
      *
      * @return string The query with positional parameters.
      */
-    function getQueryWithPositionalParameters();
+    public function getQueryWithPositionalParameters();
 
     /**
      * Gets an update query.
      *
      * @return string The update query.
      */
-    function getUpdateQuery();
+    public function getUpdateQuery();
 
     /**
      * Gets an update query with named parameters.
      *
      * @return string The update query with named parameters.
      */
-    function getUpdateQueryWithNamedParameters();
+    public function getUpdateQueryWithNamedParameters();
 
     /**
      * Gets an update query with positional parameters.
      *
      * @return string The update query with positional parameters.
      */
-    function getUpdateQueryWithPositionalParameters();
+    public function getUpdateQueryWithPositionalParameters();
 
     /**
      * Gets the named query parameters.
      *
      * @return array The named query parameters.
      */
-    function getNamedQueryParameters();
+    public function getNamedQueryParameters();
 
     /**
      * Gets the positional query parameters.
      *
      * @return array The positional query parameters.
      */
-    function getPositionalQueryParameters();
+    public function getPositionalQueryParameters();
 
     /**
      * Gets the named typed query parameters.
      *
      * @return array The named typed query parameters.
      */
-    function getNamedTypedQueryParameters();
+    public function getNamedTypedQueryParameters();
 
     /**
      * Gets the positional typed query parameters.
      *
      * @return array The positional typed query parameters.
      */
-    function getPositionalTypedQueryParameters();
+    public function getPositionalTypedQueryParameters();
 
     /**
      * Gets the named query types.
      *
      * @return array The named query types.
      */
-    function getNamedQueryTypes();
+    public function getNamedQueryTypes();
 
     /**
      * Gets the positional query types.
      *
      * @return array The positional query types.
      */
-    function getPositionalQueryTypes();
+    public function getPositionalQueryTypes();
 
     /**
      * Gets the partial named query types.
      *
      * @return array The partial named query types.
      */
-    function getPartialNamedQueryTypes();
+    public function getPartialNamedQueryTypes();
 
     /**
      * Gets the partial positional query types.
      *
      * @return array The partial positional query types.
      */
-    function getPartialPositionalQueryTypes();
+    public function getPartialPositionalQueryTypes();
 
     /**
      * Gets the query result.
      *
      * @return array The query result.
      */
-    function getQueryResult();
+    public function getQueryResult();
 }
