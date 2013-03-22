@@ -511,6 +511,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function getSetTransactionIsolationSQLQuery($isolation)
+    {
+        throw PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSetCharsetSQLQuery($charset)
     {
         return 'SET NAMES '.$this->quote($charset);
