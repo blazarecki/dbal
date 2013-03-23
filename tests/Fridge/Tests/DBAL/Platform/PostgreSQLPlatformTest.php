@@ -87,9 +87,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('TIME(0) WITHOUT TIME ZONE', $this->platform->getTimeSQLDeclaration());
     }
 
-    public function testSupportInlineTableColumnComments()
+    public function testSupportInlineColumnComments()
     {
-        $this->assertFalse($this->platform->supportInlineTableColumnComments());
+        $this->assertFalse($this->platform->supportInlineColumnComments());
     }
 
     public function testSetTransactionIsolationSQLQuery()

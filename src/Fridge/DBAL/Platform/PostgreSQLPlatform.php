@@ -73,7 +73,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportInlineTableColumnComments()
+    public function supportInlineColumnComments()
     {
         return false;
     }

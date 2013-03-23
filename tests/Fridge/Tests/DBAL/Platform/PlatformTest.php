@@ -419,9 +419,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->platform->supportSequences());
     }
 
-    public function testSupportInlineTableComments()
+    public function testSupportInlineColumnComments()
     {
-        $this->assertTrue($this->platform->supportInlineTableColumnComments());
+        $this->assertTrue($this->platform->supportInlineColumnComments());
     }
 
     public function testCreateSavepointSQLQuery()

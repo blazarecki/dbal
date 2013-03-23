@@ -461,7 +461,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportInlineTableColumnComments()
+    public function supportInlineColumnComments()
     {
         return true;
     }
@@ -672,7 +672,7 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $queries = array();
 
-        if (!$this->supportInlineTableColumnComments()) {
+        if (!$this->supportInlineColumnComments()) {
             $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
         }
 
@@ -714,7 +714,7 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $queries = array($this->getAlterTableSQLQuery($table, 'ADD COLUMN', $this->getColumnSQLDeclaration($column)));
 
-        if (!$this->supportInlineTableColumnComments()
+        if (!$this->supportInlineColumnComments()
             && ($this->hasCustomType($column->getType()->getName())
             || ($column->getComment() !== null))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
@@ -829,7 +829,7 @@ abstract class AbstractPlatform implements PlatformInterface
             ),
         );
 
-        if (!$this->supportInlineTableColumnComments()
+        if (!$this->supportInlineColumnComments()
             && ($this->hasCustomType($columnDiff->getNewAsset()->getType()->getName())
             || ($columnDiff->getNewAsset()->getComment() !== null))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
@@ -1113,7 +1113,7 @@ abstract class AbstractPlatform implements PlatformInterface
             $columnDeclaration .= ' DEFAULT '.$this->quote($default);
         }
 
-        if ($this->supportInlineTableColumnComments()
+        if ($this->supportInlineColumnComments()
             && ($this->hasCustomType($column->getType()->getName())
             || ($column->getComment() !== null))
         ) {

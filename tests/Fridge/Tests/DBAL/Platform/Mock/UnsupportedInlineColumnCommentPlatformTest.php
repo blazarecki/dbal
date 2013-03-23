@@ -17,11 +17,11 @@ use Fridge\DBAL\Schema\Diff\ColumnDiff;
 use Fridge\DBAL\Type\Type;
 
 /**
- * Unsupported inline table column comment platform test.
+ * Unsupported inline column comment platform test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class UnsupportedInlineTableColumnCommentPlatformTest extends \PHPUnit_Framework_TestCase
+class UnsupportedInlineColumnCommentPlatformTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
     protected $platform;
@@ -31,7 +31,7 @@ class UnsupportedInlineTableColumnCommentPlatformTest extends \PHPUnit_Framework
      */
     protected function setUp()
     {
-        $this->platform = new UnsupportedInlineTableColumnCommentPlatformMock();
+        $this->platform = new UnsupportedInlineColumnCommentPlatformMock();
     }
 
     /**
@@ -61,16 +61,16 @@ class UnsupportedInlineTableColumnCommentPlatformTest extends \PHPUnit_Framework
 }
 
 /**
- * Unsupported inline table column comment platform mock.
+ * Unsupported inline column comment platform mock.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class UnsupportedInlineTableColumnCommentPlatformMock extends AbstractPlatform
+class UnsupportedInlineColumnCommentPlatformMock extends AbstractPlatform
 {
     /**
      * {@inheritdoc}
      */
-    public function supportInlineTableColumnComments()
+    public function supportInlineColumnComments()
     {
         return false;
     }

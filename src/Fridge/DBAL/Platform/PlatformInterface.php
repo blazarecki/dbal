@@ -341,11 +341,11 @@ interface PlatformInterface
     public function supportChecks();
 
     /**
-     * Checks if the platform supports inline table column comments.
+     * Checks if the platform supports inline column comments.
      *
-     * @return boolean TRUE if the platform supports inline table column comments else FALSE.
+     * @return boolean TRUE if the platform supports inline column comments else FALSE.
      */
-    public function supportInlineTableColumnComments();
+    public function supportInlineColumnComments();
 
     /**
      * Gets the set charset SQL query.
