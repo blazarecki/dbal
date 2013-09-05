@@ -249,7 +249,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableChecksSQLQuery($table, $database)
+    public function getSelectChecksSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  co.conname AS name,'.

@@ -230,9 +230,9 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableChecksSQLQuery()
+    public function testSelectChecksSQLQuery()
     {
-        $this->platform->getSelectTableChecksSQLQuery('foo', 'bar');
+        $this->platform->getSelectChecksSQLQuery('foo', 'bar');
     }
 
     /**

@@ -279,7 +279,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $query = $this->getConnection()->getPlatform()->getSelectTableChecksSQLQuery($table, $database);
+        $query = $this->getConnection()->getPlatform()->getSelectChecksSQLQuery($table, $database);
         $checks = $this->getConnection()->fetchAll($query);
 
         return $this->getGenericTableChecks($checks);
