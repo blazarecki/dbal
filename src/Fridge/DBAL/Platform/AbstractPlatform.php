@@ -599,7 +599,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table foreign keys.
      */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
+    public function getSelectForeignKeysSQLQuery($table, $database)
     {
         throw PlatformException::methodNotSupported(__METHOD__);
     }

@@ -461,7 +461,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table foreign keys.
      */
-    public function getSelectTableForeignKeysSQLQuery($table, $database);
+    public function getSelectForeignKeysSQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table indexes.

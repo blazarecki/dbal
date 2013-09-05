@@ -183,7 +183,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
+    public function getSelectForeignKeysSQLQuery($table, $database)
     {
         $actions =  'WHEN '.$this->quote('a').' THEN '.$this->quote('NO ACTION').
                     ' WHEN '.$this->quote('r').' THEN '.$this->quote('RESTRICT').

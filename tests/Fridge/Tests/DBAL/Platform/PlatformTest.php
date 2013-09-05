@@ -503,9 +503,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableForeignKeysSQLQuery()
+    public function testSelectForeignKeysSQLQuery()
     {
-        $this->platform->getSelectTableForeignKeysSQLQuery('foo', 'bar');
+        $this->platform->getSelectForeignKeysSQLQuery('foo', 'bar');
     }
 
     /**

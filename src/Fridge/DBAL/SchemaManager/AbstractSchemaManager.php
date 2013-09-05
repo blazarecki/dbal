@@ -241,7 +241,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $query = $this->getConnection()->getPlatform()->getSelectTableForeignKeysSQLQuery($table, $database);
+        $query = $this->getConnection()->getPlatform()->getSelectForeignKeysSQLQuery($table, $database);
         $foreignKeys = $this->getConnection()->fetchAll($query);
 
         return $this->getGenericTableForeignKeys($foreignKeys);
