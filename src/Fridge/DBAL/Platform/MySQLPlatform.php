@@ -94,7 +94,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportSequence()
+    public function supportSequences()
     {
         return false;
     }
@@ -102,7 +102,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportCheck()
+    public function supportChecks()
     {
         return false;
     }
@@ -162,7 +162,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableColumnsSQLQuery($table, $database)
+    public function getSelectColumnsSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  column_name AS name,'.
@@ -182,7 +182,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
+    public function getSelectPrimaryKeySQLQuery($table, $database)
     {
         return 'SELECT'.
                '  c.constraint_name AS name,'.
@@ -204,7 +204,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
+    public function getSelectForeignKeysSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  c.constraint_name AS name,'.
@@ -236,7 +236,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableIndexesSQLQuery($table, $database)
+    public function getSelectIndexesSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  s.index_name AS name,'.
@@ -281,8 +281,11 @@ class MySQLPlatform extends AbstractPlatform
     public function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table)
     {
         return array(
-            'ALTER TABLE '.$table.' CHANGE COLUMN '.$columnDiff->getOldAsset()->getName().' '.
-            $this->getColumnSQLDeclaration($columnDiff->getNewAsset())
+            $this->getAlterTableSQLQuery(
+                $table,
+                'CHANGE COLUMN',
+                $columnDiff->getOldAsset()->getName().' '.$this->getColumnSQLDeclaration($columnDiff->getNewAsset())
+            ),
         );
     }
 
@@ -291,7 +294,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
-        return array('ALTER TABLE '.$table.' DROP PRIMARY KEY');
+        return array($this->getAlterTableSQLQuery($table, 'DROP PRIMARY KEY'));
     }
 
     /**
@@ -299,7 +302,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
-        return array('ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName());
+        return array($this->getAlterTableSQLQuery($table, 'DROP FOREIGN KEY', $foreignKey->getName()));
     }
 
     /**
@@ -307,7 +310,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getDropIndexSQLQueries(Index $index, $table)
     {
-        return array('ALTER TABLE '.$table.' DROP INDEX '.$index->getName());
+        return array($this->getAlterTableSQLQuery($table, 'DROP INDEX', $index->getName()));
     }
 
     /**

@@ -132,97 +132,9 @@ class UnsupportedIndexPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportIndex()
+    public function supportIndexes()
     {
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectDatabaseSQLQuery()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectDatabasesSQLQuery()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectSequencesSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableCheckSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableColumnsSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableIndexesSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableNamesSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectViewsSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSetTransactionIsolationSQLQuery($isolation)
-    {
-
     }
 
     /**

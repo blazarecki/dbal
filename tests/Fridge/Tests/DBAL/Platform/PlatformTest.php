@@ -83,9 +83,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the platform mandatory types.
      */
-    protected function initializeMandatoryTypes()
+    protected function initializeCustomTypes()
     {
-        $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'mandatoryTypes');
+        $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'customTypes');
         $property->setAccessible(true);
 
         $property->setValue($this->platform, array(Type::INTEGER));
@@ -93,7 +93,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertTrue($this-> platform->useStrictMappedType());
+        $this->assertTrue($this-> platform->useStrictTypeMapping());
         $this->assertSame(Type::TEXT, $this->platform->getFallbackMappedType());
     }
 
@@ -116,18 +116,18 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      * @expectedException Fridge\DBAL\Exception\PlatformException
      * @expectedExceptionMessage The mapped type "bar" does not exist.
      */
-    public function testGetMappedTypeWithInvalidValueAndStrictMappedTypeEnable()
+    public function testGetMappedTypeWithInvalidValueAndStrictTypeMappingEnable()
     {
         $this->initializeMappedTypes();
 
         $this->platform->getMappedType('bar');
     }
 
-    public function testGetMappedTypeWithInvalidValueAndStrictMappedTypeDisable()
+    public function testGetMappedTypeWithInvalidValueAndStrictTypeMappingDisable()
     {
         $this->initializeMappedTypes();
 
-        $this->platform->useStrictMappedType(false);
+        $this->platform->useStrictTypeMapping(false);
         $this->assertSame($this->platform->getFallbackMappedType(), $this->platform->getMappedType('bar'));
     }
 
@@ -207,10 +207,10 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->removeMappedType('bar');
     }
 
-    public function testStrictMappedType()
+    public function testStrictTypeMapping()
     {
-        $this->platform->useStrictMappedType(false);
-        $this->assertFalse($this->platform->useStrictMappedType());
+        $this->platform->useStrictTypeMapping(false);
+        $this->assertFalse($this->platform->useStrictTypeMapping());
     }
 
     public function testFallbackMappedTypeWithValidValue()
@@ -227,60 +227,60 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->setFallbackMappedType('foo');
     }
 
-    public function testHasMandatoryType()
+    public function testHasCustomType()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->assertTrue($this->platform->hasMandatoryType(Type::INTEGER));
-        $this->assertFalse($this->platform->hasMandatoryType('foo'));
+        $this->assertTrue($this->platform->hasCustomType(Type::INTEGER));
+        $this->assertFalse($this->platform->hasCustomType('foo'));
     }
 
-    public function testAddMandatoryTypeWithValidValue()
+    public function testAddCustomTypeWithValidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->addMandatoryType(Type::SMALLINTEGER);
+        $this->platform->addCustomType(Type::SMALLINTEGER);
 
-        $this->assertTrue($this->platform->hasMandatoryType(Type::SMALLINTEGER));
+        $this->assertTrue($this->platform->hasCustomType(Type::SMALLINTEGER));
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "integer" already exists.
+     * @expectedExceptionMessage The custom type "integer" already exists.
      */
-    public function testAddMandatoryTypeWithInvalidValue()
+    public function testAddCustomTypeWithInvalidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->addMandatoryType(Type::INTEGER);
+        $this->platform->addCustomType(Type::INTEGER);
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\TypeException
      */
-    public function testAddMandatoryTypeWithInvalidType()
+    public function testAddCustomTypeWithInvalidType()
     {
-        $this->platform->addMandatoryType('foo');
+        $this->platform->addCustomType('foo');
     }
 
-    public function testRemoveMandatoryTypeWithValidValue()
+    public function testRemoveCustomTypeWithValidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->removeMandatoryType(Type::INTEGER);
+        $this->platform->removeCustomType(Type::INTEGER);
 
-        $this->assertFalse($this->platform->hasMandatoryType(Type::INTEGER));
+        $this->assertFalse($this->platform->hasCustomType(Type::INTEGER));
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "foo" does not exist.
+     * @expectedExceptionMessage The custom type "foo" does not exist.
      */
-    public function testRemoveMandatoryTypeWithInvalidValue()
+    public function testRemoveCustomTypeWithInvalidValue()
     {
-        $this->initializeMandatoryTypes();
+        $this->initializeCustomTypes();
 
-        $this->platform->removeMandatoryType('foo');
+        $this->platform->removeCustomType('foo');
     }
 
     public function testBigIntegerSQLDeclaration()
@@ -404,24 +404,24 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Y-m-d H:i:s', $this->platform->getDateTimeFormat());
     }
 
-    public function testSupportSavepoint()
+    public function testSupportSavepoints()
     {
-        $this->assertTrue($this->platform->supportSavepoint());
+        $this->assertTrue($this->platform->supportSavepoints());
     }
 
-    public function testSupportTransactionIsolation()
+    public function testSupportTransactionIsolations()
     {
-        $this->assertTrue($this->platform->supportTransactionIsolation());
+        $this->assertTrue($this->platform->supportTransactionIsolations());
     }
 
-    public function testSupportSequence()
+    public function testSupportSequences()
     {
-        $this->assertTrue($this->platform->supportSequence());
+        $this->assertTrue($this->platform->supportSequences());
     }
 
-    public function testSupportInlineTableComment()
+    public function testSupportInlineColumnComments()
     {
-        $this->assertTrue($this->platform->supportInlineTableColumnComment());
+        $this->assertTrue($this->platform->supportInlineColumnComments());
     }
 
     public function testCreateSavepointSQLQuery()
@@ -487,41 +487,41 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableColumnsSQLQuery()
+    public function testSelectColumnsSQLQuery()
     {
-        $this->platform->getSelectTableColumnsSQLQuery('foo', 'bar');
+        $this->platform->getSelectColumnsSQLQuery('foo', 'bar');
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTablePrimaryKeySQLQuery()
+    public function testSelectPrimaryKeySQLQuery()
     {
-        $this->platform->getSelectTablePrimaryKeySQLQuery('foo', 'bar');
+        $this->platform->getSelectPrimaryKeySQLQuery('foo', 'bar');
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableForeignKeysSQLQuery()
+    public function testSelectForeignKeysSQLQuery()
     {
-        $this->platform->getSelectTableForeignKeysSQLQuery('foo', 'bar');
+        $this->platform->getSelectForeignKeysSQLQuery('foo', 'bar');
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableIndexesSQLQuery()
+    public function testSelectIndexesSQLQuery()
     {
-        $this->platform->getSelectTableIndexesSQLQuery('foo', 'bar');
+        $this->platform->getSelectIndexesSQLQuery('foo', 'bar');
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableChecksSQLQuery()
+    public function testSelectChecksSQLQuery()
     {
-        $this->platform->getSelectTableCheckSQLQuery('foo', 'bar');
+        $this->platform->getSelectChecksSQLQuery('foo', 'bar');
     }
 
     public function testCreateDatabaseSQLQueries()

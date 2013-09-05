@@ -73,7 +73,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportInlineTableColumnComment()
+    public function supportInlineColumnComments()
     {
         return false;
     }
@@ -147,7 +147,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableColumnsSQLQuery($table, $database)
+    public function getSelectColumnsSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  a.attname AS name,'.
@@ -168,7 +168,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
+    public function getSelectPrimaryKeySQLQuery($table, $database)
     {
         return 'SELECT'.
                '  co.conname AS name,'.
@@ -183,7 +183,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
+    public function getSelectForeignKeysSQLQuery($table, $database)
     {
         $actions =  'WHEN '.$this->quote('a').' THEN '.$this->quote('NO ACTION').
                     ' WHEN '.$this->quote('r').' THEN '.$this->quote('RESTRICT').
@@ -233,7 +233,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableIndexesSQLQuery($table, $database)
+    public function getSelectIndexesSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  c2.relname AS name,'.
@@ -249,7 +249,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableCheckSQLQuery($table, $database)
+    public function getSelectChecksSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  co.conname AS name,'.
@@ -285,13 +285,19 @@ class PostgreSQLPlatform extends AbstractPlatform
     {
         $queries = array();
 
-        $alterTableQuery = 'ALTER TABLE '.$table;
-        $alterColumnQuery = $alterTableQuery.' ALTER COLUMN '.$columnDiff->getNewAsset()->getName();
-
         if ($columnDiff->getOldAsset()->getName() !== $columnDiff->getNewAsset()->getName()) {
-            $queries[] = $alterTableQuery.' RENAME COLUMN '.$columnDiff->getOldAsset()->getName().
-                         ' TO '.$columnDiff->getNewAsset()->getName();
+            $queries[] = $this->getAlterTableSQLQuery(
+                $table,
+                'RENAME COLUMN',
+                $columnDiff->getOldAsset()->getName().' TO '.$columnDiff->getNewAsset()->getName()
+            );
         }
+
+        $alterColumnSQLQuerySnippet = $this->getAlterTableSQLQuery(
+            $table,
+            'ALTER COLUMN',
+            $columnDiff->getNewAsset()->getName()
+        );
 
         if (in_array('type', $columnDiff->getDifferences())
             || in_array('length', $columnDiff->getDifferences())
@@ -302,7 +308,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                 $columnDiff->getNewAsset()->toArray()
             );
 
-            $queries[] = $alterColumnQuery.' TYPE '.$typeDeclaration;
+            $queries[] = $alterColumnSQLQuerySnippet.' TYPE '.$typeDeclaration;
         }
 
         if (in_array('not_null', $columnDiff->getDifferences())) {
@@ -312,7 +318,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                 $notNullDeclaration = ' DROP NOT NULL';
             }
 
-            $queries[] = $alterColumnQuery.$notNullDeclaration;
+            $queries[] = $alterColumnSQLQuerySnippet.$notNullDeclaration;
         }
 
         if (in_array('default', $columnDiff->getDifferences())) {
@@ -322,12 +328,12 @@ class PostgreSQLPlatform extends AbstractPlatform
                 $defaultDeclaration = ' DROP DEFAULT';
             }
 
-            $queries[] = $alterColumnQuery.$defaultDeclaration;
+            $queries[] = $alterColumnSQLQuerySnippet.$defaultDeclaration;
         }
 
         if (in_array('comment', $columnDiff->getDifferences())
             || (in_array('type', $columnDiff->getDifferences())
-            && $this->hasMandatoryType($columnDiff->getNewAsset()->getType()->getName()))) {
+            && $this->hasCustomType($columnDiff->getNewAsset()->getType()->getName()))) {
             $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
         }
 

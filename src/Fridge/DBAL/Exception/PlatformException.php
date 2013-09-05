@@ -85,27 +85,27 @@ class PlatformException extends Exception
     }
 
     /**
-     * Gets the "MANDATORY TYPE ALREADY EXISTS" exception.
+     * Gets the "CUSTOM TYPE ALREADY EXISTS" exception.
      *
-     * @param string $type The mandatory type.
+     * @param string $type The custom type.
      *
-     * @return \Fridge\DBAL\Exception\PlatformException The "MANDATORY TYPE ALREADY EXISTS" exception.
+     * @return \Fridge\DBAL\Exception\PlatformException The "CUSTOM TYPE ALREADY EXISTS" exception.
      */
-    public static function mandatoryTypeAlreadyExists($type)
+    public static function customTypeAlreadyExists($type)
     {
-        return new static(sprintf('The mandatory type "%s" already exists.', $type));
+        return new static(sprintf('The custom type "%s" already exists.', $type));
     }
 
     /**
-     * Gets the "MANDATORY TYPE DOES NOT EXIST" exception.
+     * Gets the "CUSTOM TYPE DOES NOT EXIST" exception.
      *
-     * @param string $type The mandatory type.
+     * @param string $type The custom type.
      *
-     * @return \Fridge\DBAL\Exception\PlatformException The "MANDATORY TYPE DOES NOT EXIST" exception.
+     * @return \Fridge\DBAL\Exception\PlatformException The "CUSTOM TYPE DOES NOT EXIST" exception.
      */
-    public static function mandatoryTypeDoesNotExist($type)
+    public static function customTypeDoesNotExist($type)
     {
-        return new static(sprintf('The mandatory type "%s" does not exist.', $type));
+        return new static(sprintf('The custom type "%s" does not exist.', $type));
     }
 
     /**

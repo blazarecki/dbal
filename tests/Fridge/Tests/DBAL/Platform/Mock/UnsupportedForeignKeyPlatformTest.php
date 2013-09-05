@@ -98,97 +98,9 @@ class UnsupportedForeignKeyPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function supportForeignKey()
+    public function supportForeignKeys()
     {
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectDatabaseSQLQuery()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectDatabasesSQLQuery()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectSequencesSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableCheckSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableColumnsSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableForeignKeysSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableIndexesSQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableNamesSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectViewsSQLQuery($database)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSetTransactionIsolationSQLQuery($isolation)
-    {
-
     }
 
     /**

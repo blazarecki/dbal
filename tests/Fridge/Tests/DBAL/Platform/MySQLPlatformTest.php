@@ -204,9 +204,9 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SMALLINT(100)', $this->platform->getSmallIntegerSQLDeclaration(array('length' => 100)));
     }
 
-    public function testSupportSequence()
+    public function testSupportSequences()
     {
-        $this->assertFalse($this->platform->supportSequence());
+        $this->assertFalse($this->platform->supportSequences());
     }
 
     public function testSetTransactionIsolationSQLQuery()
@@ -230,9 +230,9 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableCheckSQLQuery()
+    public function testSelectChecksSQLQuery()
     {
-        $this->platform->getSelectTableCheckSQLQuery('foo', 'bar');
+        $this->platform->getSelectChecksSQLQuery('foo', 'bar');
     }
 
     /**
