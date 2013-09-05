@@ -168,7 +168,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
+    public function getSelectPrimaryKeySQLQuery($table, $database)
     {
         return 'SELECT'.
                '  co.conname AS name,'.

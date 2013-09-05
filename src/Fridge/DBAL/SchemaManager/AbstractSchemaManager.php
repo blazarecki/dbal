@@ -220,7 +220,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $query = $this->getConnection()->getPlatform()->getSelectTablePrimaryKeySQLQuery($table, $database);
+        $query = $this->getConnection()->getPlatform()->getSelectPrimaryKeySQLQuery($table, $database);
         $primaryKey = $this->getConnection()->fetchAll($query);
 
         if ($primaryKey) {

@@ -451,7 +451,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table primary key.
      */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database);
+    public function getSelectPrimaryKeySQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table foreign keys.

@@ -495,9 +495,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTablePrimaryKeySQLQuery()
+    public function testSelectPrimaryKeySQLQuery()
     {
-        $this->platform->getSelectTablePrimaryKeySQLQuery('foo', 'bar');
+        $this->platform->getSelectPrimaryKeySQLQuery('foo', 'bar');
     }
 
     /**

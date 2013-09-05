@@ -589,7 +589,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table primary key.
      */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
+    public function getSelectPrimaryKeySQLQuery($table, $database)
     {
         throw PlatformException::methodNotSupported(__METHOD__);
     }

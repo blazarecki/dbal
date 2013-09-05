@@ -182,7 +182,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTablePrimaryKeySQLQuery($table, $database)
+    public function getSelectPrimaryKeySQLQuery($table, $database)
     {
         return 'SELECT'.
                '  c.constraint_name AS name,'.
