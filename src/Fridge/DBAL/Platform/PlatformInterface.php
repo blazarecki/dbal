@@ -471,7 +471,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table indexes.
      */
-    public function getSelectTableIndexesSQLQuery($table, $database);
+    public function getSelectIndexesSQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table check constraints.

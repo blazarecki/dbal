@@ -260,7 +260,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $query = $this->getConnection()->getPlatform()->getSelectTableIndexesSQLQuery($table, $database);
+        $query = $this->getConnection()->getPlatform()->getSelectIndexesSQLQuery($table, $database);
         $indexes = $this->getConnection()->fetchAll($query);
 
         return $this->getGenericTableIndexes($indexes);

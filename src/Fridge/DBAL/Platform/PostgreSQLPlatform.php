@@ -233,7 +233,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableIndexesSQLQuery($table, $database)
+    public function getSelectIndexesSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  c2.relname AS name,'.

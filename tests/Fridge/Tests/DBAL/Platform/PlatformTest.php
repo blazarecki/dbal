@@ -511,9 +511,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableIndexesSQLQuery()
+    public function testSelectIndexesSQLQuery()
     {
-        $this->platform->getSelectTableIndexesSQLQuery('foo', 'bar');
+        $this->platform->getSelectIndexesSQLQuery('foo', 'bar');
     }
 
     /**

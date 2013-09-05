@@ -236,7 +236,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableIndexesSQLQuery($table, $database)
+    public function getSelectIndexesSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  s.index_name AS name,'.
