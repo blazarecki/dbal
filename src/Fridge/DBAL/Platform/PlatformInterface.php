@@ -441,7 +441,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table columns.
      */
-    public function getSelectTableColumnsSQLQuery($table, $database);
+    public function getSelectColumnsSQLQuery($table, $database);
 
     /**
      * Gets the select query to fetch table primary key.

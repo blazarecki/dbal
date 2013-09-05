@@ -201,7 +201,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $query = $this->getConnection()->getPlatform()->getSelectTableColumnsSQLQuery($table, $database);
+        $query = $this->getConnection()->getPlatform()->getSelectColumnsSQLQuery($table, $database);
         $columns = $this->getConnection()->fetchAll($query);
 
         return $this->getGenericTableColumns($columns);

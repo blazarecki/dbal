@@ -487,9 +487,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testSelectTableColumnsSQLQuery()
+    public function testSelectColumnsSQLQuery()
     {
-        $this->platform->getSelectTableColumnsSQLQuery('foo', 'bar');
+        $this->platform->getSelectColumnsSQLQuery('foo', 'bar');
     }
 
     /**

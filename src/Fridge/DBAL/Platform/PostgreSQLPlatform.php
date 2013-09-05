@@ -147,7 +147,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableColumnsSQLQuery($table, $database)
+    public function getSelectColumnsSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  a.attname AS name,'.

@@ -579,7 +579,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table columns.
      */
-    public function getSelectTableColumnsSQLQuery($table, $database)
+    public function getSelectColumnsSQLQuery($table, $database)
     {
         throw PlatformException::methodNotSupported(__METHOD__);
     }
