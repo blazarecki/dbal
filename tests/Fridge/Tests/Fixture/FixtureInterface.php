@@ -145,7 +145,7 @@ interface FixtureInterface
      *
      * @return array The table foreign keys.
      */
-    public function getTableForeignKeys($table);
+    public function getForeignKeys($table);
 
     /**
      * Gets the table indexes.

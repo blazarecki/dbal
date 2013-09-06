@@ -118,12 +118,12 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetTableForeignKeys()
+    public function testGetForeignKeys()
     {
         foreach (self::$fixture->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getTableForeignKeys($tableName),
-                $this->schemaManager->getTableForeignKeys($tableName)
+                self::$fixture->getForeignKeys($tableName),
+                $this->schemaManager->getForeignKeys($tableName)
             );
         }
     }
@@ -285,7 +285,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tforeignkey';
 
-        foreach (self::$fixture->getTableForeignKeys($table) as $foreignKey) {
+        foreach (self::$fixture->getForeignKeys($table) as $foreignKey) {
             $this->schemaManager->dropForeignKey($foreignKey, $table);
         }
 
@@ -299,26 +299,26 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tforeignkey';
 
-        $foreignKeys = self::$fixture->getTableForeignKeys($table);
+        $foreignKeys = self::$fixture->getForeignKeys($table);
 
         foreach ($foreignKeys as $foreignKey) {
             $this->schemaManager->createForeignKey($foreignKey, $table);
         }
 
-        $this->assertEquals($foreignKeys, $this->schemaManager->getTableForeignKeys($table));
+        $this->assertEquals($foreignKeys, $this->schemaManager->getForeignKeys($table));
     }
 
     public function testDropAndCreateForeignKey()
     {
         $table = 'tforeignkey';
 
-        foreach (self::$fixture->getTableForeignKeys($table) as $foreignKey) {
+        foreach (self::$fixture->getForeignKeys($table) as $foreignKey) {
             $this->schemaManager->dropAndCreateForeignKey($foreignKey, $table);
         }
 
         $this->assertEquals(
-            self::$fixture->getTableForeignKeys($table),
-            $this->schemaManager->getTableForeignKeys($table)
+            self::$fixture->getForeignKeys($table),
+            $this->schemaManager->getForeignKeys($table)
         );
     }
 
@@ -440,7 +440,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tforeignkey';
 
-        foreach (self::$fixture->getTableForeignKeys($table) as $foreignKey) {
+        foreach (self::$fixture->getForeignKeys($table) as $foreignKey) {
             $this->schemaManager->dropConstraint($foreignKey, $table);
         }
 
@@ -453,7 +453,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConstraintWithForeignKey()
     {
         $table = 'tforeignkey';
-        $foreignKeys = self::$fixture->getTableForeignKeys($table);
+        $foreignKeys = self::$fixture->getForeignKeys($table);
 
         foreach ($foreignKeys as $foreignKey) {
             $this->schemaManager->createConstraint($foreignKey, $table);
@@ -461,14 +461,14 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $foreignKeys,
-            $this->schemaManager->getTableForeignKeys($table)
+            $this->schemaManager->getForeignKeys($table)
         );
     }
 
     public function testDropAndCreateConstraintWithForeignKey()
     {
         $tableName = 'tforeignkey';
-        $foreignKeys = self::$fixture->getTableForeignKeys($tableName);
+        $foreignKeys = self::$fixture->getForeignKeys($tableName);
 
         foreach ($foreignKeys as $foreignKey) {
             $this->schemaManager->dropAndCreateConstraint($foreignKey, $tableName);

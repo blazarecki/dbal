@@ -138,7 +138,7 @@ interface SchemaManagerInterface
      *
      * @return array The table foreign keys.
      */
-    public function getTableForeignKeys($table, $database = null);
+    public function getForeignKeys($table, $database = null);
 
     /**
      * Gets the indexes of a table.
