@@ -108,12 +108,12 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetTablePrimaryKey()
+    public function testGetPrimaryKey()
     {
         foreach (self::$fixture->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getTablePrimaryKey($tableName),
-                $this->schemaManager->getTablePrimaryKey($tableName)
+                self::$fixture->getPrimaryKey($tableName),
+                $this->schemaManager->getPrimaryKey($tableName)
             );
         }
     }
@@ -249,7 +249,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tprimarykeyunlock';
 
-        $primaryKey = self::$fixture->getTablePrimaryKey($table);
+        $primaryKey = self::$fixture->getPrimaryKey($table);
         $this->schemaManager->dropPrimaryKey($primaryKey, $table);
 
         $this->assertFalse($this->schemaManager->getTable($table)->hasPrimaryKey());
@@ -262,22 +262,22 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tprimarykeyunlock';
 
-        $primaryKey = self::$fixture->getTablePrimaryKey($table);
+        $primaryKey = self::$fixture->getPrimaryKey($table);
         $this->schemaManager->createPrimaryKey($primaryKey, $table);
 
-        $this->assertEquals($primaryKey, $this->schemaManager->getTablePrimaryKey($table));
+        $this->assertEquals($primaryKey, $this->schemaManager->getPrimaryKey($table));
     }
 
     public function testDropAndCreatePrimaryKey()
     {
         $primaryKeyTable = 'tprimarykeyunlock';
 
-        $primaryKey = self::$fixture->getTablePrimaryKey($primaryKeyTable);
+        $primaryKey = self::$fixture->getPrimaryKey($primaryKeyTable);
         $this->schemaManager->dropAndCreatePrimaryKey($primaryKey, $primaryKeyTable);
 
         $this->assertEquals(
-            self::$fixture->getTablePrimaryKey($primaryKeyTable),
-            $this->schemaManager->getTablePrimaryKey($primaryKeyTable)
+            self::$fixture->getPrimaryKey($primaryKeyTable),
+            $this->schemaManager->getPrimaryKey($primaryKeyTable)
         );
     }
 
@@ -405,7 +405,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tprimarykeyunlock';
 
-        $this->schemaManager->dropConstraint(self::$fixture->getTablePrimaryKey($table), $table);
+        $this->schemaManager->dropConstraint(self::$fixture->getPrimaryKey($table), $table);
 
         $this->assertFalse($this->schemaManager->getTable($table)->hasPrimaryKey());
     }
@@ -416,20 +416,20 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConstraintWithPrimaryKey()
     {
         $table = 'tprimarykeyunlock';
-        $primaryKey = self::$fixture->getTablePrimaryKey($table);
+        $primaryKey = self::$fixture->getPrimaryKey($table);
 
         $this->schemaManager->createConstraint($primaryKey, $table);
 
         $this->assertEquals(
             $primaryKey,
-            $this->schemaManager->getTablePrimaryKey($table)
+            $this->schemaManager->getPrimaryKey($table)
         );
     }
 
     public function testDropAndCreateConstraintWithPrimaryKey()
     {
         $tableName = 'tprimarykeyunlock';
-        $primaryKey = self::$fixture->getTablePrimaryKey($tableName);
+        $primaryKey = self::$fixture->getPrimaryKey($tableName);
 
         $this->schemaManager->dropAndCreateConstraint($primaryKey, $tableName);
 

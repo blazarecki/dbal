@@ -136,7 +136,7 @@ interface FixtureInterface
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The table primary key.
      */
-    public function getTablePrimaryKey($table);
+    public function getPrimaryKey($table);
 
     /**
      * Gets the table foreign keys.

@@ -185,7 +185,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         return new Table(
             $table,
             $this->getColumns($table, $database),
-            $this->getTablePrimaryKey($table, $database),
+            $this->getPrimaryKey($table, $database),
             $this->getTableForeignKeys($table, $database),
             $this->getTableIndexes($table, $database),
             $this->getTableChecks($table, $database)
@@ -210,7 +210,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getTablePrimaryKey($table, $database = null)
+    public function getPrimaryKey($table, $database = null)
     {
         if (!$this->getConnection()->getPlatform()->supportPrimaryKeys()) {
             return;

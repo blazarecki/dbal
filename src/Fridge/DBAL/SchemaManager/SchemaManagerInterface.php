@@ -128,7 +128,7 @@ interface SchemaManagerInterface
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The table primary key.
      */
-    public function getTablePrimaryKey($table, $database = null);
+    public function getPrimaryKey($table, $database = null);
 
     /**
      * Gets the foreign keys of a table.

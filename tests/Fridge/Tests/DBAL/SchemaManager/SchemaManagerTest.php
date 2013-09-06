@@ -64,14 +64,14 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->schemaManager->getViews());
     }
 
-    public function testGetTablePrimaryKeyWhenNotSupported()
+    public function testGetPrimaryKeyWhenNotSupported()
     {
         $this->platformMock
             ->expects($this->once())
             ->method('supportPrimaryKeys')
             ->will($this->returnValue(false));
 
-        $this->assertNull($this->schemaManager->getTablePrimaryKey('foo'));
+        $this->assertNull($this->schemaManager->getPrimaryKey('foo'));
     }
 
     public function testGetTableForeignKeysWhenNotSupported()

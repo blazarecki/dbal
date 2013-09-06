@@ -54,9 +54,9 @@ class MySQLFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
-    public function getTablePrimaryKey($table)
+    public function getPrimaryKey($table)
     {
-        $primaryKey = parent::getTablePrimaryKey($table);
+        $primaryKey = parent::getPrimaryKey($table);
 
         if ($primaryKey !== null) {
             $primaryKey->setName('PRIMARY');
