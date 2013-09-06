@@ -154,7 +154,7 @@ interface FixtureInterface
      *
      * @return array The table indexes.
      */
-    public function getTableIndexes($table);
+    public function getIndexes($table);
 
     /**
      * Gets the table checks.

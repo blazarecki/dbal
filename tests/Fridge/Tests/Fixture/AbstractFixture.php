@@ -230,7 +230,7 @@ abstract class AbstractFixture implements FixtureInterface
             $this->getColumns($name),
             $this->getPrimaryKey($name),
             $this->getForeignKeys($name),
-            $this->getTableIndexes($name),
+            $this->getIndexes($name),
             $this->getTableChecks($name)
         );
     }
@@ -364,7 +364,7 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getTableIndexes($table)
+    public function getIndexes($table)
     {
         switch ($table) {
             case 'tprimarykeylock':

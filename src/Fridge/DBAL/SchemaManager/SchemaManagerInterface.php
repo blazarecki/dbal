@@ -148,7 +148,7 @@ interface SchemaManagerInterface
      *
      * @return array The table indexes.
      */
-    public function getTableIndexes($table, $database = null);
+    public function getIndexes($table, $database = null);
 
     /**
      * Gets the check constraints of a table.

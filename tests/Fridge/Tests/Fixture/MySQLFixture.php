@@ -68,9 +68,9 @@ class MySQLFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
-    public function getTableIndexes($table)
+    public function getIndexes($table)
     {
-        $indexes = parent::getTableIndexes($table);
+        $indexes = parent::getIndexes($table);
 
         foreach ($indexes as $index) {
             if (substr($index->getName(), 0, 2) === 'pk') {

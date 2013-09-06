@@ -128,12 +128,12 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetTableIndexes()
+    public function testGetIndexes()
     {
         foreach (self::$fixture->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getTableIndexes($tableName),
-                $this->schemaManager->getTableIndexes($tableName)
+                self::$fixture->getIndexes($tableName),
+                $this->schemaManager->getIndexes($tableName)
             );
         }
     }
@@ -326,7 +326,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tindex';
 
-        foreach (self::$fixture->getTableIndexes($table) as $index) {
+        foreach (self::$fixture->getIndexes($table) as $index) {
             $this->schemaManager->dropIndex($index, $table);
         }
 
@@ -340,26 +340,26 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tindex';
 
-        $indexes = self::$fixture->getTableIndexes($table);
+        $indexes = self::$fixture->getIndexes($table);
 
         foreach ($indexes as $index) {
             $this->schemaManager->createIndex($index, $table);
         }
 
-        $this->assertEquals($indexes, $this->schemaManager->getTableIndexes($table));
+        $this->assertEquals($indexes, $this->schemaManager->getIndexes($table));
     }
 
     public function testDropAndCreateIndex()
     {
         $table = 'tindex';
 
-        $indexes = self::$fixture->getTableIndexes($table);
+        $indexes = self::$fixture->getIndexes($table);
 
         foreach ($indexes as $index) {
             $this->schemaManager->dropAndCreateIndex($index, $table);
         }
 
-        $this->assertEquals($indexes, $this->schemaManager->getTableIndexes($table));
+        $this->assertEquals($indexes, $this->schemaManager->getIndexes($table));
     }
 
     public function testDropCheck()
@@ -485,7 +485,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tindex';
 
-        foreach (self::$fixture->getTableIndexes($table) as $index) {
+        foreach (self::$fixture->getIndexes($table) as $index) {
             $this->schemaManager->dropConstraint($index, $table);
         }
 
@@ -498,7 +498,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConstraintWithIndex()
     {
         $table = 'tindex';
-        $indexes = self::$fixture->getTableIndexes($table);
+        $indexes = self::$fixture->getIndexes($table);
 
         foreach ($indexes as $index) {
             $this->schemaManager->createConstraint($index, $table);
@@ -506,14 +506,14 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $indexes,
-            $this->schemaManager->getTableIndexes($table)
+            $this->schemaManager->getIndexes($table)
         );
     }
 
     public function testDropAndCreateConstraintWithIndex()
     {
         $tableName = 'tindex';
-        $indexes = self::$fixture->getTableIndexes($tableName);
+        $indexes = self::$fixture->getIndexes($tableName);
 
         foreach ($indexes as $index) {
             $this->schemaManager->dropAndCreateConstraint($index, $tableName);

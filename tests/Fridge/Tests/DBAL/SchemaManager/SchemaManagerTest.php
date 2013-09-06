@@ -84,13 +84,13 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->schemaManager->getForeignKeys('foo'));
     }
 
-    public function testGetTableIndexesWhenNotSupported()
+    public function testGetIndexesWhenNotSupported()
     {
         $this->platformMock
             ->expects($this->once())
             ->method('supportIndexes')
             ->will($this->returnValue(false));
 
-        $this->assertEmpty($this->schemaManager->getTableIndexes('foo'));
+        $this->assertEmpty($this->schemaManager->getIndexes('foo'));
     }
 }
