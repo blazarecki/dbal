@@ -188,7 +188,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $this->getPrimaryKey($table, $database),
             $this->getForeignKeys($table, $database),
             $this->getIndexes($table, $database),
-            $this->getTableChecks($table, $database)
+            $this->getChecks($table, $database)
         );
     }
 
@@ -269,7 +269,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getTableChecks($table, $database = null)
+    public function getChecks($table, $database = null)
     {
         if (!$this->getConnection()->getPlatform()->supportChecks()) {
             return array();

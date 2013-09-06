@@ -158,7 +158,7 @@ interface SchemaManagerInterface
      *
      * @return array The table indexes.
      */
-    public function getTableChecks($table, $database = null);
+    public function getChecks($table, $database = null);
 
     /**
      * Creates a database.

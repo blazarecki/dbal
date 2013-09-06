@@ -163,7 +163,7 @@ interface FixtureInterface
      *
      * @return array The table checks.
      */
-    public function getTableChecks($table);
+    public function getChecks($table);
 
     /**
      * Gets a query that can be executed on the database.

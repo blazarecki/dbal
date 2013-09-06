@@ -138,12 +138,12 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetTableChecks()
+    public function testGetChecks()
     {
         foreach (self::$fixture->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getTableChecks($tableName),
-                $this->schemaManager->getTableChecks($tableName)
+                self::$fixture->getChecks($tableName),
+                $this->schemaManager->getChecks($tableName)
             );
         }
     }
@@ -366,7 +366,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getTableChecks($table);
+        $checks = self::$fixture->getChecks($table);
 
         foreach ($checks as $check) {
             $this->schemaManager->dropCheck($check, $table);
@@ -379,26 +379,26 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getTableChecks($table);
+        $checks = self::$fixture->getChecks($table);
 
         foreach ($checks as $check) {
             $this->schemaManager->createCheck($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
     }
 
     public function testDropAndCreateCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getTableChecks($table);
+        $checks = self::$fixture->getChecks($table);
 
         foreach ($checks as $check) {
             $this->schemaManager->dropAndCreateCheck($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
     }
 
     public function testDropConstraintWithPrimaryKey()
@@ -530,7 +530,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getTableChecks($table);
+        $checks = self::$fixture->getChecks($table);
 
         foreach ($checks as $check) {
             $this->schemaManager->dropConstraint($check, $table);
@@ -543,26 +543,26 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getTableChecks($table);
+        $checks = self::$fixture->getChecks($table);
 
         foreach ($checks as $check) {
             $this->schemaManager->createConstraint($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
     }
 
     public function testDropAndCreateConstraintWithCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getTableChecks($table);
+        $checks = self::$fixture->getChecks($table);
 
         foreach ($checks as $check) {
             $this->schemaManager->dropAndCreateConstraint($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
     }
 
     public function testDropTable()
