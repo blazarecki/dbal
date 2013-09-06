@@ -127,7 +127,7 @@ interface FixtureInterface
      *
      * @return array The table columns.
      */
-    public function getTableColumns($table);
+    public function getColumns($table);
 
     /**
      * Gets the table primary key.

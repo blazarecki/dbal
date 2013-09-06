@@ -98,12 +98,12 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::$fixture->getViews(), $this->schemaManager->getViews());
     }
 
-    public function testGetTableColumns()
+    public function testGetColumns()
     {
         foreach (self::$fixture->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getTableColumns($tableName),
-                $this->schemaManager->getTableColumns($tableName)
+                self::$fixture->getColumns($tableName),
+                $this->schemaManager->getColumns($tableName)
             );
         }
     }

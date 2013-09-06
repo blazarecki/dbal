@@ -118,7 +118,7 @@ interface SchemaManagerInterface
      *
      * @return array The table columns.
      */
-    public function getTableColumns($table, $database = null);
+    public function getColumns($table, $database = null);
 
     /**
      * Gets the primary key of a table.
