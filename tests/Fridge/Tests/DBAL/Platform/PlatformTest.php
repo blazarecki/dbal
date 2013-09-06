@@ -1077,7 +1077,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             null,
             array(),
             array(),
-            array(new Check('ck1', array('foo > 0')))
+            array(new Check('ck1', 'foo > 0'))
         );
 
         $this->assertSame(
