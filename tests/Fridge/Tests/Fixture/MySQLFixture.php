@@ -54,9 +54,9 @@ class MySQLFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
-    public function getTablePrimaryKey($table)
+    public function getPrimaryKey($table)
     {
-        $primaryKey = parent::getTablePrimaryKey($table);
+        $primaryKey = parent::getPrimaryKey($table);
 
         if ($primaryKey !== null) {
             $primaryKey->setName('PRIMARY');
@@ -68,9 +68,9 @@ class MySQLFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
-    public function getTableIndexes($table)
+    public function getIndexes($table)
     {
-        $indexes = parent::getTableIndexes($table);
+        $indexes = parent::getIndexes($table);
 
         foreach ($indexes as $index) {
             if (substr($index->getName(), 0, 2) === 'pk') {

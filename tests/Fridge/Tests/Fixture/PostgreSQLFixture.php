@@ -33,9 +33,9 @@ class PostgreSQLFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
-    public function getTableColumns($table)
+    public function getColumns($table)
     {
-        $columns = parent::getTableColumns($table);
+        $columns = parent::getColumns($table);
 
         foreach ($columns as $column) {
             if ($column->getType()->getName() !== Type::STRING) {

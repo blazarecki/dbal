@@ -227,21 +227,19 @@ abstract class AbstractFixture implements FixtureInterface
     {
         return new Table(
             $name,
-            $this->getTableColumns($name),
-            $this->getTablePrimaryKey($name),
-            $this->getTableForeignKeys($name),
-            $this->getTableIndexes($name),
-            $this->getTableChecks($name)
+            $this->getColumns($name),
+            $this->getPrimaryKey($name),
+            $this->getForeignKeys($name),
+            $this->getIndexes($name),
+            $this->getChecks($name)
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTableColumns($table)
+    public function getColumns($table)
     {
-        $columns = array();
-
         switch ($table) {
             case 'tcolumns':
                 return array(
@@ -331,7 +329,7 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getTablePrimaryKey($table)
+    public function getPrimaryKey($table)
     {
         switch ($table) {
             case 'tprimarykeylock':
@@ -344,7 +342,7 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getTableForeignKeys($table)
+    public function getForeignKeys($table)
     {
         switch ($table) {
             case 'tforeignkey':
@@ -366,7 +364,7 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getTableIndexes($table)
+    public function getIndexes($table)
     {
         switch ($table) {
             case 'tprimarykeylock':
@@ -385,7 +383,7 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getTableChecks($table)
+    public function getChecks($table)
     {
         switch ($table) {
             case 'tcheck':

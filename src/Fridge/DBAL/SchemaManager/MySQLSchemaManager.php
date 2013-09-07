@@ -30,7 +30,7 @@ class MySQLSchemaManager extends AbstractSchemaManager
      *  - auto_increment
      *  - comment
      */
-    protected function getGenericTableColumn(array $column)
+    protected function getGenericColumn(array $column)
     {
         $typeToken = '(),';
         $databaseType = strtok($column['type'], $typeToken);
@@ -74,7 +74,7 @@ class MySQLSchemaManager extends AbstractSchemaManager
                 break;
         }
 
-        return parent::getGenericTableColumn(
+        return parent::getGenericColumn(
             array(
                 'name'           => $column['name'],
                 'type'           => $databaseType,

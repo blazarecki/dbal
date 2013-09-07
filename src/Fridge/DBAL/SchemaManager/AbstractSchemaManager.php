@@ -184,18 +184,18 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
 
         return new Table(
             $table,
-            $this->getTableColumns($table, $database),
-            $this->getTablePrimaryKey($table, $database),
-            $this->getTableForeignKeys($table, $database),
-            $this->getTableIndexes($table, $database),
-            $this->getTableChecks($table, $database)
+            $this->getColumns($table, $database),
+            $this->getPrimaryKey($table, $database),
+            $this->getForeignKeys($table, $database),
+            $this->getIndexes($table, $database),
+            $this->getChecks($table, $database)
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTableColumns($table, $database = null)
+    public function getColumns($table, $database = null)
     {
         if ($database === null) {
             $database = $this->getDatabase();
@@ -204,13 +204,13 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $query = $this->getConnection()->getPlatform()->getSelectColumnsSQLQuery($table, $database);
         $columns = $this->getConnection()->fetchAll($query);
 
-        return $this->getGenericTableColumns($columns);
+        return $this->getGenericColumns($columns);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTablePrimaryKey($table, $database = null)
+    public function getPrimaryKey($table, $database = null)
     {
         if (!$this->getConnection()->getPlatform()->supportPrimaryKeys()) {
             return;
@@ -224,14 +224,14 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $primaryKey = $this->getConnection()->fetchAll($query);
 
         if ($primaryKey) {
-            return $this->getGenericTablePrimaryKey($primaryKey);
+            return $this->getGenericPrimaryKey($primaryKey);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTableForeignKeys($table, $database = null)
+    public function getForeignKeys($table, $database = null)
     {
         if (!$this->getConnection()->getPlatform()->supportForeignKeys()) {
             return array();
@@ -244,13 +244,13 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $query = $this->getConnection()->getPlatform()->getSelectForeignKeysSQLQuery($table, $database);
         $foreignKeys = $this->getConnection()->fetchAll($query);
 
-        return $this->getGenericTableForeignKeys($foreignKeys);
+        return $this->getGenericForeignKeys($foreignKeys);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTableIndexes($table, $database = null)
+    public function getIndexes($table, $database = null)
     {
         if (!$this->getConnection()->getPlatform()->supportIndexes()) {
             return array();
@@ -263,13 +263,13 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $query = $this->getConnection()->getPlatform()->getSelectIndexesSQLQuery($table, $database);
         $indexes = $this->getConnection()->fetchAll($query);
 
-        return $this->getGenericTableIndexes($indexes);
+        return $this->getGenericIndexes($indexes);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTableChecks($table, $database = null)
+    public function getChecks($table, $database = null)
     {
         if (!$this->getConnection()->getPlatform()->supportChecks()) {
             return array();
@@ -282,7 +282,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $query = $this->getConnection()->getPlatform()->getSelectChecksSQLQuery($table, $database);
         $checks = $this->getConnection()->fetchAll($query);
 
-        return $this->getGenericTableChecks($checks);
+        return $this->getGenericChecks($checks);
     }
 
     /**
@@ -826,12 +826,12 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return array The generic columns.
      */
-    protected function getGenericTableColumns(array $columns)
+    protected function getGenericColumns(array $columns)
     {
         $genericColumns = array();
 
         foreach ($columns as $column) {
-            $genericColumns[] = $this->getGenericTableColumn($column);
+            $genericColumns[] = $this->getGenericColumn($column);
         }
 
         return $genericColumns;
@@ -857,7 +857,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return \Fridge\DBAL\Schema\Column The generic column.
      */
-    protected function getGenericTableColumn(array $column)
+    protected function getGenericColumn(array $column)
     {
         $name = $column['name'];
 
@@ -899,7 +899,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The generic primary key.
      */
-    protected function getGenericTablePrimaryKey(array $primaryKey)
+    protected function getGenericPrimaryKey(array $primaryKey)
     {
         $genericPrimaryKey = new PrimaryKey($primaryKey[0]['name']);
 
@@ -925,7 +925,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return array The generic foreign keys.
      */
-    protected function getGenericTableForeignKeys(array $foreignKeys)
+    protected function getGenericForeignKeys(array $foreignKeys)
     {
         $genericForeignKeys = array();
 
@@ -962,7 +962,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return array The generic indexes.
      */
-    protected function getGenericTableIndexes(array $indexes)
+    protected function getGenericIndexes(array $indexes)
     {
         $genericIndexes = array();
 
@@ -990,7 +990,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return array The generic checks.
      */
-    protected function getGenericTableChecks(array $checks)
+    protected function getGenericChecks(array $checks)
     {
         $genericChecks = array();
 

@@ -118,7 +118,7 @@ interface SchemaManagerInterface
      *
      * @return array The table columns.
      */
-    public function getTableColumns($table, $database = null);
+    public function getColumns($table, $database = null);
 
     /**
      * Gets the primary key of a table.
@@ -128,7 +128,7 @@ interface SchemaManagerInterface
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The table primary key.
      */
-    public function getTablePrimaryKey($table, $database = null);
+    public function getPrimaryKey($table, $database = null);
 
     /**
      * Gets the foreign keys of a table.
@@ -138,7 +138,7 @@ interface SchemaManagerInterface
      *
      * @return array The table foreign keys.
      */
-    public function getTableForeignKeys($table, $database = null);
+    public function getForeignKeys($table, $database = null);
 
     /**
      * Gets the indexes of a table.
@@ -148,7 +148,7 @@ interface SchemaManagerInterface
      *
      * @return array The table indexes.
      */
-    public function getTableIndexes($table, $database = null);
+    public function getIndexes($table, $database = null);
 
     /**
      * Gets the check constraints of a table.
@@ -158,7 +158,7 @@ interface SchemaManagerInterface
      *
      * @return array The table indexes.
      */
-    public function getTableChecks($table, $database = null);
+    public function getChecks($table, $database = null);
 
     /**
      * Creates a database.

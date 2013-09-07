@@ -242,7 +242,7 @@ abstract class AbstractAlterationTest extends BaseAlteration
 
         $this->assertEquals(
             array($this->newColumn),
-            $this->connection->getSchemaManager()->getTableColumns($this->table->getName())
+            $this->connection->getSchemaManager()->getColumns($this->table->getName())
         );
     }
 }

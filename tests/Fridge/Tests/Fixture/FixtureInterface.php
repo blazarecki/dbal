@@ -127,7 +127,7 @@ interface FixtureInterface
      *
      * @return array The table columns.
      */
-    public function getTableColumns($table);
+    public function getColumns($table);
 
     /**
      * Gets the table primary key.
@@ -136,7 +136,7 @@ interface FixtureInterface
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The table primary key.
      */
-    public function getTablePrimaryKey($table);
+    public function getPrimaryKey($table);
 
     /**
      * Gets the table foreign keys.
@@ -145,7 +145,7 @@ interface FixtureInterface
      *
      * @return array The table foreign keys.
      */
-    public function getTableForeignKeys($table);
+    public function getForeignKeys($table);
 
     /**
      * Gets the table indexes.
@@ -154,7 +154,7 @@ interface FixtureInterface
      *
      * @return array The table indexes.
      */
-    public function getTableIndexes($table);
+    public function getIndexes($table);
 
     /**
      * Gets the table checks.
@@ -163,7 +163,7 @@ interface FixtureInterface
      *
      * @return array The table checks.
      */
-    public function getTableChecks($table);
+    public function getChecks($table);
 
     /**
      * Gets a query that can be executed on the database.
