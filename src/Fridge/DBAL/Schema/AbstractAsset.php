@@ -23,7 +23,7 @@ use Fridge\DBAL\Exception\SchemaException;
 abstract class AbstractAsset
 {
     /** @var string */
-    protected $name;
+    private $name;
 
     /**
      * Creates an asset.

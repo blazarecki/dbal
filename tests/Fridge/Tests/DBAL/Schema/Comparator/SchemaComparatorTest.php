@@ -27,34 +27,34 @@ use Fridge\DBAL\Type\Type;
 class SchemaComparatorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Comparator\SchemaComparator */
-    protected $schemaComparator;
+    private $schemaComparator;
 
     /** @var \Fridge\DBAL\Schema\Schema */
-    protected $oldSchema;
+    private $oldSchema;
 
     /** @var \Fridge\DBAL\Schema\Schema */
-    protected $newSchema;
+    private $newSchema;
 
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $oldTable;
+    private $oldTable;
 
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $newTable;
+    private $newTable;
 
     /** @var \Fridge\DBAL\Schema\Sequence */
-    protected $oldSequence;
+    private $oldSequence;
 
     /** @var \Fridge\DBAL\Schema\Sequence */
-    protected $newSequence;
+    private $newSequence;
 
     /** @var \Fridge\DBAL\Schema\View */
-    protected $oldView;
+    private $oldView;
 
     /** @var \Fridge\DBAL\Schema\View */
-    protected $newView;
+    private $newView;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $column;
+    private $column;
 
     /**
      * {@inheritdoc}

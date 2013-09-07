@@ -36,43 +36,43 @@ use Fridge\DBAL\Schema\Diff\TableDiff;
 class AlterTableSQLCollector
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /** @var array */
-    protected $renameTableQueries;
+    private $renameTableQueries;
 
     /** @var array */
-    protected $dropCheckQueries;
+    private $dropCheckQueries;
 
     /** @var array */
-    protected $dropForeignKeyQueries;
+    private $dropForeignKeyQueries;
 
     /** @var array */
-    protected $dropIndexQueries;
+    private $dropIndexQueries;
 
     /** @var array */
-    protected $dropPrimaryKeyQueries;
+    private $dropPrimaryKeyQueries;
 
     /** @var array */
-    protected $dropColumnQueries;
+    private $dropColumnQueries;
 
     /** @var array */
-    protected $alterColumnQueries;
+    private $alterColumnQueries;
 
     /** @var array */
-    protected $createColumnQueries;
+    private $createColumnQueries;
 
     /** @var array */
-    protected $createPrimaryKeyQueries;
+    private $createPrimaryKeyQueries;
 
     /** @var array */
-    protected $createIndexQueries;
+    private $createIndexQueries;
 
     /** @var array */
-    protected $createForeignKeyQueries;
+    private $createForeignKeyQueries;
 
     /** @var array */
-    protected $createCheckQueries;
+    private $createCheckQueries;
 
     /**
      * Alter table SQL collector constructor.
@@ -294,7 +294,7 @@ class AlterTableSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table difference.
      */
-    protected function collectColumns(TableDiff $tableDiff)
+    private function collectColumns(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedColumns() as $column) {
             $this->createColumnQueries = array_merge(
@@ -323,7 +323,7 @@ class AlterTableSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table difference.
      */
-    protected function collectPrimaryKeys(TableDiff $tableDiff)
+    private function collectPrimaryKeys(TableDiff $tableDiff)
     {
         if ($tableDiff->getCreatedPrimaryKey() !== null) {
             $this->createPrimaryKeyQueries = array_merge(
@@ -351,7 +351,7 @@ class AlterTableSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table difference.
      */
-    protected function collectForeignKeys(TableDiff $tableDiff)
+    private function collectForeignKeys(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedForeignKeys() as $foreignKey) {
             $this->createForeignKeyQueries = array_merge(
@@ -373,7 +373,7 @@ class AlterTableSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table difference.
      */
-    protected function collectIndexes(TableDiff $tableDiff)
+    private function collectIndexes(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedIndexes() as $index) {
             $this->createIndexQueries = array_merge(
@@ -395,7 +395,7 @@ class AlterTableSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table difference.
      */
-    protected function collectChecks(TableDiff $tableDiff)
+    private function collectChecks(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedChecks() as $check) {
             $this->createCheckQueries = array_merge(

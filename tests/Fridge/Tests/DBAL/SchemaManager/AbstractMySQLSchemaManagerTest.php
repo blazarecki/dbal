@@ -27,7 +27,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo'))
             ->getMock();
 
-        $this->schemaManager->createSequence($sequenceMock);
+        $this->getSchemaManager()->createSequence($sequenceMock);
     }
 
     /**
@@ -39,7 +39,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo'))
             ->getMock();
 
-        $this->schemaManager->dropSequence($sequenceMock);
+        $this->getSchemaManager()->dropSequence($sequenceMock);
     }
 
     /**
@@ -51,7 +51,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo'))
             ->getMock();
 
-        $this->schemaManager->dropAndCreateSequence($sequenceMock);
+        $this->getSchemaManager()->dropAndCreateSequence($sequenceMock);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo', 'bar'))
             ->getMock();
 
-        $this->schemaManager->dropCheck($checkMock, 'foo');
+        $this->getSchemaManager()->dropCheck($checkMock, 'foo');
     }
 
     /**
@@ -75,7 +75,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo', 'bar'))
             ->getMock();
 
-        $this->schemaManager->createCheck($checkMock, 'foo');
+        $this->getSchemaManager()->createCheck($checkMock, 'foo');
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo', 'bar'))
             ->getMock();
 
-        $this->schemaManager->dropAndCreateCheck($checkMock, 'foo');
+        $this->getSchemaManager()->dropAndCreateCheck($checkMock, 'foo');
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo', 'bar'))
             ->getMock();
 
-        $this->schemaManager->dropConstraint($checkMock, 'foo');
+        $this->getSchemaManager()->dropConstraint($checkMock, 'foo');
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo', 'bar'))
             ->getMock();
 
-        $this->schemaManager->createConstraint($checkMock, 'foo');
+        $this->getSchemaManager()->createConstraint($checkMock, 'foo');
     }
 
     /**
@@ -123,6 +123,6 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
             ->setConstructorArgs(array('foo', 'bar'))
             ->getMock();
 
-        $this->schemaManager->dropAndCreateConstraint($checkMock, 'foo');
+        $this->getSchemaManager()->dropAndCreateConstraint($checkMock, 'foo');
     }
 }

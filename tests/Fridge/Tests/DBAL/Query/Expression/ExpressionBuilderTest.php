@@ -11,8 +11,6 @@
 
 namespace Fridge\Tests\DBAL\Query\Expression;
 
-use \ReflectionMethod;
-
 use Fridge\DBAL\Query\Expression\ExpressionBuilder;
 
 /**
@@ -23,7 +21,7 @@ use Fridge\DBAL\Query\Expression\ExpressionBuilder;
 class ExpressionBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Query\Expression\ExpressionBuilder */
-    protected $expressionBuilder;
+    private $expressionBuilder;
 
     /**
      * {@inheritdoc}
@@ -67,7 +65,7 @@ class ExpressionBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testComparison()
     {
-        $method = new ReflectionMethod('Fridge\DBAL\Query\Expression\ExpressionBuilder', 'comparison');
+        $method = new \ReflectionMethod('Fridge\DBAL\Query\Expression\ExpressionBuilder', 'comparison');
         $method->setAccessible(true);
 
         $comparison = $method->invoke($this->expressionBuilder, 'a', 'foo', 'b');

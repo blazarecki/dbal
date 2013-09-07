@@ -11,7 +11,6 @@
 
 namespace Fridge\DBAL\SchemaManager;
 
-use Exception;
 use Fridge\DBAL\Connection\ConnectionInterface;
 use Fridge\DBAL\Schema\Check;
 use Fridge\DBAL\Schema\Column;
@@ -38,7 +37,7 @@ use Fridge\DBAL\Type\Type;
 abstract class AbstractSchemaManager implements SchemaManagerInterface
 {
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
-    protected $connection;
+    private $connection;
 
     /**
      * Creates a schema manager.
@@ -1035,7 +1034,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             call_user_func_array(array($this, $method), $arguments);
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

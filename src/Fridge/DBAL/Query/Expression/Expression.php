@@ -18,17 +18,17 @@ namespace Fridge\DBAL\Query\Expression;
  */
 class Expression
 {
-    /** @const The AND expression type */
+    /** @const string The AND expression type */
     const TYPE_AND = 'AND';
 
-    /** @const The OR expression type */
+    /** @const string The OR expression type */
     const TYPE_OR  = 'OR';
 
     /** @var string */
-    protected $type;
+    private $type;
 
     /** @var array */
-    protected $parts;
+    private $parts;
 
     /**
      * Expression constructor.

@@ -13,7 +13,6 @@ namespace Fridge\DBAL\Type;
 
 use Fridge\DBAL\Exception\TypeException;
 use Fridge\DBAL\Platform\PlatformInterface;
-use PDO;
 
 /**
  * Array type.
@@ -46,7 +45,7 @@ class ArrayType implements TypeInterface
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
         if ($value === null) {
-            return null;
+            return;
         }
 
         $val = unserialize($value);
@@ -63,7 +62,7 @@ class ArrayType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_STR;
+        return \PDO::PARAM_STR;
     }
 
     /**

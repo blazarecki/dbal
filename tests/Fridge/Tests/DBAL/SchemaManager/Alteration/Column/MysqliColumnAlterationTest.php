@@ -19,31 +19,23 @@ use Fridge\Tests\Fixture\MySQLFixture;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliAlterationTest extends AbstractAlterationTest
+class MysqliColumnAlterationTest extends AbstractColumnAlterationTest
 {
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            self::$fixture = new MySQLFixture(ConnectionUtility::MYSQLI);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(ConnectionUtility::MYSQLI);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpSchemaManager()
     {
-        if (self::$fixture !== null) {
-            $this->connection = ConnectionUtility::getConnection(ConnectionUtility::MYSQLI);
-        }
-
-        parent::setUp();
+        return ConnectionUtility::getConnection(ConnectionUtility::MYSQLI)->getSchemaManager();
     }
 }

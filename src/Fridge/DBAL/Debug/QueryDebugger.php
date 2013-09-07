@@ -19,26 +19,26 @@ namespace Fridge\DBAL\Debug;
 class QueryDebugger
 {
     /** @var string */
-    protected $query;
+    private $query;
 
     /** @var array */
-    protected $parameters;
+    private $parameters;
 
     /** @var array */
-    protected $types;
+    private $types;
 
     /** @var float */
-    protected $time;
+    private $time;
 
     /** @var float */
-    protected $start;
+    private $start;
 
     /**
      * Creates & starts the debug.
      *
-     * @param string $query     The debugged query
-     * @param array $parameters The debugged parameters.
-     * @param array $types      The debugged types.
+     * @param string $query      The debugged query
+     * @param array  $parameters The debugged parameters.
+     * @param array  $types      The debugged types.
      */
     public function __construct($query, array $parameters, array $types)
     {

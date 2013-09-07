@@ -13,7 +13,6 @@ namespace Fridge\Tests\Fixture;
 
 use Fridge\DBAL\Type\Type;
 use Fridge\Tests\PHPUnitUtility;
-use PDO;
 
 /**
  * PostgreSQL fixture.
@@ -155,22 +154,22 @@ EOT;
     protected function getConnection($database = true)
     {
         $dsnOptions = array();
-
         $haystack = array('host', 'port');
 
         if ($database) {
             $haystack[] = 'dbname';
         }
 
-        foreach ($this->settings as $dsnKey => $dsnSetting) {
+        foreach ($this->getSettings() as $dsnKey => $dsnSetting) {
             if (in_array($dsnKey, $haystack)) {
                 $dsnOptions[] = $dsnKey.'='.$dsnSetting;
             }
         }
 
-        $username = $this->settings['username'];
-        $password = $this->settings['password'];
-
-        return new PDO('pgsql:'.implode(';', $dsnOptions), $username, $password);
+        return new \PDO(
+            'pgsql:'.implode(';', $dsnOptions),
+            $this->getSetting('username'),
+            $this->getSetting('password')
+        );
     }
 }

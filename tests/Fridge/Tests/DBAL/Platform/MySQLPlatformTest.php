@@ -24,7 +24,6 @@ use Fridge\DBAL\Schema\Schema;
 use Fridge\DBAL\Schema\Sequence;
 use Fridge\DBAL\Schema\Table;
 use Fridge\DBAL\Type\Type;
-use ReflectionMethod;
 
 /**
  * MySQL Platform test.
@@ -34,7 +33,7 @@ use ReflectionMethod;
 class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /**
      * {@inheritdoc}
@@ -62,9 +61,9 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      *
      * @return \ReflectionMethod The MySQLPlatform::getIntegerSQLDeclarationSnippet method.
      */
-    protected function getIntegerSQLDeclarationSnippetMethod()
+    private function getIntegerSQLDeclarationSnippetMethod()
     {
-        $method = new ReflectionMethod('Fridge\DBAL\Platform\MySQLPlatform', 'getIntegerSQLDeclarationSnippet');
+        $method = new \ReflectionMethod('Fridge\DBAL\Platform\MySQLPlatform', 'getIntegerSQLDeclarationSnippet');
         $method->setAccessible(true);
 
         return $method;

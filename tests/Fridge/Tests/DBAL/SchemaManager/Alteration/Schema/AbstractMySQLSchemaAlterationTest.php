@@ -15,11 +15,11 @@ use Fridge\DBAL\Schema\ForeignKey;
 use Fridge\DBAL\Type\Type;
 
 /**
- * Base MySQL schema alteration test case
+ * Abstract MySQL schema alteration test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
+abstract class AbstractMySQLSchemaAlterationTest extends AbstractSchemaAlterationTest
 {
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
@@ -55,15 +55,15 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
     public function testCreateView()
     {
-        $settings = self::$fixture->getSettings();
+        $dbName = self::getFixture()->getSetting('dbname');
 
-        $table = $this->oldSchema->createTable('foo');
+        $table = $this->getOldSchema()->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema->createView(
+        $this->getNewSchema()->createView(
             'vfoo',
-            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $dbName, $dbName)
         );
 
         $this->assertAlteration();
@@ -71,42 +71,42 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
     public function testRenameView()
     {
-        $settings = self::$fixture->getSettings();
+        $dbName = self::getFixture()->getSetting('dbname');
 
-        $table = $this->oldSchema->createTable('foo');
+        $table = $this->getOldSchema()->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
 
-        $this->oldSchema->createView(
+        $this->getOldSchema()->createView(
             'vfoo',
-            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $dbName, $dbName)
         );
 
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema->renameView('vfoo', 'vbar');
+        $this->getNewSchema()->renameView('vfoo', 'vbar');
 
         $this->assertAlteration();
     }
 
     public function testAlterView()
     {
-        $settings = self::$fixture->getSettings();
+        $dbName = self::getFixture()->getSetting('dbname');
 
-        $table = $this->oldSchema->createTable('foo');
+        $table = $this->getOldSchema()->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
         $table->createColumn('bar', Type::STRING, array('length' => 50));
 
-        $view = $this->oldSchema->createView(
+        $view = $this->getOldSchema()->createView(
             'vfoo',
-            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+            sprintf('select `%s`.`foo`.`foo` AS `foo` from `%s`.`foo`', $dbName, $dbName)
         );
 
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema
+        $this->getNewSchema()
             ->getView($view->getName())
             ->setSQL(
-                sprintf('select `%s`.`foo`.`bar` AS `foo` from `%s`.`foo`', $settings['dbname'], $settings['dbname'])
+                sprintf('select `%s`.`foo`.`bar` AS `foo` from `%s`.`foo`', $dbName, $dbName)
             );
 
         $this->assertAlteration();
@@ -114,41 +114,41 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
     public function testCreatePrimaryKey()
     {
-        $table = $this->oldSchema->createTable('foo');
+        $table = $this->getOldSchema()->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema->getTable($table->getName())->createPrimaryKey(array('foo'), 'PRIMARY');
+        $this->getNewSchema()->getTable($table->getName())->createPrimaryKey(array('foo'), 'PRIMARY');
 
         $this->assertAlteration();
     }
 
     public function testAlterPrimaryKey()
     {
-        $table = $this->oldSchema->createTable('foo');
+        $table = $this->getOldSchema()->createTable('foo');
         $table->createColumn('foo', Type::STRING, array('length' => 50));
         $table->createColumn('bar', Type::STRING, array('length' => 50));
         $table->createPrimaryKey(array('foo'), 'PRIMARY');
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema->getTable($table->getName())->dropPrimaryKey();
-        $this->newSchema->getTable($table->getName())->createPrimaryKey(array('bar'), 'PRIMARY');
+        $this->getNewSchema()->getTable($table->getName())->dropPrimaryKey();
+        $this->getNewSchema()->getTable($table->getName())->createPrimaryKey(array('bar'), 'PRIMARY');
 
         $this->assertAlteration();
     }
 
     public function testCreateForeignKey()
     {
-        $table1 = $this->oldSchema->createTable('foo');
+        $table1 = $this->getOldSchema()->createTable('foo');
         $table1->createColumn('foo', Type::STRING, array('length' => 50));
         $table1->createPrimaryKey(array('foo'), 'PRIMARY');
 
-        $table2 = $this->oldSchema->createTable('bar');
+        $table2 = $this->getOldSchema()->createTable('bar');
         $table2->createColumn('foo', Type::STRING, array('length' => 50));
 
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema->getTable($table2->getName())->createForeignKey(
+        $this->getNewSchema()->getTable($table2->getName())->createForeignKey(
             array('foo'),
             'foo',
             array('foo'),
@@ -162,11 +162,11 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
     public function testDropForeignKey()
     {
-        $table1 = $this->oldSchema->createTable('foo');
+        $table1 = $this->getOldSchema()->createTable('foo');
         $table1->createColumn('foo', Type::STRING, array('length' => 50));
         $table1->createPrimaryKey(array('foo'), 'PRIMARY');
 
-        $table2 = $this->oldSchema->createTable('bar');
+        $table2 = $this->getOldSchema()->createTable('bar');
         $table2->createColumn('foo', Type::STRING, array('length' => 50));
         $foreignKey = $table2->createForeignKey(
             array('foo'),
@@ -177,9 +177,9 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
             'fk_foo'
         );
 
-        $this->setUpSchema();
+        $this->createOldSchema();
 
-        $this->newSchema->getTable($table2->getName())->dropForeignKey($foreignKey->getName());
+        $this->getNewSchema()->getTable($table2->getName())->dropForeignKey($foreignKey->getName());
 
         $this->assertAlteration();
     }

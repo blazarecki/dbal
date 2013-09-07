@@ -21,50 +21,50 @@ use Fridge\DBAL\Exception\TypeException;
  */
 class Type
 {
-    /** @const The array type constant */
+    /** @const string The array type constant */
     const TARRAY = 'array';
 
-    /** @const The big integer type constant */
+    /** @const string The big integer type constant */
     const BIGINTEGER = 'biginteger';
 
-    /** @const The blob type constant */
+    /** @const string The blob type constant */
     const BLOB = 'blob';
 
-    /** @const The boolean type constant */
+    /** @const string The boolean type constant */
     const BOOLEAN = 'boolean';
 
-    /** @const The date type constant */
+    /** @const string The date type constant */
     const DATE = 'date';
 
-    /** @const The date time type constant */
+    /** @const string The date time type constant */
     const DATETIME = 'datetime';
 
-    /** @const The decimal type constant */
+    /** @const string The decimal type constant */
     const DECIMAL = 'decimal';
 
-    /** @const The float type constant */
+    /** @const string The float type constant */
     const FLOAT = 'float';
 
-    /** @const The integer type constant */
+    /** @const string The integer type constant */
     const INTEGER = 'integer';
 
-    /** @const the object type constant */
+    /** @const string the object type constant */
     const OBJECT = 'object';
 
-    /** @const The small integer type constant */
+    /** @const string The small integer type constant */
     const SMALLINTEGER = 'smallinteger';
 
-    /** @const The string type constant */
+    /** @const string The string type constant */
     const STRING = 'string';
 
-    /** @const The text type constant */
+    /** @const string The text type constant */
     const TEXT = 'text';
 
-    /** @const The time type constant */
+    /** @const string The time type constant */
     const TIME = 'time';
 
     /** @var array */
-    protected static $mappedTypeClasses = array(
+    private static $mappedTypeClasses = array(
         self::TARRAY       => 'Fridge\DBAL\Type\ArrayType',
         self::BIGINTEGER   => 'Fridge\DBAL\Type\BigIntegerType',
         self::BLOB         => 'Fridge\DBAL\Type\BlobType',
@@ -82,7 +82,7 @@ class Type
     );
 
     /** @var array */
-    protected static $mappedTypeInstances = array();
+    private static $mappedTypeInstances = array();
 
     /**
      * Checks if a type exists.

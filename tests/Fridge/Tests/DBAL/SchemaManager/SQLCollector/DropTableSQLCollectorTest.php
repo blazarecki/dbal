@@ -22,24 +22,25 @@ use Fridge\DBAL\Type\Type;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class DropTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
+class DropTableSQLCollectorTest extends AbstractSQLCollectorTestCase
 {
-    /**  @var \Fridge\DBAL\SchemaManager\SQLCollector\DropTableSQLCollector */
-    protected $sqlCollector;
-
-    /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platformMock;
-
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $table;
+    private $table;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUpSQLCollector()
+    {
+        return new DropTableSQLCollector($this->getPlatform());
+    }
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
-        $this->sqlCollector = new DropTableSQLCollector($this->platformMock);
+        parent::setUp();
 
         $this->table = new Table(
             'foo',
@@ -54,9 +55,19 @@ class DropTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->sqlCollector);
-        unset($this->platformMock);
+        parent::tearDown();
+
         unset($this->table);
+    }
+
+    /**
+     * Asserts the initial state.
+     */
+    private function assertInitialState()
+    {
+        $this->assertEmpty($this->getSQLCollector()->getDropForeignKeyQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropTableQueries());
+        $this->assertEmpty($this->getSQLCollector()->getQueries());
     }
 
     public function testInitialState()
@@ -66,78 +77,68 @@ class DropTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testPlatform()
     {
-        $this->assertSame($this->platformMock, $this->sqlCollector->getPlatform());
+        $this->assertSame($this->getPlatform(), $this->getSQLCollector()->getPlatform());
 
         $platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
-        $this->sqlCollector->setPlatform($platformMock);
+        $this->getSQLCollector()->setPlatform($platformMock);
 
-        $this->assertSame($platformMock, $this->sqlCollector->getPlatform());
+        $this->assertSame($platformMock, $this->getSQLCollector()->getPlatform());
     }
 
     public function testCollect()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropTableSQLQueries')
             ->with($this->equalTo($this->table))
             ->will($this->returnValue(array('DROP TABLE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropForeignKeySQLQueries')
             ->with($this->equalTo($this->table->getForeignKey('foo')), $this->equalTo($this->table->getName()))
             ->will($this->returnValue(array('DROP FOREIGN KEY')));
 
-        $this->sqlCollector->collect($this->table);
+        $this->getSQLCollector()->collect($this->table);
 
-        $this->assertSame(array('DROP FOREIGN KEY'), $this->sqlCollector->getDropForeignKeyQueries());
-        $this->assertSame(array('DROP TABLE'), $this->sqlCollector->getDropTableQueries());
-        $this->assertSame(array('DROP FOREIGN KEY', 'DROP TABLE'), $this->sqlCollector->getQueries());
+        $this->assertSame(array('DROP FOREIGN KEY'), $this->getSQLCollector()->getDropForeignKeyQueries());
+        $this->assertSame(array('DROP TABLE'), $this->getSQLCollector()->getDropTableQueries());
+        $this->assertSame(array('DROP FOREIGN KEY', 'DROP TABLE'), $this->getSQLCollector()->getQueries());
     }
 
     public function testPlatformWithCollectedQueries()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->sqlCollector->collect($this->table);
-        $this->sqlCollector->setPlatform($this->platformMock);
+        $this->getSQLCollector()->collect($this->table);
+        $this->getSQLCollector()->setPlatform($this->getPlatform());
 
         $this->assertInitialState();
     }
 
     public function testInit()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->sqlCollector->collect($this->table);
-        $this->sqlCollector->init();
+        $this->getSQLCollector()->collect($this->table);
+        $this->getSQLCollector()->init();
 
         $this->assertInitialState();
-    }
-
-    /**
-     * Asserts the initial state.
-     */
-    protected function assertInitialState()
-    {
-        $this->assertEmpty($this->sqlCollector->getDropForeignKeyQueries());
-        $this->assertEmpty($this->sqlCollector->getDropTableQueries());
-        $this->assertEmpty($this->sqlCollector->getQueries());
     }
 }

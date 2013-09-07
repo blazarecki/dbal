@@ -13,61 +13,58 @@ namespace Fridge\Tests\DBAL\Type;
 
 use Fridge\DBAL\Type\TextType;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Text type test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class TextTypeTest extends AbstractTypeTest
+class TextTypeTest extends AbstractTypeTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpType()
     {
-        parent::setUp();
-
-        $this->type = new TextType();
+        return new TextType();
     }
 
     public function testSQLDeclaration()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getClobSQLDeclaration');
 
-        $this->type->getSQLDeclaration($this->platformMock);
+        $this->getType()->getSQLDeclaration($this->getPlatform());
     }
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('foo', $this->type->convertToDatabaseValue('foo', $this->platformMock));
+        $this->assertSame('foo', $this->getType()->convertToDatabaseValue('foo', $this->getPlatform()));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToDatabaseValue(null, $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertSame('foo', $this->type->convertToPHPValue('foo', $this->platformMock));
+        $this->assertSame('foo', $this->getType()->convertToPHPValue('foo', $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToPHPValue(null, $this->getPlatform()));
     }
 
     public function testBindingType()
     {
-        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(\PDO::PARAM_STR, $this->getType()->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertSame(Type::TEXT, $this->type->getName());
+        $this->assertSame(Type::TEXT, $this->getType()->getName());
     }
 }

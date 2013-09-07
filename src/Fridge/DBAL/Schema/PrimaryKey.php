@@ -21,7 +21,7 @@ use Fridge\DBAL\Exception\SchemaException;
 class PrimaryKey extends AbstractAsset implements ConstraintInterface
 {
     /** @var array */
-    protected $columnNames;
+    private $columnNames;
 
     /**
      * Creates a primary key.

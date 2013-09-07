@@ -20,12 +20,12 @@ use Fridge\DBAL\Exception\PlatformException;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
+abstract class AbstractMySQLTableAlterationTest extends AbstractTableAlterationTest
 {
     public function testCreatePrimaryKey()
     {
         $this->setUpColumns();
-        $this->newTable->createPrimaryKey(array('foo'), 'PRIMARY');
+        $this->getNewTable()->createPrimaryKey(array('foo'), 'PRIMARY');
 
         $this->assertAlteration();
     }
@@ -34,8 +34,8 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
     {
         $this->setUpPrimaryKey();
 
-        $this->newTable->dropPrimaryKey();
-        $this->newTable->createPrimaryKey(array('bar'), 'PRIMARY');
+        $this->getNewTable()->dropPrimaryKey();
+        $this->getNewTable()->createPrimaryKey(array('bar'), 'PRIMARY');
 
         $this->assertAlteration();
     }
@@ -47,7 +47,7 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
             $this->fail();
         } catch (PlatformException $e) {
-            $this->newTable = null;
+            $this->resetNewTable();
         }
     }
 
@@ -58,7 +58,7 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
             $this->fail();
         } catch (PlatformException $e) {
-            $this->newTable = null;
+            $this->resetNewTable();
         }
     }
 
@@ -69,7 +69,7 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
             $this->fail();
         } catch (PlatformException $e) {
-            $this->newTable = null;
+            $this->resetNewTable();
         }
     }
 }

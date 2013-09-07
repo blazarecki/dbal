@@ -24,26 +24,20 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            self::$fixture = new PostgreSQLFixture();
-        } else {
-            self::$fixture = null;
+            return new PostgreSQLFixture();
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpConnection()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            $this->connection = ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL);
+            return ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL);
         }
-
-        parent::setUp();
     }
 }

@@ -25,32 +25,24 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            self::$fixture = new MySQLFixture(PHPUnitUtility::PDO_MYSQL);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(PHPUnitUtility::PDO_MYSQL);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpDriver()
     {
-        if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            $this->driver = new PDOMySQLDriver();
-        }
-
-        parent::setUp();
+        return new PDOMySQLDriver();
     }
 
     public function testConnectWithUnixSocket()
     {
-        $settings = self::$fixture->getSettings();
+        $settings = self::getFixture()->getSettings();
 
         unset($settings['host']);
         unset($settings['port']);
@@ -59,18 +51,26 @@ class PDOMySQLDriverTest extends AbstractDriverTest
 
         $this->assertInstanceOf(
             'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
-            $this->driver->connect($settings, $settings['username'], $settings['password'])
+            $this->getDriver()->connect(
+                $settings,
+                self::getFixture()->getSetting('username'),
+                self::getFixture()->getSetting('password')
+            )
         );
     }
 
     public function testConnectWithCharset()
     {
-        $settings = self::$fixture->getSettings();
+        $settings = self::getFixture()->getSettings();
         $settings['charset'] = 'utf8';
 
         $this->assertInstanceOf(
             'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
-            $this->driver->connect($settings, $settings['username'], $settings['password'])
+            $this->getDriver()->connect(
+                $settings,
+                self::getFixture()->getSetting('username'),
+                self::getFixture()->getSetting('password')
+            )
         );
     }
 }

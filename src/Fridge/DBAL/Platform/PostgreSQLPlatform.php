@@ -345,7 +345,7 @@ class PostgreSQLPlatform extends AbstractPlatform
      */
     protected function initializeMappedTypes()
     {
-        $this->mappedTypes = array(
+        return array(
             'bigint'           => Type::BIGINTEGER,
             'bigserial'        => Type::BIGINTEGER,
             'bool'             => Type::BOOLEAN,

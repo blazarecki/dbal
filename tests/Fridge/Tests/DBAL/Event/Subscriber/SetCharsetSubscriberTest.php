@@ -23,7 +23,7 @@ use Fridge\DBAL\Event\Subscriber\SetCharsetSubscriber;
 class SetCharsetSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Fridge\DBAL\Event\Subscriber\CharsetSubscriber */
-    protected $subscriber;
+    private $subscriber;
 
     /**
      * {@inheritdoc}

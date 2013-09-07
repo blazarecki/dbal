@@ -9,41 +9,33 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Column;
+namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Schema;
 
 use Fridge\Tests\ConnectionUtility;
 use Fridge\Tests\Fixture\PostgreSQLFixture;
 
 /**
- * PDO PostgreSQL column alteration test.
+ * PDO PostgreSQL schema alteration test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOPostgreSQLAlterationTest extends AbstractAlterationTest
+class PDOPostgreSQLSchemaAlterationTest extends AbstractSchemaAlterationTest
 {
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            self::$fixture = new PostgreSQLFixture();
-        } else {
-            self::$fixture = null;
+            return new PostgreSQLFixture();
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpSchemaManager()
     {
-        if (self::$fixture !== null) {
-            $this->connection = ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL);
-        }
-
-        parent::setUp();
+        return ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL)->getSchemaManager();
     }
 }

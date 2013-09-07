@@ -26,13 +26,13 @@ use Fridge\DBAL\Schema\Table;
 class CreateTableSQLCollector
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /** @var array */
-    protected $createTableQueries;
+    private $createTableQueries;
 
     /** @var array */
-    protected $createForeignKeyQueries;
+    private $createForeignKeyQueries;
 
     /**
      * Create tables SQL collector constructor.

@@ -14,17 +14,38 @@ namespace Fridge\Tests\DBAL\Event;
 use Fridge\DBAL\Event\PostConnectEvent;
 
 /**
- * PostConnectEvent test.
+ * Post connect event test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class PostConnectEventTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var \Fridge\DBAL\Event\PostConnectEvent */
+    private $postConnectEvent;
+
+    /** @var \Fridge\DBAL\Connection\ConnectionInterface */
+    private $connection;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $this->connection = $this->getMock('Fridge\DBAL\Connection\ConnectionInterface');
+        $this->postConnectEvent = new PostConnectEvent($this->connection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        unset($this->postConnectEvent);
+        unset($this->connection);
+    }
+
     public function testConnection()
     {
-        $connectionMock = $this->getMock('Fridge\DBAL\Connection\ConnectionInterface');
-        $event = new PostConnectEvent($connectionMock);
-
-        $this->assertSame($connectionMock, $event->getConnection());
+        $this->assertSame($this->connection, $this->postConnectEvent->getConnection());
     }
 }

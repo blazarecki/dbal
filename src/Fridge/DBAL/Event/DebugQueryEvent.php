@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
 class DebugQueryEvent extends Event
 {
     /** @var \Fridge\DBAL\Debug\QueryDebugger */
-    protected $queryDebugger;
+    private $queryDebugger;
 
     /**
      * Creates a debug query event.

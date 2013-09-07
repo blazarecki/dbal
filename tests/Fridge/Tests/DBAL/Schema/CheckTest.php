@@ -22,7 +22,7 @@ use Fridge\DBAL\Query\Expression\ExpressionBuilder;
 class CheckTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Check */
-    protected $check;
+    private $check;
 
     /**
      * {@inheritdoc}

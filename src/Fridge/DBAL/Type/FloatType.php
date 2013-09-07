@@ -12,7 +12,6 @@
 namespace Fridge\DBAL\Type;
 
 use Fridge\DBAL\Platform\PlatformInterface;
-use PDO;
 
 /**
  * Float type.
@@ -50,7 +49,7 @@ class FloatType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_STR;
+        return \PDO::PARAM_STR;
     }
 
     /**

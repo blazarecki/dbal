@@ -22,22 +22,22 @@ use Fridge\DBAL\Type\Type;
 class Table extends AbstractAsset
 {
     /** @var Fridge\DBAL\Schema\Schema */
-    protected $schema;
+    private $schema;
 
     /** @var array */
-    protected $columns = array();
+    private $columns;
 
     /** @var Fridge\DBAL\Schema\PrimaryKey */
-    protected $primaryKey;
+    private $primaryKey;
 
     /** @var array */
-    protected $foreignKeys = array();
+    private $foreignKeys;
 
     /** @var array */
-    protected $indexes = array();
+    private $indexes;
 
     /** @var array */
-    protected $checks = array();
+    private $checks;
 
     /**
      * Creates a table.
@@ -58,6 +58,11 @@ class Table extends AbstractAsset
         array $checks = array()
     ) {
         parent::__construct($name);
+
+        $this->columns = array();
+        $this->foreignKeys = array();
+        $this->indexes = array();
+        $this->checks = array();
 
         $this->setColumns($columns);
 

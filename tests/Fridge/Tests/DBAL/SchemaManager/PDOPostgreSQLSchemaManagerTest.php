@@ -11,7 +11,6 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager;
 
-use Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager;
 use Fridge\Tests\ConnectionUtility;
 use Fridge\Tests\Fixture\PostgreSQLFixture;
 
@@ -25,36 +24,25 @@ class PDOPostgreSQLSchemaManagerTest extends AbstractSchemaManagerTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    public static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            self::$fixture = new PostgreSQLFixture();
-        } else {
-            self::$fixture = null;
+            return new PostgreSQLFixture();
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpSchemaManager()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            $this->schemaManager = new PostgreSQLSchemaManager(
-                ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL)
-            );
-        }
-
-        parent::setUp();
+        return ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL)->getSchemaManager();
     }
 
     public function testGetDatabaseWithoutConfiguredDatabase()
     {
-        $this->schemaManager->getConnection()->setDatabase(null);
+        $this->getSchemaManager()->getConnection()->setDatabase(null);
 
-        $settings = self::$fixture->getSettings();
-        $this->assertSame($settings['username'], $this->schemaManager->getDatabase());
+        $this->assertSame(self::getFixture()->getSetting('username'), $this->getSchemaManager()->getDatabase());
     }
 }

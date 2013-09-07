@@ -11,8 +11,6 @@
 
 namespace Fridge\DBAL\Driver\Connection;
 
-use PDO;
-
 /**
  * Low-level class representing a database connection.
  *
@@ -58,7 +56,7 @@ interface NativeConnectionInterface
      *
      * @return string The quoted string.
      */
-    public function quote($string, $type = PDO::PARAM_STR);
+    public function quote($string, $type = \PDO::PARAM_STR);
 
     /**
      * Executes an SQL query.

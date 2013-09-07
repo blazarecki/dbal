@@ -12,7 +12,6 @@
 namespace Fridge\DBAL\Type;
 
 use Fridge\DBAL\Platform\PlatformInterface;
-use PDO;
 
 /**
  * String type.
@@ -50,7 +49,7 @@ class StringType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_STR;
+        return \PDO::PARAM_STR;
     }
 
     /**

@@ -63,11 +63,38 @@ interface FixtureInterface
     public function dropDatas();
 
     /**
+     * Checks if the fixture has settings.
+     *
+     * @boolean TRUE if the fixture has settings else FALSE.
+     */
+    public function hasSettings();
+
+    /**
      * Gets the PHPUnit settings.
      *
      * @return array The PHPUnit settings.
      */
     public function getSettings();
+
+    /**
+     * Checks if a specific setting exists.
+     *
+     * @param string $name The setting name.
+     *
+     * @return boolean TRUE if the specific setting exists else FALSE.
+     */
+    public function hasSetting($name);
+
+    /**
+     * Gets a specific setting.
+     *
+     * @param string $name The setting name.
+     *
+     * @throws \Exception If the setting does not exist.
+     *
+     * @return mixed The setting.
+     */
+    public function getSetting($name);
 
     /**
      * Gets the database.

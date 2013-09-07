@@ -19,17 +19,17 @@ namespace Fridge\Tests;
  */
 class PHPUnitUtility
 {
-    /** @const The PDO MySQL constant */
+    /** @const string The PDO MySQL constant */
     const PDO_MYSQL = 'PDO_MYSQL_';
 
-    /** @const The PDO PgSQL constant */
+    /** @const string The PDO PgSQL constant */
     const PDO_PGSQL = 'PDO_PGSQL_';
 
-    /** @const The Mysqli constant */
+    /** @const string The Mysqli constant */
     const MYSQLI = 'MYSQLI_';
 
     /** @var array */
-    protected static $settings = array();
+    private static $settings = array();
 
     /**
      * Checks if a group of settings exists in the PHPUnit XML configuration file.
@@ -65,7 +65,7 @@ class PHPUnitUtility
      *
      * @return array The group of settings.
      */
-    protected static function retrieveSettings($prefix)
+    private static function retrieveSettings($prefix)
     {
         if (!isset(static::$settings[$prefix])) {
             static::$settings[$prefix] = static::getDefaultSettings();
@@ -90,7 +90,7 @@ class PHPUnitUtility
      *
      * @return array The default settings of a group of settings.
      */
-    protected static function getDefaultSettings()
+    private static function getDefaultSettings()
     {
         return array(
             'driver'   => null,

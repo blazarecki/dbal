@@ -22,10 +22,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class Configuration
 {
     /** @var boolean */
-    protected $debug;
+    private $debug;
 
     /** @var \Symfony\Component\EventDispatcher\EventDispatcher */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * Creates a configuration.

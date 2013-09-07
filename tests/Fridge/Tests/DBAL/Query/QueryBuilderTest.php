@@ -24,7 +24,7 @@ use Fridge\DBAL\Type\Type;
 class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Query\QueryBuilder */
-    protected $queryBuilder;
+    private $queryBuilder;
 
     /**
      * {@inheritdoc}

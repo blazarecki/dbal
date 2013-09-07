@@ -123,7 +123,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return integer The placeholder position.
      */
-    protected static function determinePlaceholderPosition($query, $index, array $placeholdersPositions = array())
+    private static function determinePlaceholderPosition($query, $index, array $placeholdersPositions = array())
     {
         // The placeholder position.
         $placeholderPosition = null;
@@ -211,7 +211,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return string The rewritten query.
      */
-    protected static function rewriteQuery($query, $placeholderPosition, array $newPlaceholders)
+    private static function rewriteQuery($query, $placeholderPosition, array $newPlaceholders)
     {
         return substr($query, 0, $placeholderPosition).
             implode(', ', $newPlaceholders).
@@ -236,7 +236,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
      *
      * @return array 0 => The rewritten parameters, 1 => The rewritten types.
      */
-    protected static function rewriteParameterAndType(array $parameters, array $types, $index)
+    private static function rewriteParameterAndType(array $parameters, array $types, $index)
     {
         // The parameter value according.
         $parameterValue = $parameters[$index];

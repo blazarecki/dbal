@@ -13,8 +13,6 @@ namespace Fridge\DBAL\Driver\Connection;
 
 use Fridge\DBAL\Driver\Statement\MysqliStatement;
 use Fridge\DBAL\Exception\MysqliException;
-use mysqli;
-use PDO;
 
 /**
  * {@inheritdoc}
@@ -24,13 +22,13 @@ use PDO;
 class MysqliConnection implements NativeConnectionInterface
 {
     /** @var \mysqli */
-    protected $mysqli;
+    private $mysqli;
 
     /** @var boolean */
-    protected $inTransaction;
+    private $inTransaction;
 
     /** @var integer */
-    protected $maxAllowedPacket;
+    private $maxAllowedPacket;
 
     /**
      * Mysqli connection constructor.
@@ -56,7 +54,7 @@ class MysqliConnection implements NativeConnectionInterface
         $port = isset($parameters['post']) ? $parameters['port'] : ini_get('mysqli.default_port');
         $unixSocket = isset($parameters['unix_socket']) ? $parameters['unix_socket'] : ini_get('mysqli.default_socket');
 
-        $this->mysqli = @new mysqli($host, $username, $password, $database, $port, $unixSocket);
+        $this->mysqli = @new \mysqli($host, $username, $password, $database, $port, $unixSocket);
 
         if ($this->mysqli->connect_error !== null) {
             throw new MysqliException($this->mysqli->connect_error, $this->mysqli->connect_errno);
@@ -84,13 +82,7 @@ class MysqliConnection implements NativeConnectionInterface
      */
     public function beginTransaction()
     {
-        $result = $this->mysqli->query('START TRANSACTION');
-
-        if ($result) {
-            $this->inTransaction = true;
-        }
-
-        return $result;
+        return $this->inTransaction = $this->mysqli->query('START TRANSACTION');
     }
 
     /**
@@ -124,7 +116,7 @@ class MysqliConnection implements NativeConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function quote($string, $type = PDO::PARAM_STR)
+    public function quote($string, $type = \PDO::PARAM_STR)
     {
         return '\''.$this->mysqli->real_escape_string($string).'\'';
     }

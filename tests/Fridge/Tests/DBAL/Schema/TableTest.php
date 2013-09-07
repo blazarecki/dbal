@@ -23,25 +23,25 @@ use Fridge\DBAL\Type\Type;
 class TableTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $table;
+    private $table;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $columnMock;
+    private $columnMock;
 
     /** @var \Fridge\DBAL\Schema\PrimaryKey */
-    protected $primaryKeyMock;
+    private $primaryKeyMock;
 
     /** @var \Fridge\DBAL\Schema\ForeignKey */
-    protected $foreignKeyMock;
+    private $foreignKeyMock;
 
     /** @var \Fridge\DBAL\Schema\Index */
-    protected $indexMock;
+    private $indexMock;
 
     /** @var \Fridge\DBAL\Schema\Schema */
-    protected $schemaMock;
+    private $schemaMock;
 
     /** @var \Fridge\DBAL\Schema\Check */
-    protected $checkMock;
+    private $checkMock;
 
     /**
      * {@inheritdoc}

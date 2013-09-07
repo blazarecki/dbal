@@ -11,8 +11,6 @@
 
 namespace Fridge\DBAL\Driver\Statement;
 
-use PDO;
-
 /**
  * Low-level class representing a prepared SQL statement.
  *
@@ -31,7 +29,7 @@ interface NativeStatementInterface
      *
      * @return boolean TRUE if the parameter has been binded to the PHP variable else FALSE.
      */
-    public function bindParam($parameter, &$variable, $type = PDO::PARAM_STR);
+    public function bindParam($parameter, &$variable, $type = \PDO::PARAM_STR);
 
     /**
      * Binds a value to a parameter.
@@ -42,7 +40,7 @@ interface NativeStatementInterface
      *
      * @return boolean TRUE if the value has been binded to the parameter else FALSE.
      */
-    public function bindValue($parameter, $value, $type = PDO::PARAM_STR);
+    public function bindValue($parameter, $value, $type = \PDO::PARAM_STR);
 
     /**
      * Executes the statement.
@@ -67,7 +65,7 @@ interface NativeStatementInterface
      *
      * @return array All rows from the result set.
      */
-    public function fetchAll($fetchMode = PDO::FETCH_BOTH);
+    public function fetchAll($fetchMode = \PDO::FETCH_BOTH);
 
     /**
      * Fetches the next row from the result set.
@@ -76,7 +74,7 @@ interface NativeStatementInterface
      *
      * @return mixed The next row from the result set.
      */
-    public function fetch($fetchMode = PDO::FETCH_BOTH);
+    public function fetch($fetchMode = \PDO::FETCH_BOTH);
 
     /**
      * Fetches the value of a single column from the next row of the result set.

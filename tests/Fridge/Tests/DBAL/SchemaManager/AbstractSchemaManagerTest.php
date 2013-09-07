@@ -16,22 +16,16 @@ namespace Fridge\Tests\DBAL\SchemaManager;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractSchemaManagerTest extends AbstractSchemaManagerTestCase
 {
-    /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    protected static $fixture;
-
-    /** @var \Fridge\DBAL\SchemaManager\SchemaManagerInterface */
-    protected $schemaManager;
-
     /**
      * {@inheritdoc}
      */
     public static function setUpBeforeClass()
     {
-        if (self::$fixture !== null) {
-            self::$fixture->create();
-        }
+        parent::setUpBeforeClass();
+
+        self::getFixture()->create();
     }
 
     /**
@@ -39,142 +33,123 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        if (self::$fixture !== null) {
-            self::$fixture->drop();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        if (self::$fixture === null) {
-            $this->markTestSkipped();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        if ($this->schemaManager !== null) {
-            $this->schemaManager->getConnection()->close();
-
-            unset($this->schemaManager);
+        if (self::hasFixture()) {
+            self::getFixture()->drop();
         }
     }
 
     public function testConnection()
     {
-        $this->assertInstanceOf('Fridge\DBAL\Connection\ConnectionInterface', $this->schemaManager->getConnection());
+        $this->assertInstanceOf(
+            'Fridge\DBAL\Connection\ConnectionInterface',
+            $this->getSchemaManager()->getConnection()
+        );
     }
 
     public function testGetDatabases()
     {
-        $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+        $this->assertTrue(in_array(self::getFixture()->getDatabase(), $this->getSchemaManager()->getDatabases()));
     }
 
     public function testGetDatabaseWithConfiguredDatabase()
     {
-        $this->assertSame(self::$fixture->getDatabase(), $this->schemaManager->getDatabase());
+        $this->assertSame(self::getFixture()->getDatabase(), $this->getSchemaManager()->getDatabase());
     }
 
     public function testGetDatabaseWithoutConfiguredDatabase()
     {
-        $this->schemaManager->getConnection()->setDatabase(null);
+        $this->getSchemaManager()->getConnection()->setDatabase(null);
 
-        $this->assertNull($this->schemaManager->getDatabase());
+        $this->assertNull($this->getSchemaManager()->getDatabase());
     }
 
     public function testGetSequences()
     {
-        $this->assertEquals(self::$fixture->getSequences(), $this->schemaManager->getSequences());
+        $this->assertEquals(self::getFixture()->getSequences(), $this->getSchemaManager()->getSequences());
     }
 
     public function testGetViews()
     {
-        $this->assertEquals(self::$fixture->getViews(), $this->schemaManager->getViews());
+        $this->assertEquals(self::getFixture()->getViews(), $this->getSchemaManager()->getViews());
     }
 
     public function testGetColumns()
     {
-        foreach (self::$fixture->getTableNames() as $tableName) {
+        foreach (self::getFixture()->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getColumns($tableName),
-                $this->schemaManager->getColumns($tableName)
+                self::getFixture()->getColumns($tableName),
+                $this->getSchemaManager()->getColumns($tableName)
             );
         }
     }
 
     public function testGetPrimaryKey()
     {
-        foreach (self::$fixture->getTableNames() as $tableName) {
+        foreach (self::getFixture()->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getPrimaryKey($tableName),
-                $this->schemaManager->getPrimaryKey($tableName)
+                self::getFixture()->getPrimaryKey($tableName),
+                $this->getSchemaManager()->getPrimaryKey($tableName)
             );
         }
     }
 
     public function testGetForeignKeys()
     {
-        foreach (self::$fixture->getTableNames() as $tableName) {
+        foreach (self::getFixture()->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getForeignKeys($tableName),
-                $this->schemaManager->getForeignKeys($tableName)
+                self::getFixture()->getForeignKeys($tableName),
+                $this->getSchemaManager()->getForeignKeys($tableName)
             );
         }
     }
 
     public function testGetIndexes()
     {
-        foreach (self::$fixture->getTableNames() as $tableName) {
+        foreach (self::getFixture()->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getIndexes($tableName),
-                $this->schemaManager->getIndexes($tableName)
+                self::getFixture()->getIndexes($tableName),
+                $this->getSchemaManager()->getIndexes($tableName)
             );
         }
     }
 
     public function testGetChecks()
     {
-        foreach (self::$fixture->getTableNames() as $tableName) {
+        foreach (self::getFixture()->getTableNames() as $tableName) {
             $this->assertEquals(
-                self::$fixture->getChecks($tableName),
-                $this->schemaManager->getChecks($tableName)
+                self::getFixture()->getChecks($tableName),
+                $this->getSchemaManager()->getChecks($tableName)
             );
         }
     }
 
     public function testGetTable()
     {
-        foreach (self::$fixture->getTableNames() as $table) {
-            $this->assertEquals(self::$fixture->getTable($table), $this->schemaManager->getTable($table));
+        foreach (self::getFixture()->getTableNames() as $table) {
+            $this->assertEquals(self::getFixture()->getTable($table), $this->getSchemaManager()->getTable($table));
         }
     }
 
     public function testGetTableNames()
     {
-        $tableNames = $this->schemaManager->getTableNames();
+        $tableNames = $this->getSchemaManager()->getTableNames();
 
-        foreach (self::$fixture->getTableNames() as $tableName) {
+        foreach (self::getFixture()->getTableNames() as $tableName) {
             $this->assertTrue(in_array($tableName, $tableNames));
         }
 
-        $this->assertSame(count(self::$fixture->getTableNames()), count($tableNames));
+        $this->assertSame(count(self::getFixture()->getTableNames()), count($tableNames));
     }
 
     public function testGetTables()
     {
-        $tables = $this->schemaManager->getTables();
+        $tables = $this->getSchemaManager()->getTables();
 
-        $tableNames = self::$fixture->getTableNames();
+        $tableNames = self::getFixture()->getTableNames();
         sort($tableNames);
 
         foreach ($tableNames as $index => $tableName) {
-            $this->assertEquals(self::$fixture->getTable($tableName), $tables[$index]);
+            $this->assertEquals(self::getFixture()->getTable($tableName), $tables[$index]);
         }
 
         $this->assertSame(count($tableNames), count($tables));
@@ -182,16 +157,16 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSchema()
     {
-        $this->assertEquals(self::$fixture->getSchema(), $this->schemaManager->getSchema());
+        $this->assertEquals(self::getFixture()->getSchema(), $this->getSchemaManager()->getSchema());
     }
 
     public function testDropSequence()
     {
-        foreach (self::$fixture->getSequences() as $sequence) {
-            $this->schemaManager->dropSequence($sequence);
+        foreach (self::getFixture()->getSequences() as $sequence) {
+            $this->getSchemaManager()->dropSequence($sequence);
         }
 
-        $this->assertFalse($this->schemaManager->getSchema()->hasSequences());
+        $this->assertFalse($this->getSchemaManager()->getSchema()->hasSequences());
     }
 
     /**
@@ -199,29 +174,29 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateSequence()
     {
-        foreach (self::$fixture->getSequences() as $sequence) {
-            $this->schemaManager->createSequence($sequence);
+        foreach (self::getFixture()->getSequences() as $sequence) {
+            $this->getSchemaManager()->createSequence($sequence);
         }
 
-        $this->assertEquals(self::$fixture->getSequences(), $this->schemaManager->getSequences());
+        $this->assertEquals(self::getFixture()->getSequences(), $this->getSchemaManager()->getSequences());
     }
 
     public function testDropAndCreateSequence()
     {
-        foreach (self::$fixture->getSequences() as $sequence) {
-            $this->schemaManager->dropAndCreateSequence($sequence);
+        foreach (self::getFixture()->getSequences() as $sequence) {
+            $this->getSchemaManager()->dropAndCreateSequence($sequence);
         }
 
-        $this->assertEquals(self::$fixture->getSequences(), $this->schemaManager->getSequences());
+        $this->assertEquals(self::getFixture()->getSequences(), $this->getSchemaManager()->getSequences());
     }
 
     public function testDropView()
     {
-        foreach (self::$fixture->getViews() as $view) {
-            $this->schemaManager->dropView($view);
+        foreach (self::getFixture()->getViews() as $view) {
+            $this->getSchemaManager()->dropView($view);
         }
 
-        $this->assertFalse($this->schemaManager->getSchema()->hasViews());
+        $this->assertFalse($this->getSchemaManager()->getSchema()->hasViews());
     }
 
     /**
@@ -229,30 +204,30 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateView()
     {
-        foreach (self::$fixture->getViews() as $view) {
-            $this->schemaManager->createView($view);
+        foreach (self::getFixture()->getViews() as $view) {
+            $this->getSchemaManager()->createView($view);
         }
 
-        $this->assertEquals(self::$fixture->getViews(), $this->schemaManager->getViews());
+        $this->assertEquals(self::getFixture()->getViews(), $this->getSchemaManager()->getViews());
     }
 
     public function testDropAndCreateView()
     {
-        foreach (self::$fixture->getViews() as $view) {
-            $this->schemaManager->dropAndCreateView($view);
+        foreach (self::getFixture()->getViews() as $view) {
+            $this->getSchemaManager()->dropAndCreateView($view);
         }
 
-        $this->assertEquals(self::$fixture->getViews(), $this->schemaManager->getViews());
+        $this->assertEquals(self::getFixture()->getViews(), $this->getSchemaManager()->getViews());
     }
 
     public function testDropPrimaryKey()
     {
         $table = 'tprimarykeyunlock';
 
-        $primaryKey = self::$fixture->getPrimaryKey($table);
-        $this->schemaManager->dropPrimaryKey($primaryKey, $table);
+        $primaryKey = self::getFixture()->getPrimaryKey($table);
+        $this->getSchemaManager()->dropPrimaryKey($primaryKey, $table);
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasPrimaryKey());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasPrimaryKey());
     }
 
     /**
@@ -262,22 +237,22 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tprimarykeyunlock';
 
-        $primaryKey = self::$fixture->getPrimaryKey($table);
-        $this->schemaManager->createPrimaryKey($primaryKey, $table);
+        $primaryKey = self::getFixture()->getPrimaryKey($table);
+        $this->getSchemaManager()->createPrimaryKey($primaryKey, $table);
 
-        $this->assertEquals($primaryKey, $this->schemaManager->getPrimaryKey($table));
+        $this->assertEquals($primaryKey, $this->getSchemaManager()->getPrimaryKey($table));
     }
 
     public function testDropAndCreatePrimaryKey()
     {
         $primaryKeyTable = 'tprimarykeyunlock';
 
-        $primaryKey = self::$fixture->getPrimaryKey($primaryKeyTable);
-        $this->schemaManager->dropAndCreatePrimaryKey($primaryKey, $primaryKeyTable);
+        $primaryKey = self::getFixture()->getPrimaryKey($primaryKeyTable);
+        $this->getSchemaManager()->dropAndCreatePrimaryKey($primaryKey, $primaryKeyTable);
 
         $this->assertEquals(
-            self::$fixture->getPrimaryKey($primaryKeyTable),
-            $this->schemaManager->getPrimaryKey($primaryKeyTable)
+            self::getFixture()->getPrimaryKey($primaryKeyTable),
+            $this->getSchemaManager()->getPrimaryKey($primaryKeyTable)
         );
     }
 
@@ -285,11 +260,11 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tforeignkey';
 
-        foreach (self::$fixture->getForeignKeys($table) as $foreignKey) {
-            $this->schemaManager->dropForeignKey($foreignKey, $table);
+        foreach (self::getFixture()->getForeignKeys($table) as $foreignKey) {
+            $this->getSchemaManager()->dropForeignKey($foreignKey, $table);
         }
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasForeignKeys());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasForeignKeys());
     }
 
     /**
@@ -299,26 +274,26 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tforeignkey';
 
-        $foreignKeys = self::$fixture->getForeignKeys($table);
+        $foreignKeys = self::getFixture()->getForeignKeys($table);
 
         foreach ($foreignKeys as $foreignKey) {
-            $this->schemaManager->createForeignKey($foreignKey, $table);
+            $this->getSchemaManager()->createForeignKey($foreignKey, $table);
         }
 
-        $this->assertEquals($foreignKeys, $this->schemaManager->getForeignKeys($table));
+        $this->assertEquals($foreignKeys, $this->getSchemaManager()->getForeignKeys($table));
     }
 
     public function testDropAndCreateForeignKey()
     {
         $table = 'tforeignkey';
 
-        foreach (self::$fixture->getForeignKeys($table) as $foreignKey) {
-            $this->schemaManager->dropAndCreateForeignKey($foreignKey, $table);
+        foreach (self::getFixture()->getForeignKeys($table) as $foreignKey) {
+            $this->getSchemaManager()->dropAndCreateForeignKey($foreignKey, $table);
         }
 
         $this->assertEquals(
-            self::$fixture->getForeignKeys($table),
-            $this->schemaManager->getForeignKeys($table)
+            self::getFixture()->getForeignKeys($table),
+            $this->getSchemaManager()->getForeignKeys($table)
         );
     }
 
@@ -326,11 +301,11 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tindex';
 
-        foreach (self::$fixture->getIndexes($table) as $index) {
-            $this->schemaManager->dropIndex($index, $table);
+        foreach (self::getFixture()->getIndexes($table) as $index) {
+            $this->getSchemaManager()->dropIndex($index, $table);
         }
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasIndexes());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasIndexes());
     }
 
     /**
@@ -340,74 +315,74 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tindex';
 
-        $indexes = self::$fixture->getIndexes($table);
+        $indexes = self::getFixture()->getIndexes($table);
 
         foreach ($indexes as $index) {
-            $this->schemaManager->createIndex($index, $table);
+            $this->getSchemaManager()->createIndex($index, $table);
         }
 
-        $this->assertEquals($indexes, $this->schemaManager->getIndexes($table));
+        $this->assertEquals($indexes, $this->getSchemaManager()->getIndexes($table));
     }
 
     public function testDropAndCreateIndex()
     {
         $table = 'tindex';
 
-        $indexes = self::$fixture->getIndexes($table);
+        $indexes = self::getFixture()->getIndexes($table);
 
         foreach ($indexes as $index) {
-            $this->schemaManager->dropAndCreateIndex($index, $table);
+            $this->getSchemaManager()->dropAndCreateIndex($index, $table);
         }
 
-        $this->assertEquals($indexes, $this->schemaManager->getIndexes($table));
+        $this->assertEquals($indexes, $this->getSchemaManager()->getIndexes($table));
     }
 
     public function testDropCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getChecks($table);
+        $checks = self::getFixture()->getChecks($table);
 
         foreach ($checks as $check) {
-            $this->schemaManager->dropCheck($check, $table);
+            $this->getSchemaManager()->dropCheck($check, $table);
         }
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasChecks());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasChecks());
     }
 
     public function testCreateCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getChecks($table);
+        $checks = self::getFixture()->getChecks($table);
 
         foreach ($checks as $check) {
-            $this->schemaManager->createCheck($check, $table);
+            $this->getSchemaManager()->createCheck($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
+        $this->assertEquals($checks, $this->getSchemaManager()->getChecks($table));
     }
 
     public function testDropAndCreateCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getChecks($table);
+        $checks = self::getFixture()->getChecks($table);
 
         foreach ($checks as $check) {
-            $this->schemaManager->dropAndCreateCheck($check, $table);
+            $this->getSchemaManager()->dropAndCreateCheck($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
+        $this->assertEquals($checks, $this->getSchemaManager()->getChecks($table));
     }
 
     public function testDropConstraintWithPrimaryKey()
     {
         $table = 'tprimarykeyunlock';
 
-        $this->schemaManager->dropConstraint(self::$fixture->getPrimaryKey($table), $table);
+        $this->getSchemaManager()->dropConstraint(self::getFixture()->getPrimaryKey($table), $table);
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasPrimaryKey());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasPrimaryKey());
     }
 
     /**
@@ -416,35 +391,35 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConstraintWithPrimaryKey()
     {
         $table = 'tprimarykeyunlock';
-        $primaryKey = self::$fixture->getPrimaryKey($table);
+        $primaryKey = self::getFixture()->getPrimaryKey($table);
 
-        $this->schemaManager->createConstraint($primaryKey, $table);
+        $this->getSchemaManager()->createConstraint($primaryKey, $table);
 
         $this->assertEquals(
             $primaryKey,
-            $this->schemaManager->getPrimaryKey($table)
+            $this->getSchemaManager()->getPrimaryKey($table)
         );
     }
 
     public function testDropAndCreateConstraintWithPrimaryKey()
     {
         $tableName = 'tprimarykeyunlock';
-        $primaryKey = self::$fixture->getPrimaryKey($tableName);
+        $primaryKey = self::getFixture()->getPrimaryKey($tableName);
 
-        $this->schemaManager->dropAndCreateConstraint($primaryKey, $tableName);
+        $this->getSchemaManager()->dropAndCreateConstraint($primaryKey, $tableName);
 
-        $this->assertEquals($primaryKey, $this->schemaManager->getTable($tableName)->getPrimaryKey());
+        $this->assertEquals($primaryKey, $this->getSchemaManager()->getTable($tableName)->getPrimaryKey());
     }
 
     public function testDropConstraintWithForeignKey()
     {
         $table = 'tforeignkey';
 
-        foreach (self::$fixture->getForeignKeys($table) as $foreignKey) {
-            $this->schemaManager->dropConstraint($foreignKey, $table);
+        foreach (self::getFixture()->getForeignKeys($table) as $foreignKey) {
+            $this->getSchemaManager()->dropConstraint($foreignKey, $table);
         }
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasForeignKeys());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasForeignKeys());
     }
 
     /**
@@ -453,28 +428,28 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConstraintWithForeignKey()
     {
         $table = 'tforeignkey';
-        $foreignKeys = self::$fixture->getForeignKeys($table);
+        $foreignKeys = self::getFixture()->getForeignKeys($table);
 
         foreach ($foreignKeys as $foreignKey) {
-            $this->schemaManager->createConstraint($foreignKey, $table);
+            $this->getSchemaManager()->createConstraint($foreignKey, $table);
         }
 
         $this->assertEquals(
             $foreignKeys,
-            $this->schemaManager->getForeignKeys($table)
+            $this->getSchemaManager()->getForeignKeys($table)
         );
     }
 
     public function testDropAndCreateConstraintWithForeignKey()
     {
         $tableName = 'tforeignkey';
-        $foreignKeys = self::$fixture->getForeignKeys($tableName);
+        $foreignKeys = self::getFixture()->getForeignKeys($tableName);
 
         foreach ($foreignKeys as $foreignKey) {
-            $this->schemaManager->dropAndCreateConstraint($foreignKey, $tableName);
+            $this->getSchemaManager()->dropAndCreateConstraint($foreignKey, $tableName);
         }
 
-        $table = $this->schemaManager->getTable($tableName);
+        $table = $this->getSchemaManager()->getTable($tableName);
 
         foreach ($foreignKeys as $foreignKey) {
             $this->assertEquals($foreignKey, $table->getForeignKey($foreignKey->getName()));
@@ -485,11 +460,11 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tindex';
 
-        foreach (self::$fixture->getIndexes($table) as $index) {
-            $this->schemaManager->dropConstraint($index, $table);
+        foreach (self::getFixture()->getIndexes($table) as $index) {
+            $this->getSchemaManager()->dropConstraint($index, $table);
         }
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasIndexes());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasIndexes());
     }
 
     /**
@@ -498,28 +473,28 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConstraintWithIndex()
     {
         $table = 'tindex';
-        $indexes = self::$fixture->getIndexes($table);
+        $indexes = self::getFixture()->getIndexes($table);
 
         foreach ($indexes as $index) {
-            $this->schemaManager->createConstraint($index, $table);
+            $this->getSchemaManager()->createConstraint($index, $table);
         }
 
         $this->assertEquals(
             $indexes,
-            $this->schemaManager->getIndexes($table)
+            $this->getSchemaManager()->getIndexes($table)
         );
     }
 
     public function testDropAndCreateConstraintWithIndex()
     {
         $tableName = 'tindex';
-        $indexes = self::$fixture->getIndexes($tableName);
+        $indexes = self::getFixture()->getIndexes($tableName);
 
         foreach ($indexes as $index) {
-            $this->schemaManager->dropAndCreateConstraint($index, $tableName);
+            $this->getSchemaManager()->dropAndCreateConstraint($index, $tableName);
         }
 
-        $table = $this->schemaManager->getTable($tableName);
+        $table = $this->getSchemaManager()->getTable($tableName);
 
         foreach ($indexes as $index) {
             $this->assertEquals($index, $table->getIndex($index->getName()));
@@ -530,57 +505,57 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getChecks($table);
+        $checks = self::getFixture()->getChecks($table);
 
         foreach ($checks as $check) {
-            $this->schemaManager->dropConstraint($check, $table);
+            $this->getSchemaManager()->dropConstraint($check, $table);
         }
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasChecks());
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasChecks());
     }
 
     public function testCreateConstraintWithCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getChecks($table);
+        $checks = self::getFixture()->getChecks($table);
 
         foreach ($checks as $check) {
-            $this->schemaManager->createConstraint($check, $table);
+            $this->getSchemaManager()->createConstraint($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
+        $this->assertEquals($checks, $this->getSchemaManager()->getChecks($table));
     }
 
     public function testDropAndCreateConstraintWithCheck()
     {
         $table = 'tcheck';
 
-        $checks = self::$fixture->getChecks($table);
+        $checks = self::getFixture()->getChecks($table);
 
         foreach ($checks as $check) {
-            $this->schemaManager->dropAndCreateConstraint($check, $table);
+            $this->getSchemaManager()->dropAndCreateConstraint($check, $table);
         }
 
-        $this->assertEquals($checks, $this->schemaManager->getChecks($table));
+        $this->assertEquals($checks, $this->getSchemaManager()->getChecks($table));
     }
 
     public function testDropTable()
     {
-        foreach (self::$fixture->getViews() as $view) {
-            $this->schemaManager->dropView($view);
+        foreach (self::getFixture()->getViews() as $view) {
+            $this->getSchemaManager()->dropView($view);
         }
 
-        $schema = self::$fixture->getSchema();
+        $schema = self::getFixture()->getSchema();
 
-        $tableNames = self::$fixture->getTableNames();
+        $tableNames = self::getFixture()->getTableNames();
         sort($tableNames);
 
         foreach ($tableNames as $tableName) {
-            $this->schemaManager->dropTable($schema->getTable($tableName));
+            $this->getSchemaManager()->dropTable($schema->getTable($tableName));
         }
 
-        $this->assertFalse($this->schemaManager->getSchema()->hasTables());
+        $this->assertFalse($this->getSchemaManager()->getSchema()->hasTables());
     }
 
     /**
@@ -588,16 +563,16 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateTable()
     {
-        $tableNames = self::$fixture->getTableNames();
+        $tableNames = self::getFixture()->getTableNames();
 
         foreach ($tableNames as $tableName) {
-            $this->schemaManager->createTable(self::$fixture->getTable($tableName));
+            $this->getSchemaManager()->createTable(self::getFixture()->getTable($tableName));
         }
 
-        $schema = $this->schemaManager->getSchema();
+        $schema = $this->getSchemaManager()->getSchema();
 
         foreach ($tableNames as $tableName) {
-            $table = self::$fixture->getTable($tableName);
+            $table = self::getFixture()->getTable($tableName);
             $table->setSchema($schema);
 
             $this->assertEquals($table, $schema->getTable($tableName));
@@ -606,41 +581,41 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDropAndCreateTable()
     {
-        $tableNames = self::$fixture->getTableNames();
+        $tableNames = self::getFixture()->getTableNames();
 
-        $this->schemaManager->dropTable(self::$fixture->getTable('tforeignkey'));
+        $this->getSchemaManager()->dropTable(self::getFixture()->getTable('tforeignkey'));
 
         foreach ($tableNames as $tableName) {
-            $this->schemaManager->dropAndCreateTable(self::$fixture->getTable($tableName));
+            $this->getSchemaManager()->dropAndCreateTable(self::getFixture()->getTable($tableName));
         }
 
-        $tables = $this->schemaManager->getTables();
+        $tables = $this->getSchemaManager()->getTables();
         sort($tableNames);
 
         foreach ($tableNames as $index => $tableName) {
-            $this->assertEquals(self::$fixture->getTable($tableName), $tables[$index]);
+            $this->assertEquals(self::getFixture()->getTable($tableName), $tables[$index]);
         }
     }
 
     public function testDropTables()
     {
-        $this->schemaManager->dropTables(self::$fixture->getTables());
+        $this->getSchemaManager()->dropTables(self::getFixture()->getTables());
 
-        $this->assertEmpty($this->schemaManager->getTables());
+        $this->assertEmpty($this->getSchemaManager()->getTables());
     }
 
     public function testCreateTables()
     {
-        $this->schemaManager->createTables(self::$fixture->getTables());
+        $this->getSchemaManager()->createTables(self::getFixture()->getTables());
 
-        $this->assertEquals(self::$fixture->getTables(), $this->schemaManager->getTables());
+        $this->assertEquals(self::getFixture()->getTables(), $this->getSchemaManager()->getTables());
     }
 
     public function testDropAndCreateTables()
     {
-        $this->schemaManager->dropAndCreateTables(self::$fixture->getTables());
+        $this->getSchemaManager()->dropAndCreateTables(self::getFixture()->getTables());
 
-        $this->assertEquals(self::$fixture->getTables(), $this->schemaManager->getTables());
+        $this->assertEquals(self::getFixture()->getTables(), $this->getSchemaManager()->getTables());
     }
 
     public function testDropColumn()
@@ -648,9 +623,9 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $table = 'tcolumns';
         $column = 'cinteger';
 
-        $this->schemaManager->dropColumn(self::$fixture->getTable($table)->getColumn($column), $table);
+        $this->getSchemaManager()->dropColumn(self::getFixture()->getTable($table)->getColumn($column), $table);
 
-        $this->assertFalse($this->schemaManager->getTable($table)->hasColumn($column));
+        $this->assertFalse($this->getSchemaManager()->getTable($table)->hasColumn($column));
     }
 
     public function testCreateColumn()
@@ -658,11 +633,11 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $table = 'tcolumns';
         $column = 'cinteger';
 
-        $this->schemaManager->createColumn(self::$fixture->getTable($table)->getColumn($column), $table);
+        $this->getSchemaManager()->createColumn(self::getFixture()->getTable($table)->getColumn($column), $table);
 
         $this->assertEquals(
-            self::$fixture->getTable($table)->getColumn($column),
-            $this->schemaManager->getTable($table)->getColumn($column)
+            self::getFixture()->getTable($table)->getColumn($column),
+            $this->getSchemaManager()->getTable($table)->getColumn($column)
         );
     }
 
@@ -671,20 +646,23 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $table = 'tcolumns';
         $column = 'cinteger';
 
-        $this->schemaManager->dropAndCreateColumn(self::$fixture->getTable($table)->getColumn($column), $table);
+        $this->getSchemaManager()->dropAndCreateColumn(
+            self::getFixture()->getTable($table)->getColumn($column),
+            $table
+        );
 
         $this->assertEquals(
-            self::$fixture->getTable($table)->getColumn($column),
-            $this->schemaManager->getTable($table)->getColumn($column)
+            self::getFixture()->getTable($table)->getColumn($column),
+            $this->getSchemaManager()->getTable($table)->getColumn($column)
         );
     }
 
     public function testCreateDatabase()
     {
-        self::$fixture->drop();
+        self::getFixture()->drop();
 
-        $this->schemaManager->createDatabase(self::$fixture->getDatabase());
-        $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+        $this->getSchemaManager()->createDatabase(self::getFixture()->getDatabase());
+        $this->assertTrue(in_array(self::getFixture()->getDatabase(), $this->getSchemaManager()->getDatabases()));
     }
 
     /**
@@ -692,39 +670,39 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropDatabase()
     {
-        $this->schemaManager->dropDatabase(self::$fixture->getDatabase());
+        $this->getSchemaManager()->dropDatabase(self::getFixture()->getDatabase());
 
-        $this->schemaManager->getConnection()->setDatabase(null);
-        $this->assertFalse(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+        $this->getSchemaManager()->getConnection()->setDatabase(null);
+        $this->assertFalse(in_array(self::getFixture()->getDatabase(), $this->getSchemaManager()->getDatabases()));
     }
 
     public function testDropAndCreateDatabase()
     {
-        $this->schemaManager->dropAndCreateDatabase(self::$fixture->getDatabase());
+        $this->getSchemaManager()->dropAndCreateDatabase(self::getFixture()->getDatabase());
 
-        $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+        $this->assertTrue(in_array(self::getFixture()->getDatabase(), $this->getSchemaManager()->getDatabases()));
     }
 
     public function testCreateSchema()
     {
-        self::$fixture->drop();
+        self::getFixture()->drop();
 
-        $this->schemaManager->createSchema(self::$fixture->getSchema());
-        $this->assertEquals(self::$fixture->getSchema(), $this->schemaManager->getSchema());
+        $this->getSchemaManager()->createSchema(self::getFixture()->getSchema());
+        $this->assertEquals(self::getFixture()->getSchema(), $this->getSchemaManager()->getSchema());
     }
 
     public function testDropAndCreateSchema()
     {
-        $this->schemaManager->dropAndCreateSchema(self::$fixture->getSchema());
+        $this->getSchemaManager()->dropAndCreateSchema(self::getFixture()->getSchema());
 
-        $this->assertEquals(self::$fixture->getSchema(), $this->schemaManager->getSchema());
+        $this->assertEquals(self::getFixture()->getSchema(), $this->getSchemaManager()->getSchema());
     }
 
     public function testDropSchema()
     {
-        $this->schemaManager->dropSchema(self::$fixture->getSchema());
+        $this->getSchemaManager()->dropSchema(self::getFixture()->getSchema());
 
-        $this->schemaManager->getConnection()->setDatabase(null);
-        $this->assertFalse(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+        $this->getSchemaManager()->getConnection()->setDatabase(null);
+        $this->assertFalse(in_array(self::getFixture()->getDatabase(), $this->getSchemaManager()->getDatabases()));
     }
 }

@@ -27,10 +27,10 @@ use Fridge\DBAL\Exception\StatementRewriterException;
 class StatementRewriter
 {
     /** @var string */
-    protected $statement;
+    private $statement;
 
     /** @var array */
-    protected $parameters;
+    private $parameters;
 
     /**
      * Statement rewriter constructor.
@@ -90,7 +90,7 @@ class StatementRewriter
      *    - statement: SELECT * FROM foo WHERE bar = ?
      *    - parameters: array(':bar' => array(1))
      */
-    protected function rewrite()
+    private function rewrite()
     {
         // Current positional parameter.
         $positionalParameter = 1;
@@ -151,7 +151,7 @@ class StatementRewriter
      *
      * @return boolean TRUE if the character is a valid placeholder character else FALSE.
      */
-    protected function isValidPlaceholderCharacter($character)
+    private function isValidPlaceholderCharacter($character)
     {
         $asciiCode = ord($character);
 

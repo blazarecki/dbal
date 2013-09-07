@@ -22,24 +22,25 @@ use Fridge\DBAL\Type\Type;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
+class CreateTableSQLCollectorTest extends AbstractSQLCollectorTestCase
 {
-    /** @var \Fridge\DBAL\SchemaManager\SQLCollector\CreateTableSQLCollector */
-    protected $sqlCollector;
-
-    /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platformMock;
-
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $table;
+    private $table;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUpSQLCollector()
+    {
+        return new CreateTableSQLCollector($this->getPlatform());
+    }
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
-        $this->sqlCollector = new CreateTableSQLCollector($this->platformMock);
+        parent::setUp();
 
         $this->table = new Table(
             'foo',
@@ -54,9 +55,19 @@ class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->sqlCollector);
-        unset($this->platformMock);
+        parent::tearDown();
+
         unset($this->table);
+    }
+
+    /**
+     * Asserts the initial state.
+     */
+    private function assertInitialState()
+    {
+        $this->assertEmpty($this->getSQLCollector()->getCreateTableQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateForeignKeyQueries());
+        $this->assertEmpty($this->getSQLCollector()->getQueries());
     }
 
     public function testInitialState()
@@ -66,78 +77,68 @@ class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testPlatform()
     {
-        $this->assertSame($this->platformMock, $this->sqlCollector->getPlatform());
+        $this->assertSame($this->getPlatform(), $this->getSQLCollector()->getPlatform());
 
         $platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
-        $this->sqlCollector->setPlatform($platformMock);
+        $this->getSQLCollector()->setPlatform($platformMock);
 
-        $this->assertSame($platformMock, $this->sqlCollector->getPlatform());
+        $this->assertSame($platformMock, $this->getSQLCollector()->getPlatform());
     }
 
     public function testCollect()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
             ->with($this->equalTo($this->table), $this->equalTo(array('foreign_key' => false)))
             ->will($this->returnValue(array('CREATE TABLE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateForeignKeySQLQueries')
             ->with($this->equalTo($this->table->getForeignKey('foo')))
             ->will($this->returnValue(array('CREATE FOREIGN KEY')));
 
-        $this->sqlCollector->collect($this->table);
+        $this->getSQLCollector()->collect($this->table);
 
-        $this->assertSame(array('CREATE TABLE'), $this->sqlCollector->getCreateTableQueries());
-        $this->assertSame(array('CREATE FOREIGN KEY'), $this->sqlCollector->getCreateForeignKeyQueries());
-        $this->assertSame(array('CREATE TABLE', 'CREATE FOREIGN KEY'), $this->sqlCollector->getQueries());
+        $this->assertSame(array('CREATE TABLE'), $this->getSQLCollector()->getCreateTableQueries());
+        $this->assertSame(array('CREATE FOREIGN KEY'), $this->getSQLCollector()->getCreateForeignKeyQueries());
+        $this->assertSame(array('CREATE TABLE', 'CREATE FOREIGN KEY'), $this->getSQLCollector()->getQueries());
     }
 
     public function testPlatformWithCollectedQueries()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->sqlCollector->collect($this->table);
-        $this->sqlCollector->setPlatform($this->platformMock);
+        $this->getSQLCollector()->collect($this->table);
+        $this->getSQLCollector()->setPlatform($this->getPlatform());
 
         $this->assertInitialState();
     }
 
     public function testInit()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->sqlCollector->collect($this->table);
-        $this->sqlCollector->init();
+        $this->getSQLCollector()->collect($this->table);
+        $this->getSQLCollector()->init();
 
         $this->assertInitialState();
-    }
-
-    /**
-     * Asserts the initial state.
-     */
-    protected function assertInitialState()
-    {
-        $this->assertEmpty($this->sqlCollector->getCreateTableQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateForeignKeyQueries());
-        $this->assertEmpty($this->sqlCollector->getQueries());
     }
 }

@@ -21,7 +21,17 @@ use Fridge\DBAL\Driver\Statement\StatementRewriter;
 class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Driver\Statement\StatementRewriter */
-    protected $statementRewriter;
+    private $statementRewriter;
+
+    /**
+     * Sets up the statement rewriter.
+     *
+     * @param string $statement The statement.
+     */
+    private function setUpStatementRewriter($statement)
+    {
+        $this->statementRewriter = new StatementRewriter($statement);
+    }
 
     /**
      * {@inheritdoc}
@@ -31,31 +41,25 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
         unset($this->statementRewriter);
     }
 
-    /**
-     * @expectedException \Fridge\DBAL\Exception\StatementRewriterException
-     * @expectedExceptionMessage The parameter "foo" does not exist.
-     */
     public function testRewriteWithoutParameter()
     {
-        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo');
+        $statement = 'SELECT * FROM foo';
+        $this->setUpStatementRewriter($statement);
 
-        $this->assertSame('SELECT * FROM foo', $this->statementRewriter->getRewritedStatement());
-
-        $this->statementRewriter->getRewritedParameters('foo');
+        $this->assertSame($statement, $this->statementRewriter->getRewritedStatement());
     }
 
     public function testRewriteWithOneParameter()
     {
-        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo WHERE foo = :foo');
+        $this->setUpStatementRewriter('SELECT * FROM foo WHERE foo = :foo');
 
         $this->assertSame('SELECT * FROM foo WHERE foo = ?', $this->statementRewriter->getRewritedStatement());
-
         $this->assertSame(array(1), $this->statementRewriter->getRewritedParameters(':foo'));
     }
 
     public function testRewriteWithMultipleParameters()
     {
-        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo WHERE foo = :foo AND bar = :bar');
+        $this->setUpStatementRewriter('SELECT * FROM foo WHERE foo = :foo AND bar = :bar');
 
         $this->assertSame(
             'SELECT * FROM foo WHERE foo = ? AND bar = ?',
@@ -68,9 +72,7 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithMultipleSameParameters()
     {
-        $this->statementRewriter = new StatementRewriter(
-            'SELECT * FROM foo WHERE foo = :foo AND bar = :bar AND baz = :foo'
-        );
+        $this->setUpStatementRewriter('SELECT * FROM foo WHERE foo = :foo AND bar = :bar AND baz = :foo');
 
         $this->assertSame(
             'SELECT * FROM foo WHERE foo = ? AND bar = ? AND baz = ?',
@@ -83,7 +85,7 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithPositionalStatement()
     {
-        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo WHERE foo = ?');
+        $this->setUpStatementRewriter('SELECT * FROM foo WHERE foo = ?');
 
         $this->assertSame('SELECT * FROM foo WHERE foo = ?', $this->statementRewriter->getRewritedStatement());
         $this->assertSame(array(1), $this->statementRewriter->getRewritedParameters(1));
@@ -91,9 +93,7 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithSimpleQuoteLiteralDelimiter()
     {
-        $this->statementRewriter = new StatementRewriter(
-            'SELECT * FROM foo WHERE foo = :foo AND bar = \':bar\' AND baz = :baz'
-        );
+        $this->setUpStatementRewriter('SELECT * FROM foo WHERE foo = :foo AND bar = \':bar\' AND baz = :baz');
 
         $this->assertSame(
             'SELECT * FROM foo WHERE foo = ? AND bar = \':bar\' AND baz = ?',
@@ -106,9 +106,7 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithDoubleQuoteLiteralDelimiter()
     {
-        $this->statementRewriter = new StatementRewriter(
-            'SELECT * FROM foo WHERE foo = :foo AND bar = ":bar" AND baz = :baz'
-        );
+        $this->setUpStatementRewriter('SELECT * FROM foo WHERE foo = :foo AND bar = ":bar" AND baz = :baz');
 
         $this->assertSame(
             'SELECT * FROM foo WHERE foo = ? AND bar = ":bar" AND baz = ?',
@@ -117,5 +115,15 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(1), $this->statementRewriter->getRewritedParameters(':foo'));
         $this->assertSame(array(2), $this->statementRewriter->getRewritedParameters(':baz'));
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\StatementRewriterException
+     * @expectedExceptionMessage The parameter "foo" does not exist.
+     */
+    public function testGetInvalidParameter()
+    {
+        $this->setUpStatementRewriter('SELECT * FROM foo');
+        $this->statementRewriter->getRewritedParameters('foo');
     }
 }

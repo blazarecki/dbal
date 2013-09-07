@@ -27,6 +27,6 @@ class StatementRewriterException extends Exception
      */
     public static function parameterDoesNotExist($parameter)
     {
-        return new static(sprintf('The parameter "%s" does not exist.', $parameter));
+        return new self(sprintf('The parameter "%s" does not exist.', $parameter));
     }
 }

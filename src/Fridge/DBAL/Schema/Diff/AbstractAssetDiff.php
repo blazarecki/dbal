@@ -22,10 +22,10 @@ use Fridge\DBAL\Schema\AbstractAsset;
 abstract class AbstractAssetDiff implements DiffInterface
 {
     /** @var \Fridge\DBAL\Schema\AbstractAsset */
-    protected $oldAsset;
+    private $oldAsset;
 
     /** @var \Fridge\DBAL\Schema\AbstractAsset */
-    protected $newAsset;
+    private $newAsset;
 
     /**
      * @param \Fridge\DBAL\Schema\AbstractAsset $oldAsset The old asset.

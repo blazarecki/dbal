@@ -21,13 +21,13 @@ use Fridge\DBAL\Exception\SchemaException;
 class Schema extends AbstractAsset
 {
     /** @var array */
-    protected $tables;
+    private $tables;
 
     /** @var array */
-    protected $sequences;
+    private $sequences;
 
     /** @var array */
-    protected $views;
+    private $views;
 
     /**
      * Creates a schema.

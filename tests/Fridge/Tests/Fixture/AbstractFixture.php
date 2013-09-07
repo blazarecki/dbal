@@ -11,8 +11,6 @@
 
 namespace Fridge\Tests\Fixture;
 
-use DateTime;
-use Exception;
 use Fridge\DBAL\Schema\Check;
 use Fridge\DBAL\Schema\Column;
 use Fridge\DBAL\Schema\ForeignKey;
@@ -24,7 +22,6 @@ use Fridge\DBAL\Schema\Table;
 use Fridge\DBAL\Schema\View;
 use Fridge\DBAL\Type\Type;
 use Fridge\Tests\PHPUnitUtility;
-use stdClass;
 
 /**
  * {@inheritdoc}
@@ -34,7 +31,7 @@ use stdClass;
 abstract class AbstractFixture implements FixtureInterface
 {
     /** @var array */
-    protected $settings;
+    private $settings;
 
     /**
      * Fixture constructor.
@@ -43,6 +40,8 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function __construct($prefix)
     {
+        $this->settings = array();
+
         if (PHPUnitUtility::hasSettings($prefix)) {
             $this->settings = PHPUnitUtility::getSettings($prefix);
         }
@@ -73,7 +72,7 @@ abstract class AbstractFixture implements FixtureInterface
     {
         $this->dropDatabase();
 
-        if ($this->settings !== null) {
+        if ($this->hasSettings()) {
             $connection = $this->getConnection(false);
             $connection->exec($this->getCreateDatabaseSQLQuery());
             unset($connection);
@@ -85,7 +84,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function dropDatabase()
     {
-        if ($this->settings !== null) {
+        if ($this->hasSettings()) {
             $connection = $this->getConnection(false);
             $connection->exec($this->getDropDatabaseSQLQuery());
             unset($connection);
@@ -99,7 +98,7 @@ abstract class AbstractFixture implements FixtureInterface
     {
         $this->dropSchema();
 
-        if ($this->settings !== null) {
+        if ($this->hasSettings()) {
             $this->executeQueries($this->getCreateSchemaSQLQueries());
         }
     }
@@ -109,7 +108,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function dropSchema()
     {
-        if ($this->settings !== null) {
+        if ($this->hasSettings()) {
             $this->executeQueries($this->getDropSchemaSQLQueries());
         }
     }
@@ -121,7 +120,7 @@ abstract class AbstractFixture implements FixtureInterface
     {
         $this->dropDatas();
 
-        if ($this->settings !== null) {
+        if ($this->hasSettings()) {
             $this->executeQueries($this->getCreateDatasSQLQueries());
         }
     }
@@ -131,9 +130,17 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function dropDatas()
     {
-        if ($this->settings !== null) {
+        if ($this->hasSettings()) {
             $this->executeQueries($this->getDropDatasSQLQueries());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasSettings()
+    {
+        return !empty($this->settings);
     }
 
     /**
@@ -142,6 +149,26 @@ abstract class AbstractFixture implements FixtureInterface
     public function getSettings()
     {
         return $this->settings;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasSetting($name)
+    {
+        return isset($this->settings[$name]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetting($name)
+    {
+        if (!$this->hasSetting($name)) {
+            throw new \Exception(sprintf('The fixture setting "%s" does not exist.', $name));
+        }
+
+        return $this->settings[$name];
     }
 
     /**
@@ -258,12 +285,12 @@ abstract class AbstractFixture implements FixtureInterface
                     new Column(
                         'cdatetime',
                         Type::getType(Type::DATETIME),
-                        array('default' => new DateTime('2012-01-01 12:12:12'), 'comment' => 'comment')
+                        array('default' => new \DateTime('2012-01-01 12:12:12'), 'comment' => 'comment')
                     ),
                     new Column(
                         'cdate',
                         Type::getType(Type::DATE),
-                        array('default' => new DateTime('2012-01-01'), 'comment' => 'comment')
+                        array('default' => new \DateTime('2012-01-01'), 'comment' => 'comment')
                     ),
                     new Column(
                         'cdecimal',
@@ -291,7 +318,7 @@ abstract class AbstractFixture implements FixtureInterface
                     new Column(
                         'ctime',
                         Type::getType(Type::TIME),
-                        array('default' => new DateTime('12:12:12'), 'comment' => 'comment')
+                        array('default' => new \DateTime('12:12:12'), 'comment' => 'comment')
                     ),
                 );
             case 'tprimarykeylock':
@@ -529,16 +556,16 @@ abstract class AbstractFixture implements FixtureInterface
             'cbiginteger'   => 1000000000,
             'cblob'         => fopen('data://text/plain;base64,'.base64_encode('foo'), 'r'),
             'cboolean'      => true,
-            'cdatetime'     => new DateTime('2000-01-01 12:12:12'),
-            'cdate'         => new DateTime('2000-01-01'),
+            'cdatetime'     => new \DateTime('2000-01-01 12:12:12'),
+            'cdate'         => new \DateTime('2000-01-01'),
             'cdecimal'      => 1.1,
             'cfloat'        => 1.1,
             'cinteger'      => 1,
-            'cobject'       => new stdClass(),
+            'cobject'       => new \stdClass(),
             'csmallinteger' => 1,
             'cstring'       => 'foo',
             'ctext'         => 'foo',
-            'ctime'         => new DateTime('12:12:12'),
+            'ctime'         => new \DateTime('12:12:12'),
         );
     }
 
@@ -737,6 +764,8 @@ EOT;
      * Executes the queries on the fixture connection.
      *
      * @param array $queries The queries to execute.
+     *
+     * @throws \Exception If an error occurend during queries execution.
      */
     protected function executeQueries(array $queries)
     {
@@ -748,7 +777,7 @@ EOT;
             if ($result === false) {
                 $errors = $connection->errorInfo();
 
-                throw new Exception($errors[2]);
+                throw new \Exception($errors[2]);
             }
         }
 

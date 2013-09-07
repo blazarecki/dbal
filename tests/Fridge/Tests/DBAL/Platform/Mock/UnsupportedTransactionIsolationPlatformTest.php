@@ -22,7 +22,7 @@ use Fridge\DBAL\Platform\AbstractPlatform;
 class UnsupportedTransactionIsolationPlatformTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /**
      * {@inheritdoc}

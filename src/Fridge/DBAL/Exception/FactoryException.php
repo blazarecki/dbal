@@ -27,7 +27,7 @@ class FactoryException extends Exception
      */
     public static function connectionMustImplementConnectionInterface($connection)
     {
-        return new static(sprintf(
+        return new self(sprintf(
             'The connection "%s" must implement the Fridge\DBAL\Connection\ConnectionInterface.',
             $connection
         ));
@@ -43,7 +43,7 @@ class FactoryException extends Exception
      */
     public static function driverDoesNotExist($driver, array $availableDrivers)
     {
-        return new static(sprintf(
+        return new self(sprintf(
             'The driver "%s" does not exist (Available drivers: %s).',
             $driver,
             implode(', ', $availableDrivers)
@@ -59,7 +59,7 @@ class FactoryException extends Exception
      */
     public static function driverMustImplementDriverInterface($driver)
     {
-        return new static(sprintf('The driver "%s" must implement the Fridge\DBAL\Driver\DriverInterface.', $driver));
+        return new self(sprintf('The driver "%s" must implement the Fridge\DBAL\Driver\DriverInterface.', $driver));
     }
 
     /**
@@ -71,7 +71,7 @@ class FactoryException extends Exception
      */
     public static function driverRequired($availableDrivers)
     {
-        return new static(sprintf(
+        return new self(sprintf(
             'A connection needs at least a driver or a driver class (Available drivers: %s).',
             implode(', ', $availableDrivers)
         ));

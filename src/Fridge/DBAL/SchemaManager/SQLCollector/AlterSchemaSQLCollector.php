@@ -43,31 +43,31 @@ use Fridge\DBAL\Schema\Diff\SchemaDiff;
 class AlterSchemaSQLCollector
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /** @var \Fridge\DBAL\SchemaManager\SQLCollector\CreateTableSQLCollector */
-    protected $createTableSQLCollector;
+    private $createTableSQLCollector;
 
     /** @var \Fridge\DBAL\SchemaManager\SQLCollector\DropTableSQLCollector */
-    protected $dropTableSQLCollector;
+    private $dropTableSQLCollector;
 
     /** @var \Fridge\DBAL\SchemaManager\SQLCollector\AlterTableSQLCollector */
-    protected $alterTableSQLCollector;
+    private $alterTableSQLCollector;
 
     /** @var array */
-    protected $dropSequenceQueries;
+    private $dropSequenceQueries;
 
     /** @var array */
-    protected $dropViewQueries;
+    private $dropViewQueries;
 
     /** @var array */
-    protected $createViewQueries;
+    private $createViewQueries;
 
     /** @var array */
-    protected $createSequenceQueries;
+    private $createSequenceQueries;
 
     /** @var array */
-    protected $renameSchemaQueries;
+    private $renameSchemaQueries;
 
     /**
      * ALter schema SQL collector constructor.
@@ -375,7 +375,7 @@ class AlterSchemaSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\SchemaDiff $schemaDiff The schema difference.
      */
-    protected function collectTables(SchemaDiff $schemaDiff)
+    private function collectTables(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedTables() as $table) {
             $this->createTableSQLCollector->collect($table);
@@ -395,7 +395,7 @@ class AlterSchemaSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\SchemaDiff $schemaDiff The schema difference.
      */
-    protected function collectViews(SchemaDiff $schemaDiff)
+    private function collectViews(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedViews() as $view) {
             $this->createViewQueries = array_merge(
@@ -417,7 +417,7 @@ class AlterSchemaSQLCollector
      *
      * @param \Fridge\DBAL\Schema\Diff\SchemaDiff $schemaDiff The schema difference.
      */
-    protected function collectSequences(SchemaDiff $schemaDiff)
+    private function collectSequences(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedSequences() as $sequence) {
             $this->createSequenceQueries = array_merge(

@@ -11,7 +11,6 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager;
 
-use Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 use Fridge\Tests\ConnectionUtility;
 use Fridge\Tests\Fixture\MySQLFixture;
 
@@ -25,28 +24,18 @@ class PDOMySQLSchemaManagerTest extends AbstractMySQLSchemaManagerTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            self::$fixture = new MySQLFixture(ConnectionUtility::PDO_MYSQL);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpSchemaManager()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            $this->schemaManager = new MySQLSchemaManager(
-                ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL)
-            );
-        }
-
-        parent::setUp();
+        return ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL)->getSchemaManager();
     }
 }

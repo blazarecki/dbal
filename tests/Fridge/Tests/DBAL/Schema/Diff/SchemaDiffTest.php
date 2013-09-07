@@ -21,11 +21,14 @@ use Fridge\DBAL\Schema\Diff\SchemaDiff;
 class SchemaDiffTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Schema */
-    protected $oldSchemaMock;
+    private $oldSchemaMock;
 
     /** @var \Fridge\DBAL\Schema\Schema */
-    protected $newSchemaMock;
+    private $newSchemaMock;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->oldSchemaMock = $this->getMockBuilder('Fridge\DBAL\Schema\Schema')
@@ -47,6 +50,9 @@ class SchemaDiffTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('foo'));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         unset($this->oldSchemaMock);

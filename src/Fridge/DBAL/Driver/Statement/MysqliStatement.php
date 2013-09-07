@@ -11,54 +11,51 @@
 
 namespace Fridge\DBAL\Driver\Statement;
 
-use ArrayIterator;
 use Fridge\DBAL\Driver\Connection\MysqliConnection;
 use Fridge\DBAL\Exception\MysqliException;
-use IteratorAggregate;
-use PDO;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliStatement implements NativeStatementInterface, IteratorAggregate
+class MysqliStatement implements NativeStatementInterface, \IteratorAggregate
 {
     /** @var array */
-    protected static $mappedTypes = array(
-        PDO::PARAM_NULL => 's',
-        PDO::PARAM_INT  => 'i',
-        PDO::PARAM_STR  => 's',
-        PDO::PARAM_LOB  => 'b',
-        PDO::PARAM_BOOL => 'i',
+    private static $mappedTypes = array(
+        \PDO::PARAM_NULL => 's',
+        \PDO::PARAM_INT  => 'i',
+        \PDO::PARAM_STR  => 's',
+        \PDO::PARAM_LOB  => 'b',
+        \PDO::PARAM_BOOL => 'i',
     );
 
     /** @var \Fridge\DBAL\Driver\Connection\MysqliConnection */
-    protected $connection;
+    private $connection;
 
     /** @var \mysqli_stmt */
-    protected $mysqliStatement;
+    private $mysqliStatement;
 
     /** @var \Fridge\DBAL\Driver\Statement\StatementRewriter */
-    protected $statementRewriter;
+    private $statementRewriter;
 
     /** @var integer */
-    protected $defaultFetchMode;
+    private $defaultFetchMode;
 
     /** @var array */
-    protected $bindedParameters;
+    private $bindedParameters;
 
     /** @var array */
-    protected $bindedTypes;
+    private $bindedTypes;
 
     /** @var array */
-    protected $bindedValues;
+    private $bindedValues;
 
     /** @var array */
-    protected $resultFields;
+    private $resultFields;
 
     /** @var array */
-    protected $result;
+    private $result;
 
     /**
      * Mysqli statement constructor.
@@ -79,7 +76,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
             throw new MysqliException($connection->getMysqli()->error, $connection->getMysqli()->errno);
         }
 
-        $this->defaultFetchMode = PDO::FETCH_BOTH;
+        $this->defaultFetchMode = \PDO::FETCH_BOTH;
 
         $this->bindedParameters = array();
         $this->bindedTypes = array();
@@ -101,15 +98,13 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
      */
     public function getIterator()
     {
-        $datas = $this->fetchAll();
-
-        return new ArrayIterator($datas);
+        return new \ArrayIterator($this->fetchAll());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function bindParam($parameter, &$variable, $type = PDO::PARAM_STR)
+    public function bindParam($parameter, &$variable, $type = \PDO::PARAM_STR)
     {
         $mappedType = self::getMappedType($type);
 
@@ -133,7 +128,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
      * To bind a value (by copy), the wrapper will copy the value in the bindedValues property and then, bind the
      * copied value as parameter (by reference).
      */
-    public function bindValue($parameter, $value, $type = PDO::PARAM_STR)
+    public function bindValue($parameter, $value, $type = \PDO::PARAM_STR)
     {
         $this->bindedValues[$parameter] = $value;
 
@@ -190,7 +185,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function fetchAll($fetchMode = PDO::FETCH_BOTH)
+    public function fetchAll($fetchMode = \PDO::FETCH_BOTH)
     {
         $results = array();
 
@@ -207,7 +202,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
      * @throws \Fridge\DBAL\Exception\MysqliException If the statement can not be fetched or if the fetch mode is not
      *                                                supported.
      */
-    public function fetch($fetchMode = PDO::FETCH_BOTH)
+    public function fetch($fetchMode = \PDO::FETCH_BOTH)
     {
         $fetchResult = $this->mysqliStatement->fetch();
 
@@ -216,7 +211,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
         }
 
         if ($fetchResult === null) {
-            return null;
+            return;
         }
 
         $values = array();
@@ -229,11 +224,11 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
         }
 
         switch ($fetchMode) {
-            case PDO::FETCH_NUM:
+            case \PDO::FETCH_NUM:
                 return $values;
-            case PDO::FETCH_ASSOC:
+            case \PDO::FETCH_ASSOC:
                 return array_combine($this->resultFields, $values);
-            case PDO::FETCH_BOTH:
+            case \PDO::FETCH_BOTH:
                 $result = array_combine($this->resultFields, $values);
                 $result += $values;
 
@@ -248,7 +243,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
      */
     public function fetchColumn($columnIndex = 0)
     {
-        $result = $this->fetch(PDO::FETCH_NUM);
+        $result = $this->fetch(\PDO::FETCH_NUM);
 
         if ($result === null) {
             return false;
@@ -304,13 +299,13 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
     /**
      * Gets the mapped type.
      *
-     * @param integer $type The type (PDO::PARAM_*).
+     * @param integer $type The type (\PDO::PARAM_*).
      *
      * @throws \Fridge\DBAL\Exception\MysqliException If the mapped type does not exist.
      *
      * @return string The mapped type.
      */
-    protected static function getMappedType($type)
+    private static function getMappedType($type)
     {
         if (!isset(self::$mappedTypes[$type])) {
             throw MysqliException::mappedTypeDoesNotExist($type);
@@ -324,7 +319,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
      *
      * @param array $values Associative array describing parameter => value pairs.
      */
-    protected function bindValues(array $values)
+    private function bindValues(array $values)
     {
         $this->bindedParameters = array();
         $this->bindedTypes = array();
@@ -342,7 +337,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
     /**
      * Binds the parameters on the low-level statement.
      */
-    protected function bindParameters()
+    private function bindParameters()
     {
         $bindedParameterReferences = array(implode('', $this->bindedTypes));
         $lobParameters = array();
@@ -350,7 +345,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
 
         foreach ($this->bindedParameters as $key => &$parameter) {
             if (isset($this->bindedTypes[$key - 1])
-                && ($this->bindedTypes[$key - 1] === self::$mappedTypes[PDO::PARAM_LOB])) {
+                && ($this->bindedTypes[$key - 1] === self::$mappedTypes[\PDO::PARAM_LOB])) {
                 $lobParameters[$key - 1] = $parameter;
                 $bindedParameterReferences[$key] = &$null;
             } else {
@@ -375,7 +370,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
     /**
      * Binds the low-level result fields.
      */
-    protected function bindResultFields()
+    private function bindResultFields()
     {
         $resultMetadata = $this->mysqliStatement->result_metadata();
 
@@ -393,7 +388,7 @@ class MysqliStatement implements NativeStatementInterface, IteratorAggregate
     /**
      * Binds the low-level statement result.
      */
-    protected function bindResult()
+    private function bindResult()
     {
         $this->result = array_fill(0, count($this->resultFields), null);
 

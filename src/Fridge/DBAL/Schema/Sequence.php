@@ -21,10 +21,10 @@ use Fridge\DBAL\Exception\SchemaException;
 class Sequence extends AbstractAsset
 {
     /** @var integer */
-    protected $initialValue;
+    private $initialValue;
 
     /** @var integer */
-    protected $incrementSize;
+    private $incrementSize;
 
     /**
      * Creates a sequence.

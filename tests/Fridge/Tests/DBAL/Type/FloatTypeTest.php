@@ -13,61 +13,58 @@ namespace Fridge\Tests\DBAL\Type;
 
 use Fridge\DBAL\Type\FloatType;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Float type test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class FloatTypeTest extends AbstractTypeTest
+class FloatTypeTest extends AbstractTypeTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpType()
     {
-        parent::setUp();
-
-        $this->type = new FloatType();
+        return new FloatType();
     }
 
     public function testSQLDeclaration()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getFloatSQLDeclaration');
 
-        $this->type->getSQLDeclaration($this->platformMock);
+        $this->getType()->getSQLDeclaration($this->getPlatform());
     }
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('1.12', $this->type->convertToDatabaseValue(1.12, $this->platformMock));
+        $this->assertSame('1.12', $this->getType()->convertToDatabaseValue(1.12, $this->getPlatform()));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToDatabaseValue(null, $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertSame(1.12, $this->type->convertToPHPValue('1.12', $this->platformMock));
+        $this->assertSame(1.12, $this->getType()->convertToPHPValue('1.12', $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToPHPValue(null, $this->getPlatform()));
     }
 
     public function testBindingType()
     {
-        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(\PDO::PARAM_STR, $this->getType()->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertSame(Type::FLOAT, $this->type->getName());
+        $this->assertSame(Type::FLOAT, $this->getType()->getName());
     }
 }

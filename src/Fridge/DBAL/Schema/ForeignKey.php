@@ -20,32 +20,32 @@ use Fridge\DBAL\Exception\SchemaException;
  */
 class ForeignKey extends AbstractAsset implements ConstraintInterface
 {
-    /** @const Cascade referential action constant. */
+    /** @const string Cascade referential action constant. */
     const CASCADE = 'CASCADE';
 
-    /** @const Restrict referential action constant. */
+    /** @const string Restrict referential action constant. */
     const RESTRICT = 'RESTRICT';
 
-    /** @const No action referential action constant. */
+    /** @const string No action referential action constant. */
     const NO_ACTION = 'NO ACTION';
 
-    /** @const Set null referential action constant. */
+    /** @const string Set null referential action constant. */
     const SET_NULL = 'SET NULL';
 
     /** @var array */
-    protected $localColumnNames;
+    private $localColumnNames;
 
     /** @var string */
-    protected $foreignTableName;
+    private $foreignTableName;
 
     /** @var array */
-    protected $foreignColumnNames;
+    private $foreignColumnNames;
 
     /** @var string */
-    protected $onDelete;
+    private $onDelete;
 
     /** @var string */
-    protected $onUpdate;
+    private $onUpdate;
 
     /**
      * Creates a foreign key.

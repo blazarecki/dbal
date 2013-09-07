@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
 class PostConnectEvent extends Event
 {
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
-    protected $connection;
+    private $connection;
 
     /**
      * Creates a post connect event.

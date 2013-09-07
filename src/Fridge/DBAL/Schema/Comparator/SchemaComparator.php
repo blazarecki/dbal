@@ -24,7 +24,7 @@ use Fridge\DBAL\Schema\View;
 class SchemaComparator
 {
     /** @var \Fridge\DBAL\Schema\Comparator\TableComparator */
-    protected $tableComparator;
+    private $tableComparator;
 
     /**
      * Schema comparator constructor.
@@ -99,7 +99,7 @@ class SchemaComparator
      *
      * @return array The created tables.
      */
-    protected function getCreatedTables(Schema $oldSchema, Schema $newSchema)
+    private function getCreatedTables(Schema $oldSchema, Schema $newSchema)
     {
         $createdTables = array();
 
@@ -120,7 +120,7 @@ class SchemaComparator
      *
      * @return array The altered tables.
      */
-    protected function getAlteredTables(Schema $oldSchema, Schema $newSchema)
+    private function getAlteredTables(Schema $oldSchema, Schema $newSchema)
     {
         $alteredTables = array();
 
@@ -145,7 +145,7 @@ class SchemaComparator
      *
      * @return array The dropped tables.
      */
-    protected function getDroppedTables(Schema $oldSchema, Schema $newSchema)
+    private function getDroppedTables(Schema $oldSchema, Schema $newSchema)
     {
         $droppedTables = array();
 
@@ -165,7 +165,7 @@ class SchemaComparator
      * @param array &$droppedTables The dropped tables.
      * @param array &$alteredTables The altered tables.
      */
-    protected function detectRenamedTables(array &$createdTables, array &$droppedTables, array &$alteredTables)
+    private function detectRenamedTables(array &$createdTables, array &$droppedTables, array &$alteredTables)
     {
         foreach ($createdTables as $createdIndex => $createdTable) {
             foreach ($droppedTables as $droppedIndex => $droppedTable) {
@@ -191,7 +191,7 @@ class SchemaComparator
      *
      * @return array The created sequences.
      */
-    protected function getCreatedSequences(Schema $oldSchema, Schema $newSchema)
+    private function getCreatedSequences(Schema $oldSchema, Schema $newSchema)
     {
         $createdSequences = array();
 
@@ -213,7 +213,7 @@ class SchemaComparator
      *
      * @return array The dropped sequences.
      */
-    protected function getDroppedSequences(Schema $oldSchema, Schema $newSchema)
+    private function getDroppedSequences(Schema $oldSchema, Schema $newSchema)
     {
         $droppedSequences = array();
 
@@ -235,7 +235,7 @@ class SchemaComparator
      *
      * @return array The created views.
      */
-    protected function getCreatedViews(Schema $oldSchema, Schema $newSchema)
+    private function getCreatedViews(Schema $oldSchema, Schema $newSchema)
     {
         $createdViews = array();
 
@@ -257,7 +257,7 @@ class SchemaComparator
      *
      * @return array The dropped views.
      */
-    protected function getDroppedViews(Schema $oldSchema, Schema $newSchema)
+    private function getDroppedViews(Schema $oldSchema, Schema $newSchema)
     {
         $droppedViews = array();
 

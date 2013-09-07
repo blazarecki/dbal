@@ -25,7 +25,7 @@ class ConnectionFactory
     const VERSION = '1.0.0-dev';
 
     /** @var array */
-    protected static $mappedDriverClasses = array(
+    private static $mappedDriverClasses = array(
         'pdo_mysql' => 'Fridge\DBAL\Driver\PDOMySQLDriver',
         'pdo_pgsql' => 'Fridge\DBAL\Driver\PDOPostgreSQLDriver',
         'mysqli'    => 'Fridge\DBAL\Driver\MysqliDriver',

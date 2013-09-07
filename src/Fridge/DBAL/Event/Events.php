@@ -18,10 +18,10 @@ namespace Fridge\DBAL\Event;
  */
 class Events
 {
-    /** @const The post connect event */
+    /** @const string The post connect event */
     const POST_CONNECT = 'POST_CONNECT';
 
-    /** @const The debug query event */
+    /** @const string The debug query event */
     const DEBUG_QUERY = 'DEBUG_QUERY';
 
     /**

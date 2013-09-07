@@ -26,13 +26,13 @@ use Fridge\DBAL\Schema\Table;
 class DropTableSQLCollector
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /** @var array */
-    protected $dropForeignKeyQueries;
+    private $dropForeignKeyQueries;
 
     /** @var array */
-    protected $dropTableQueries;
+    private $dropTableQueries;
 
     /**
      * Drop table SQL collector constructor.

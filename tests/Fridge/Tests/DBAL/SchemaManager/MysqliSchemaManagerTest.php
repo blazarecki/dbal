@@ -11,7 +11,6 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager;
 
-use Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 use Fridge\Tests\ConnectionUtility;
 use Fridge\Tests\Fixture\MySQLFixture;
 
@@ -25,26 +24,18 @@ class MysqliSchemaManagerTest extends AbstractMySQLSchemaManagerTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            self::$fixture = new MySQLFixture(ConnectionUtility::MYSQLI);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(ConnectionUtility::MYSQLI);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpSchemaManager()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            $this->schemaManager = new MySQLSchemaManager(ConnectionUtility::getConnection(ConnectionUtility::MYSQLI));
-        }
-
-        parent::setUp();
+        return ConnectionUtility::getConnection(ConnectionUtility::MYSQLI)->getSchemaManager();
     }
 }

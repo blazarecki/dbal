@@ -28,7 +28,7 @@ class TypeException extends Exception
      */
     public static function conversionToPHPFailed($value, $type)
     {
-        return new static(sprintf('The value "%s" can not be converted to the type "%s".', $value, $type));
+        return new self(sprintf('The value "%s" can not be converted to the type "%s".', $value, $type));
     }
 
     /**
@@ -40,7 +40,7 @@ class TypeException extends Exception
      */
     public static function typeAlreadyExists($type)
     {
-        return new static(sprintf('The type "%s" already exists.', $type));
+        return new self(sprintf('The type "%s" already exists.', $type));
     }
 
     /**
@@ -52,7 +52,7 @@ class TypeException extends Exception
      */
     public static function typeDoesNotExist($type)
     {
-        return new static(sprintf('The type "%s" does not exist.', $type));
+        return new self(sprintf('The type "%s" does not exist.', $type));
     }
 
     /**
@@ -64,6 +64,6 @@ class TypeException extends Exception
      */
     public static function typeMustImplementTypeInterface($type)
     {
-        return new static(sprintf('The type "%s" must implement the Fridge\DBAL\Type\TypeInterface.', $type));
+        return new self(sprintf('The type "%s" must implement the Fridge\DBAL\Type\TypeInterface.', $type));
     }
 }
