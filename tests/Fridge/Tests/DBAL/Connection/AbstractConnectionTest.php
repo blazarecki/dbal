@@ -25,31 +25,17 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpBeforeClassFixtureMode()
     {
-        parent::setUpBeforeClass();
-
-        self::getFixture()->create();
+        return self::MODE_CREATE;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function tearDownAfterClass()
+    protected static function setUpFixtureMode()
     {
-        if (self::hasFixture()) {
-            self::getFixture()->drop();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        self::getFixture()->createDatas();
+        return self::MODE_DATAS;
     }
 
     /**

@@ -23,21 +23,9 @@ abstract class AbstractColumnAlterationTest extends AbstractColumnAlterationTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpBeforeClassFixtureMode()
     {
-        parent::setUpBeforeClass();
-
-        self::getFixture()->createDatabase();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function tearDownAfterClass()
-    {
-        if (self::hasFixture()) {
-            self::getFixture()->dropDatabase();
-        }
+        return self::MODE_DATABASE;
     }
 
     /**
