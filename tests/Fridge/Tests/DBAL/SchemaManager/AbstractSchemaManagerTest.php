@@ -21,21 +21,9 @@ abstract class AbstractSchemaManagerTest extends AbstractSchemaManagerTestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpBeforeClassFixtureMode()
     {
-        parent::setUpBeforeClass();
-
-        self::getFixture()->create();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function tearDownAfterClass()
-    {
-        if (self::hasFixture()) {
-            self::getFixture()->drop();
-        }
+        return self::MODE_CREATE;
     }
 
     public function testConnection()

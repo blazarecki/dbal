@@ -36,6 +36,8 @@ abstract class AbstractNativeConnectionTestCase extends AbstractFixtureTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
+
         $this->setConnection($this->setUpConnection());
     }
 
