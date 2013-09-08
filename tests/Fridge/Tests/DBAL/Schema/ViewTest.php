@@ -21,7 +21,7 @@ use Fridge\DBAL\Schema\View;
 class ViewTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\View */
-    protected $view;
+    private $view;
 
     /**
      * {@inheritdoc}

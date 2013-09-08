@@ -29,12 +29,12 @@ use Fridge\DBAL\Type\Type;
 class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->platform = new PostgreSQLPlatform();
     }

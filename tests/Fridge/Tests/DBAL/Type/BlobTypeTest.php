@@ -13,48 +13,45 @@ namespace Fridge\Tests\DBAL\Type;
 
 use Fridge\DBAL\Type\BlobType;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Blob type test.
  *
  * @author Loic Chardonnet <loic.chardonnet@gmail.com>
  */
-class BlobTypeTest extends AbstractTypeTest
+class BlobTypeTest extends AbstractTypeTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpType()
     {
-        parent::setUp();
-
-        $this->type = new BlobType();
+        return new BlobType();
     }
 
     public function testSQLDeclaration()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getBlobSQLDeclaration');
 
-        $this->type->getSQLDeclaration($this->platformMock);
+        $this->getType()->getSQLDeclaration($this->getPlatform());
     }
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('foo', $this->type->convertToDatabaseValue('foo', $this->platformMock));
+        $this->assertSame('foo', $this->getType()->convertToDatabaseValue('foo', $this->getPlatform()));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToDatabaseValue(null, $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithValidValue()
     {
         $expectedValue = 'foo';
-        $resource = $this->type->convertToPHPValue($expectedValue, $this->platformMock);
+        $resource = $this->getType()->convertToPHPValue($expectedValue, $this->getPlatform());
 
         $this->assertTrue(is_resource($resource));
         $this->assertSame($expectedValue, fread($resource, strlen($expectedValue)));
@@ -66,21 +63,21 @@ class BlobTypeTest extends AbstractTypeTest
      */
     public function testConvertToPHPValueWithInvalidValue()
     {
-        $this->assertTrue(is_resource($this->type->convertToPHPValue(1, $this->platformMock)));
+        $this->assertTrue(is_resource($this->getType()->convertToPHPValue(1, $this->getPlatform())));
     }
 
     public function testConvertToPHPValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToPHPValue(null, $this->getPlatform()));
     }
 
     public function testBindingType()
     {
-        $this->assertSame(PDO::PARAM_LOB, $this->type->getBindingType());
+        $this->assertSame(\PDO::PARAM_LOB, $this->getType()->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertSame(Type::BLOB, $this->type->getName());
+        $this->assertSame(Type::BLOB, $this->getType()->getName());
     }
 }

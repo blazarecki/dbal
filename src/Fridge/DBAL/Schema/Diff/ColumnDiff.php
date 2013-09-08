@@ -22,7 +22,7 @@ use Fridge\DBAL\Schema\Column;
 class ColumnDiff extends AbstractAssetDiff
 {
     /** @var array */
-    protected $differences;
+    private $differences;
 
     /**
      * Column diff constructor.

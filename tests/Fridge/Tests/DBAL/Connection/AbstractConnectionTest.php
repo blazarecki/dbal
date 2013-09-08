@@ -11,33 +11,25 @@
 
 namespace Fridge\Tests\DBAL\Connection;
 
-use Exception;
 use Fridge\DBAL\Connection\Connection;
 use Fridge\DBAL\Event\Events;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Executes the functional connection test suite on a specific database.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 {
-    /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    protected static $fixture;
-
-    /** @var \Fridge\DBAL\Connection\ConnectionInterface */
-    protected $connection;
-
     /**
      * {@inheritdoc}
      */
     public static function setUpBeforeClass()
     {
-        if (self::$fixture !== null) {
-            self::$fixture->create();
-        }
+        parent::setUpBeforeClass();
+
+        self::getFixture()->create();
     }
 
     /**
@@ -45,8 +37,8 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        if (self::$fixture !== null) {
-            self::$fixture->drop();
+        if (self::hasFixture()) {
+            self::getFixture()->drop();
         }
     }
 
@@ -55,23 +47,9 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        if (self::$fixture === null) {
-            $this->markTestSkipped();
-        }
+        parent::setUp();
 
-        self::$fixture->createDatas();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        if ($this->connection !== null) {
-            $this->connection->close();
-
-            unset($this->connection);
-        }
+        self::getFixture()->createDatas();
     }
 
     /**
@@ -80,7 +58,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      * @param array $expectedResult The expected result.
      * @param mixed $actualResult   The actual result.
      */
-    protected function assertQueryResult(array $expectedResult, $actualResult)
+    private function assertQueryResult(array $expectedResult, $actualResult)
     {
         $this->assertInternalType('array', $actualResult);
 
@@ -99,17 +77,17 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testConnectAndClose()
     {
-        $this->assertTrue($this->connection->connect());
-        $this->assertTrue($this->connection->isConnected());
+        $this->assertTrue($this->getConnection()->connect());
+        $this->assertTrue($this->getConnection()->isConnected());
 
-        $this->connection->close();
-        $this->assertFalse($this->connection->isConnected());
+        $this->getConnection()->close();
+        $this->assertFalse($this->getConnection()->isConnected());
     }
 
     public function testConnectIfConnectionIsAlreadyEstablished()
     {
-        $this->connection->connect();
-        $this->assertTrue($this->connection->connect());
+        $this->getConnection()->connect();
+        $this->assertTrue($this->getConnection()->connect());
     }
 
     public function testConnectDispatchEvent()
@@ -125,63 +103,63 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->connect();
+        $this->getConnection()->connect();
     }
 
     public function testNativeConnection()
     {
         $this->assertInstanceOf(
             'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
-            $this->connection->getNativeConnection()
+            $this->getConnection()->getNativeConnection()
         );
     }
 
     public function testTransactionIsolation()
     {
         $this->assertSame(
-            $this->connection->getPlatform()->getDefaultTransactionIsolation(),
-            $this->connection->getTransactionIsolation()
+            $this->getConnection()->getPlatform()->getDefaultTransactionIsolation(),
+            $this->getConnection()->getTransactionIsolation()
         );
 
-        if (!$this->connection->getPlatform()->supportTransactionIsolations()) {
+        if (!$this->getConnection()->getPlatform()->supportTransactionIsolations()) {
             $this->setExpectedException('Fridge\DBAL\Exception\ConnectionException');
         }
 
-        $this->connection->setTransactionIsolation(Connection::TRANSACTION_READ_COMMITTED);
+        $this->getConnection()->setTransactionIsolation(Connection::TRANSACTION_READ_COMMITTED);
     }
 
     public function testCharset()
     {
-        $this->connection->setCharset('utf8');
+        $this->getConnection()->setCharset('utf8');
     }
 
     public function testExecuteQueryWithoutParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(self::$fixture->getQuery())->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(self::getFixture()->getQuery())->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryDoesNotDispatchEventWithoutDebug()
     {
-        $this->connection->connect();
+        $this->getConnection()->connect();
 
         $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $eventDispatcherMock
             ->expects($this->never())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->executeQuery(self::$fixture->getQuery());
+        $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
 
     public function testExecuteQueryDoesNotDispatchEventWithoutListeners()
     {
-        $this->connection->connect();
+        $this->getConnection()->connect();
 
         $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $eventDispatcherMock
@@ -194,15 +172,15 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setDebug(true);
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setDebug(true);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->executeQuery(self::$fixture->getQuery());
+        $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
 
     public function testExecuteQueryDispatchEventWithDebugAndListeners()
     {
-        $this->connection->connect();
+        $this->getConnection()->connect();
 
         $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $eventDispatcherMock
@@ -215,104 +193,104 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setDebug(true);
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setDebug(true);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->executeQuery(self::$fixture->getQuery());
+        $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
 
     public function testExecuteQueryWithNamedParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedQueryParameters()
-            )->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(
+                self::getFixture()->getQueryWithNamedParameters(),
+                self::getFixture()->getNamedQueryParameters()
+            )->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithNamedTypedParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedTypedQueryParameters(),
-                self::$fixture->getNamedQueryTypes()
-            )->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(
+                self::getFixture()->getQueryWithNamedParameters(),
+                self::getFixture()->getNamedTypedQueryParameters(),
+                self::getFixture()->getNamedQueryTypes()
+            )->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPartialNamedTypedParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedTypedQueryParameters(),
-                self::$fixture->getPartialNamedQueryTypes()
-            )->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(
+                self::getFixture()->getQueryWithNamedParameters(),
+                self::getFixture()->getNamedTypedQueryParameters(),
+                self::getFixture()->getPartialNamedQueryTypes()
+            )->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPositionalParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(
-                self::$fixture->getQueryWithPositionalParameters(),
-                self::$fixture->getPositionalQueryParameters()
-            )->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(
+                self::getFixture()->getQueryWithPositionalParameters(),
+                self::getFixture()->getPositionalQueryParameters()
+            )->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPositionalTypedParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(
-                self::$fixture->getQueryWithPositionalParameters(),
-                self::$fixture->getPositionalTypedQueryParameters(),
-                self::$fixture->getPositionalQueryTypes()
-            )->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(
+                self::getFixture()->getQueryWithPositionalParameters(),
+                self::getFixture()->getPositionalTypedQueryParameters(),
+                self::getFixture()->getPositionalQueryTypes()
+            )->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteQueryWithPartialPositionalTypedParameters()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->executeQuery(
-                self::$fixture->getQueryWithPositionalParameters(),
-                self::$fixture->getPositionalTypedQueryParameters(),
-                self::$fixture->getPartialPositionalQueryTypes()
-            )->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->executeQuery(
+                self::getFixture()->getQueryWithPositionalParameters(),
+                self::getFixture()->getPositionalTypedQueryParameters(),
+                self::getFixture()->getPartialPositionalQueryTypes()
+            )->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
     public function testExecuteUpdateWithoutParameters()
     {
-        $this->assertSame(1, $this->connection->executeUpdate(self::$fixture->getUpdateQuery()));
+        $this->assertSame(1, $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery()));
     }
 
     public function testExecuteUpdateDoesNotDispatchEventWithoutDebug()
     {
-        $this->connection->connect();
+        $this->getConnection()->connect();
 
         $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $eventDispatcherMock
             ->expects($this->never())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->executeUpdate(self::$fixture->getUpdateQuery());
+        $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
 
     public function testExecuteUpdateDoesNotDispatchEventWithoutListeners()
     {
-        $this->connection->connect();
+        $this->getConnection()->connect();
 
         $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $eventDispatcherMock
@@ -325,15 +303,15 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setDebug(true);
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setDebug(true);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->executeUpdate(self::$fixture->getUpdateQuery());
+        $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
 
     public function testExecuteUpdateDispatchEventWithDebugAndListeners()
     {
-        $this->connection->connect();
+        $this->getConnection()->connect();
 
         $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $eventDispatcherMock
@@ -346,17 +324,17 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('dispatch');
 
-        $this->connection->getConfiguration()->setDebug(true);
-        $this->connection->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+        $this->getConnection()->getConfiguration()->setDebug(true);
+        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
-        $this->connection->executeUpdate(self::$fixture->getUpdateQuery());
+        $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
 
     public function testExecuteUpdateWithNamedParameters()
     {
-        $count = $this->connection->executeUpdate(
-            self::$fixture->getUpdateQueryWithNamedParameters(),
-            self::$fixture->getNamedQueryParameters()
+        $count = $this->getConnection()->executeUpdate(
+            self::getFixture()->getUpdateQueryWithNamedParameters(),
+            self::getFixture()->getNamedQueryParameters()
         );
 
         $this->assertSame(1, $count);
@@ -364,10 +342,10 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithNamedTypedParameters()
     {
-        $count = $this->connection->executeUpdate(
-            self::$fixture->getUpdateQueryWithNamedParameters(),
-            self::$fixture->getNamedTypedQueryParameters(),
-            self::$fixture->getNamedQueryTypes()
+        $count = $this->getConnection()->executeUpdate(
+            self::getFixture()->getUpdateQueryWithNamedParameters(),
+            self::getFixture()->getNamedTypedQueryParameters(),
+            self::getFixture()->getNamedQueryTypes()
         );
 
         $this->assertSame(1, $count);
@@ -375,9 +353,9 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithPositionalParameters()
     {
-        $count = $this->connection->executeUpdate(
-            self::$fixture->getUpdateQueryWithPositionalParameters(),
-            self::$fixture->getPositionalQueryParameters()
+        $count = $this->getConnection()->executeUpdate(
+            self::getFixture()->getUpdateQueryWithPositionalParameters(),
+            self::getFixture()->getPositionalQueryParameters()
         );
 
         $this->assertSame(1, $count);
@@ -385,10 +363,10 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithPositionalTypedParameters()
     {
-        $count = $this->connection->executeUpdate(
-            self::$fixture->getUpdateQueryWithPositionalParameters(),
-            self::$fixture->getPositionalTypedQueryParameters(),
-            self::$fixture->getPositionalQueryTypes()
+        $count = $this->getConnection()->executeUpdate(
+            self::getFixture()->getUpdateQueryWithPositionalParameters(),
+            self::getFixture()->getPositionalTypedQueryParameters(),
+            self::getFixture()->getPositionalQueryTypes()
         );
 
         $this->assertSame(1, $count);
@@ -396,12 +374,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchAll()
     {
-        $expected = array(self::$fixture->getQueryResult());
+        $expected = array(self::getFixture()->getQueryResult());
 
-        $results = $this->connection->fetchAll(
-            self::$fixture->getQueryWithNamedParameters(),
-            self::$fixture->getNamedTypedQueryParameters(),
-            self::$fixture->getNamedQueryTypes()
+        $results = $this->getConnection()->fetchAll(
+            self::getFixture()->getQueryWithNamedParameters(),
+            self::getFixture()->getNamedTypedQueryParameters(),
+            self::getFixture()->getNamedQueryTypes()
         );
 
         $this->assertCount(count($expected), $results);
@@ -415,11 +393,11 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     public function testFetchArray()
     {
         $this->assertQueryResult(
-            array_values(self::$fixture->getQueryResult()),
-            $this->connection->fetchArray(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedTypedQueryParameters(),
-                self::$fixture->getNamedQueryTypes()
+            array_values(self::getFixture()->getQueryResult()),
+            $this->getConnection()->fetchArray(
+                self::getFixture()->getQueryWithNamedParameters(),
+                self::getFixture()->getNamedTypedQueryParameters(),
+                self::getFixture()->getNamedQueryTypes()
             )
         );
     }
@@ -427,35 +405,35 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     public function testFetchAssoc()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->fetchAssoc(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedTypedQueryParameters(),
-                self::$fixture->getNamedQueryTypes()
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->fetchAssoc(
+                self::getFixture()->getQueryWithNamedParameters(),
+                self::getFixture()->getNamedTypedQueryParameters(),
+                self::getFixture()->getNamedQueryTypes()
             )
         );
     }
 
     public function testFetchColumn()
     {
-        $queryResult = self::$fixture->getQueryResult();
+        $queryResult = self::getFixture()->getQueryResult();
 
         $this->assertSame(
             $queryResult['carray'],
-            $this->connection->fetchColumn(
-                self::$fixture->getQueryWithNamedParameters(),
-                self::$fixture->getNamedTypedQueryParameters(),
-                self::$fixture->getNamedQueryTypes()
+            $this->getConnection()->fetchColumn(
+                self::getFixture()->getQueryWithNamedParameters(),
+                self::getFixture()->getNamedTypedQueryParameters(),
+                self::getFixture()->getNamedQueryTypes()
             )
         );
     }
 
     public function testInsertWithTypedParameters()
     {
-        $count = $this->connection->insert(
+        $count = $this->getConnection()->insert(
             'tcolumns',
-            self::$fixture->getNamedTypedQueryParameters(),
-            self::$fixture->getNamedQueryTypes()
+            self::getFixture()->getNamedTypedQueryParameters(),
+            self::getFixture()->getNamedQueryTypes()
         );
 
         $this->assertSame(1, $count);
@@ -463,10 +441,10 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testInsertWithPartialTypedParameters()
     {
-        $count = $this->connection->insert(
+        $count = $this->getConnection()->insert(
             'tcolumns',
-            self::$fixture->getNamedTypedQueryParameters(),
-            self::$fixture->getPartialNamedQueryTypes()
+            self::getFixture()->getNamedTypedQueryParameters(),
+            self::getFixture()->getPartialNamedQueryTypes()
         );
 
         $this->assertSame(1, $count);
@@ -474,21 +452,21 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateWithoutExpression()
     {
-        $datas = array_merge(self::$fixture->getNamedTypedQueryParameters(), array('carray' => array('bar' => 'foo')));
-        $count = $this->connection->update('tcolumns', $datas, self::$fixture->getNamedQueryTypes());
+        $datas = array_merge(self::getFixture()->getNamedTypedQueryParameters(), array('carray' => array('bar' => 'foo')));
+        $count = $this->getConnection()->update('tcolumns', $datas, self::getFixture()->getNamedQueryTypes());
 
         $this->assertSame(1, $count);
     }
 
     public function testUpdateWithTypedPositionalExpressionParameters()
     {
-        $originalDatas = self::$fixture->getNamedTypedQueryParameters();
+        $originalDatas = self::getFixture()->getNamedTypedQueryParameters();
         $datas = array_merge($originalDatas, array('carray' => array('bar' => 'foo')));
 
-        $count = $this->connection->update(
+        $count = $this->getConnection()->update(
             'tcolumns',
             $datas,
-            self::$fixture->getNamedQueryTypes(),
+            self::getFixture()->getNamedQueryTypes(),
             'carray = ?',
             array($originalDatas['carray']),
             array(Type::TARRAY)
@@ -499,13 +477,13 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateWithTypedNamedExpressionParameters()
     {
-        $originalDatas = self::$fixture->getNamedTypedQueryParameters();
+        $originalDatas = self::getFixture()->getNamedTypedQueryParameters();
         $datas = array_merge($originalDatas, array('carray' => array('bar' => 'foo')));
 
-        $count = $this->connection->update(
+        $count = $this->getConnection()->update(
             'tcolumns',
             $datas,
-            self::$fixture->getNamedQueryTypes(),
+            self::getFixture()->getNamedQueryTypes(),
             'carray = :carrayParameter',
             array('carrayParameter' => $originalDatas['carray']),
             array('carrayParameter' => Type::TARRAY)
@@ -516,12 +494,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteWithoutExpression()
     {
-        $this->assertSame(1, $this->connection->delete('tcolumns'));
+        $this->assertSame(1, $this->getConnection()->delete('tcolumns'));
     }
 
     public function testDeleteWithTypedExpressionParameters()
     {
-        $count = $this->connection->delete(
+        $count = $this->getConnection()->delete(
             'tcolumns',
             'carray = :carrayParameter',
             array('carrayParameter' => array('foo' => 'bar')),
@@ -533,97 +511,97 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testBeginTransaction()
     {
-        $this->assertFalse($this->connection->inTransaction());
-        $this->assertSame(0, $this->connection->getTransactionLevel());
+        $this->assertFalse($this->getConnection()->inTransaction());
+        $this->assertSame(0, $this->getConnection()->getTransactionLevel());
 
-        $this->connection->beginTransaction();
+        $this->getConnection()->beginTransaction();
 
-        $this->assertTrue($this->connection->inTransaction());
-        $this->assertSame(1, $this->connection->getTransactionLevel());
+        $this->assertTrue($this->getConnection()->inTransaction());
+        $this->assertSame(1, $this->getConnection()->getTransactionLevel());
     }
 
     public function testTransactionWithCommit()
     {
-        $this->connection->beginTransaction();
+        $this->getConnection()->beginTransaction();
 
         try {
-            $this->connection->commit();
-        } catch (Exception $e) {
-            $this->connection->rollBack();
+            $this->getConnection()->commit();
+        } catch (\Exception $e) {
+            $this->getConnection()->rollBack();
 
             $this->fail($e->getMessage());
         }
 
-        $this->assertFalse($this->connection->inTransaction());
-        $this->assertSame(0, $this->connection->getTransactionLevel());
+        $this->assertFalse($this->getConnection()->inTransaction());
+        $this->assertSame(0, $this->getConnection()->getTransactionLevel());
     }
 
     public function testTransactionWithRollback()
     {
-        $this->connection->beginTransaction();
+        $this->getConnection()->beginTransaction();
 
         try {
-            throw new Exception();
-        } catch (Exception $e) {
-            $this->connection->rollBack();
+            throw new \Exception();
+        } catch (\Exception $e) {
+            $this->getConnection()->rollBack();
         }
 
-        $this->assertFalse($this->connection->inTransaction());
-        $this->assertSame(0, $this->connection->getTransactionLevel());
+        $this->assertFalse($this->getConnection()->inTransaction());
+        $this->assertSame(0, $this->getConnection()->getTransactionLevel());
     }
 
     public function testNestedTransactionWithCommit()
     {
-        $this->connection->beginTransaction();
+        $this->getConnection()->beginTransaction();
 
         try {
-            $this->connection->beginTransaction();
-            $this->assertSame(2, $this->connection->getTransactionLevel());
+            $this->getConnection()->beginTransaction();
+            $this->assertSame(2, $this->getConnection()->getTransactionLevel());
 
             try {
-                $this->connection->commit();
-            } catch (Exception $e) {
-                $this->connection->rollBack();
+                $this->getConnection()->commit();
+            } catch (\Exception $e) {
+                $this->getConnection()->rollBack();
 
                 $this->fail($e->getMessage());
             }
 
-            $this->assertSame(1, $this->connection->getTransactionLevel());
+            $this->assertSame(1, $this->getConnection()->getTransactionLevel());
 
-            $this->connection->commit();
-        } catch (Exception $e) {
-            $this->connection->rollBack();
+            $this->getConnection()->commit();
+        } catch (\Exception $e) {
+            $this->getConnection()->rollBack();
 
-            if ($this->connection->getPlatform()->supportSavepoints()) {
+            if ($this->getConnection()->getPlatform()->supportSavepoints()) {
                 $this->fail($e->getMessage());
             }
         }
 
-        $this->assertFalse($this->connection->inTransaction());
+        $this->assertFalse($this->getConnection()->inTransaction());
     }
 
     public function testNestedTransactionWithRollback()
     {
-        $this->connection->beginTransaction();
+        $this->getConnection()->beginTransaction();
 
         try {
-            $this->connection->beginTransaction();
-            $this->assertSame(2, $this->connection->getTransactionLevel());
+            $this->getConnection()->beginTransaction();
+            $this->assertSame(2, $this->getConnection()->getTransactionLevel());
 
             try {
-                throw new Exception();
-            } catch (Exception $e) {
-                $this->connection->rollBack();
+                throw new \Exception();
+            } catch (\Exception $e) {
+                $this->getConnection()->rollBack();
             }
 
-            $this->assertSame(1, $this->connection->getTransactionLevel());
+            $this->assertSame(1, $this->getConnection()->getTransactionLevel());
 
-            throw new Exception();
-        } catch (Exception $e) {
-            $this->connection->rollBack();
+            throw new \Exception();
+        } catch (\Exception $e) {
+            $this->getConnection()->rollBack();
         }
 
-        $this->assertFalse($this->connection->inTransaction());
+        $this->assertFalse($this->getConnection()->inTransaction());
     }
 
     /**
@@ -632,7 +610,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommitWithoutTransaction()
     {
-        $this->connection->commit();
+        $this->getConnection()->commit();
     }
 
     /**
@@ -640,24 +618,24 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRollbackWithoutTransaction()
     {
-        $this->connection->rollback();
+        $this->getConnection()->rollback();
     }
 
     public function testQuoteWithDBALType()
     {
-        $this->assertSame('\'foo\'', $this->connection->quote('foo', Type::STRING));
+        $this->assertSame('\'foo\'', $this->getConnection()->quote('foo', Type::STRING));
     }
 
     public function testQuoteWithPDOType()
     {
-        $this->assertSame('\'foo\'', $this->connection->quote('foo', PDO::PARAM_STR));
+        $this->assertSame('\'foo\'', $this->getConnection()->quote('foo', \PDO::PARAM_STR));
     }
 
     public function testQuery()
     {
         $this->assertQueryResult(
-            self::$fixture->getQueryResult(),
-            $this->connection->query(self::$fixture->getQuery())->fetch(PDO::FETCH_ASSOC)
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->query(self::getFixture()->getQuery())->fetch(\PDO::FETCH_ASSOC)
         );
     }
 
@@ -665,39 +643,39 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Fridge\DBAL\Statement\Statement',
-            $this->connection->prepare(self::$fixture->getQueryWithNamedParameters())
+            $this->getConnection()->prepare(self::getFixture()->getQueryWithNamedParameters())
         );
     }
 
     public function testExec()
     {
-        $this->assertSame(1, $this->connection->exec(self::$fixture->getUpdateQuery()));
+        $this->assertSame(1, $this->getConnection()->exec(self::getFixture()->getUpdateQuery()));
     }
 
     public function testLastInsertId()
     {
-        $this->connection->lastInsertId();
+        $this->getConnection()->lastInsertId();
     }
 
     public function testErrorCode()
     {
         try {
-            $this->connection->exec('foo');
+            $this->getConnection()->exec('foo');
 
             $this->fail();
-        } catch (Exception $e) {
-            $this->assertSame($e->getCode(), $this->connection->errorCode());
+        } catch (\Exception $e) {
+            $this->assertSame($e->getCode(), $this->getConnection()->errorCode());
         }
     }
 
     public function testErrorInfo()
     {
         try {
-            $this->connection->exec('foo');
+            $this->getConnection()->exec('foo');
 
             $this->fail();
-        } catch (Exception $e) {
-            $errorInfo = $this->connection->errorInfo();
+        } catch (\Exception $e) {
+            $errorInfo = $this->getConnection()->errorInfo();
 
             $this->assertArrayHasKey(0, $errorInfo);
             $this->assertSame($e->getCode(), $errorInfo[0]);

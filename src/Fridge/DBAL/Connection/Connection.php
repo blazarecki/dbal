@@ -24,7 +24,6 @@ use Fridge\DBAL\Query\QueryBuilder;
 use Fridge\DBAL\Query\Rewriter\QueryRewriter;
 use Fridge\DBAL\Statement\Statement;
 use Fridge\DBAL\Type\TypeUtility;
-use PDO;
 
 /**
  * {@inheritdoc}
@@ -33,44 +32,44 @@ use PDO;
  */
 class Connection implements ConnectionInterface
 {
-    /** @const Transaction read commited constant. */
+    /** @const string Transaction read commited constant. */
     const TRANSACTION_READ_COMMITTED = 'READ COMMITTED';
 
-    /** @const Transaction read uncommited constant. */
+    /** @const string Transaction read uncommited constant. */
     const TRANSACTION_READ_UNCOMMITTED = 'READ UNCOMMITTED';
 
-    /** @const Transaction repeatable read constant. */
+    /** @const string Transaction repeatable read constant. */
     const TRANSACTION_REPEATABLE_READ = 'REPEATABLE READ';
 
-    /** @const Transaction read commited constant. */
+    /** @const string Transaction read commited constant. */
     const TRANSACTION_SERIALIZABLE = 'SERIALIZABLE';
 
-    /** @const Array parameter constant which enables query rewritting. */
+    /** @const string Array parameter constant which enables query rewritting. */
     const PARAM_ARRAY = '[]';
 
     /** @var \Fridge\DBAL\Driver\Connection\NativeConnectionInterface */
-    protected $nativeConnection;
+    private $nativeConnection;
 
     /** @var \Fridge\DBAL\Driver\DriverInterface */
-    protected $driver;
+    private $driver;
 
     /** @var \Fridge\DBAL\Query\Expression\ExpressionBuilder */
-    protected $expressionBuilder;
+    private $expressionBuilder;
 
     /** @var \Fridge\DBAL\Configuration */
-    protected $configuration;
+    private $configuration;
 
     /** @var array */
-    protected $parameters;
+    private $parameters;
 
     /** @var boolean */
-    protected $isConnected;
+    private $isConnected;
 
     /** @var integer */
-    protected $transactionLevel;
+    private $transactionLevel;
 
     /** @var string */
-    protected $transactionIsolation;
+    private $transactionIsolation;
 
     /**
      * Creates a connection.
@@ -90,9 +89,7 @@ class Connection implements ConnectionInterface
         $this->expressionBuilder = new ExpressionBuilder();
         $this->configuration = $configuration;
 
-        $this->isConnected = false;
-        $this->transactionLevel = 0;
-        $this->transactionIsolation = $this->getPlatform()->getDefaultTransactionIsolation();
+        $this->close();
     }
 
     /**
@@ -364,6 +361,9 @@ class Connection implements ConnectionInterface
     public function close()
     {
         unset($this->nativeConnection);
+
+        $this->transactionLevel = 0;
+        $this->transactionIsolation = $this->getPlatform()->getDefaultTransactionIsolation();
         $this->isConnected = false;
     }
 
@@ -372,7 +372,7 @@ class Connection implements ConnectionInterface
      */
     public function fetchAll($query, array $parameters = array(), array $types = array())
     {
-        return $this->executeQuery($query, $parameters, $types)->fetchAll(PDO::FETCH_ASSOC);
+        return $this->executeQuery($query, $parameters, $types)->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -380,7 +380,7 @@ class Connection implements ConnectionInterface
      */
     public function fetchArray($query, array $parameters = array(), array $types = array())
     {
-        return $this->executeQuery($query, $parameters, $types)->fetch(PDO::FETCH_NUM);
+        return $this->executeQuery($query, $parameters, $types)->fetch(\PDO::FETCH_NUM);
     }
 
     /**
@@ -388,7 +388,7 @@ class Connection implements ConnectionInterface
      */
     public function fetchAssoc($query, array $parameters = array(), array $types = array())
     {
-        return $this->executeQuery($query, $parameters, $types)->fetch(PDO::FETCH_ASSOC);
+        return $this->executeQuery($query, $parameters, $types)->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -404,10 +404,7 @@ class Connection implements ConnectionInterface
      */
     public function executeQuery($query, array $parameters = array(), array $types = array())
     {
-        $debug = $this->getConfiguration()->getDebug()
-            && $this->getConfiguration()->getEventDispatcher()->hasListeners(Events::DEBUG_QUERY);
-
-        $queryDebugger = $debug ? new QueryDebugger($query, $parameters, $types) : null;
+        $queryDebugger = $this->createQueryDebugger($query, $parameters, $types);
 
         if (!empty($parameters)) {
             list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
@@ -423,13 +420,8 @@ class Connection implements ConnectionInterface
             $statement = $this->getNativeConnection()->query($query);
         }
 
-        if ($debug) {
-            $queryDebugger->stop();
-
-            $this->getConfiguration()->getEventDispatcher()->dispatch(
-                Events::DEBUG_QUERY,
-                new DebugQueryEvent($queryDebugger)
-            );
+        if ($queryDebugger) {
+            $this->debugQuery($queryDebugger);
         }
 
         return $statement;
@@ -477,7 +469,7 @@ class Connection implements ConnectionInterface
             if ($isPositional && (($datasCount = count($datas)) > 0)) {
                 $fixer = function (&$parameters, $fix) {
                     foreach ($parameters as $parameter => $value) {
-                        $parameters[$parameter + $fix] = $parameters[$parameter];
+                        $parameters[$parameter + $fix] = $value;
                         unset($parameters[$parameter]);
                     }
                 };
@@ -519,10 +511,7 @@ class Connection implements ConnectionInterface
      */
     public function executeUpdate($query, array $parameters = array(), array $types = array())
     {
-        $debug = $this->getConfiguration()->getDebug()
-            && $this->getConfiguration()->getEventDispatcher()->hasListeners(Events::DEBUG_QUERY);
-
-        $queryDebugger = $debug ? new QueryDebugger($query, $parameters, $types) : null;
+        $queryDebugger = $this->createQueryDebugger($query, $parameters, $types);
 
         if (!empty($parameters)) {
             list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
@@ -540,13 +529,8 @@ class Connection implements ConnectionInterface
             $affectedRows = $this->getNativeConnection()->exec($query);
         }
 
-        if ($debug) {
-            $queryDebugger->stop();
-
-            $this->getConfiguration()->getEventDispatcher()->dispatch(
-                Events::DEBUG_QUERY,
-                new DebugQueryEvent($queryDebugger)
-            );
+        if ($queryDebugger) {
+            $this->debugQuery($queryDebugger);
         }
 
         return $affectedRows;
@@ -619,7 +603,7 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function quote($string, $type = PDO::PARAM_STR)
+    public function quote($string, $type = \PDO::PARAM_STR)
     {
         TypeUtility::bindTypedValue($string, $type, $this->getPlatform());
 
@@ -681,7 +665,7 @@ class Connection implements ConnectionInterface
      * @param array                                                  $parameters The statement parameters.
      * @param array                                                  $types      The statement parameter types.
      */
-    protected function bindStatementParameters(NativeStatementInterface $statement, array $parameters, array $types)
+    private function bindStatementParameters(NativeStatementInterface $statement, array $parameters, array $types)
     {
         foreach ($parameters as $key => $parameter) {
             if (is_int($key)) {
@@ -700,11 +684,46 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Creates a query debugger if the query needs to be debugged.
+     *
+     * @param string $query      The query to debug.
+     * @param array  $parameters The query parameters to debug.
+     * @param array  $types      The query parameter types to debug.
+     *
+     * @return \Fridge\DBAL\Debug\QueryDebugger|null The query debugger or null if the query does need to be debugged.
+     */
+    private function createQueryDebugger($query, array $parameters = array(), array $types = array())
+    {
+        if (
+            $this->getConfiguration()->getDebug()
+            &&
+            $this->getConfiguration()->getEventDispatcher()->hasListeners(Events::DEBUG_QUERY)
+        ) {
+            return new QueryDebugger($query, $parameters, $types);
+        }
+    }
+
+    /**
+     * Debugs a query.
+     *
+     * @param \Fridge\DBAL\Debug\QueryDebugger $queryDebugger The query debugger.
+     */
+    private function debugQuery(QueryDebugger $queryDebugger)
+    {
+        $queryDebugger->stop();
+
+        $this->getConfiguration()->getEventDispatcher()->dispatch(
+            Events::DEBUG_QUERY,
+            new DebugQueryEvent($queryDebugger)
+        );
+    }
+
+    /**
      * Generates a savepoint name according to the current transaction level.
      *
      * @return string The current savepoint name.
      */
-    protected function generateSavepointName()
+    private function generateSavepointName()
     {
         return 'FRIDGE_SAVEPOINT_'.$this->getTransactionLevel();
     }

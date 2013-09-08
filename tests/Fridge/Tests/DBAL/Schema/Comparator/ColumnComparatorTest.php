@@ -23,13 +23,13 @@ use Fridge\DBAL\Type\Type;
 class ColumnComparatorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Comparator\ColumnComparator */
-    protected $columnComparator;
+    private $columnComparator;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $oldColumn;
+    private $oldColumn;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $newColumn;
+    private $newColumn;
 
     /**
      * {@inheritdoc}

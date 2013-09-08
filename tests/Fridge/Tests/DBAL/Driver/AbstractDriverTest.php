@@ -14,26 +14,18 @@ namespace Fridge\Tests\DBAL\Driver;
 /**
  * Abstract driver test.
  *
- * All driver tests must extend this class.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractDriverTest extends AbstractDriverTestCase
 {
-    /** @var \Fridge\Tests\Fixture\FixtureInterface */
-    protected static $fixture;
-
-    /** @var \Fridge\DBAL\Driver\DriverInterface */
-    protected $driver;
-
     /**
      * {@inheritdoc}
      */
     public static function setUpBeforeClass()
     {
-        if (self::$fixture !== null) {
-            self::$fixture->create();
-        }
+        parent::setUpBeforeClass();
+
+        self::getFixture()->create();
     }
 
     /**
@@ -41,42 +33,26 @@ abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        if (self::$fixture !== null) {
-            self::$fixture->drop();
+        if (self::hasFixture()) {
+            self::getFixture()->drop();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        if (self::$fixture === null) {
-            $this->markTestSkipped();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        unset($this->driver);
     }
 
     public function testConnect()
     {
-        $settings = self::$fixture->getSettings();
-
         $this->assertInstanceOf(
             'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
-            $this->driver->connect($settings, $settings['username'], $settings['password'])
+            $this->getDriver()->connect(
+                self::getFixture()->getSettings(),
+                self::getFixture()->getSetting('username'),
+                self::getFixture()->getSetting('password')
+            )
         );
     }
 
     public function testPlatform()
     {
-        $this->assertInstanceOf('Fridge\DBAL\Platform\PlatformInterface', $this->driver->getPlatform());
+        $this->assertInstanceOf('Fridge\DBAL\Platform\PlatformInterface', $this->getDriver()->getPlatform());
     }
 
     public function testSchemaManager()
@@ -85,7 +61,7 @@ abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(
             'Fridge\DBAL\SchemaManager\SchemaManagerInterface',
-            $this->driver->getSchemaManager($connectionMock)
+            $this->getDriver()->getSchemaManager($connectionMock)
         );
     }
 }

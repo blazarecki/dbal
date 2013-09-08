@@ -25,7 +25,7 @@ class ConnectionException extends Exception
      */
     public static function noActiveTransaction()
     {
-        return new static('The connection does not have an active transaction.');
+        return new self('The connection does not have an active transaction.');
     }
 
     /**
@@ -35,6 +35,6 @@ class ConnectionException extends Exception
      */
     public static function transactionIsolationNotSupported()
     {
-        return new static('The connection does not support transaction isolation.');
+        return new self('The connection does not support transaction isolation.');
     }
 }

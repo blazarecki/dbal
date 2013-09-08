@@ -20,13 +20,13 @@ use Fridge\DBAL\ConnectionFactory;
  */
 class ConnectionUtility
 {
-    /** @const The PDO MySQL constant */
+    /** @const string The PDO MySQL constant */
     const PDO_MYSQL = PHPUnitUtility::PDO_MYSQL;
 
-    /** @const The PDO PgSQL constant */
+    /** @const string The PDO PgSQL constant */
     const PDO_PGSQL = PHPUnitUtility::PDO_PGSQL;
 
-    /** @const The Mysqli constant */
+    /** @const string The Mysqli constant */
     const MYSQLI = PHPUnitUtility::MYSQLI;
 
     /**
@@ -46,15 +46,13 @@ class ConnectionUtility
      *
      * @param string $driver The driver name.
      *
-     * @return \Fridge\DBAL\Connection\ConnectionInterface The connection if it can be tested else NULL.
+     * @return \Fridge\DBAL\Connection\ConnectionInterface|null The connection if it can be tested else NULL.
      */
     public static function getConnection($driver)
     {
-        if (!self::hasConnection($driver)) {
-            return null;
+        if (self::hasConnection($driver)) {
+            return ConnectionFactory::create(PHPUnitUtility::getSettings($driver));
         }
-
-        return ConnectionFactory::create(PHPUnitUtility::getSettings($driver));
     }
 
     /**

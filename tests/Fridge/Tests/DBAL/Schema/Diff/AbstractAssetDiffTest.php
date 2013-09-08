@@ -20,10 +20,10 @@ namespace Fridge\Tests\DBAL\Schema\Diff;
 class AbstractAssetDiffTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\AbstractAsset */
-    protected $oldAssetMock;
+    private $oldAssetMock;
 
     /** @var \Fridge\DBAL\Schema\AbstractAsset */
-    protected $newAssetMock;
+    private $newAssetMock;
 
     /**
      * {@inheritdoc}

@@ -11,10 +11,8 @@
 
 namespace Fridge\DBAL\Type;
 
-use DateTime;
 use Fridge\DBAL\Exception\TypeException;
 use Fridge\DBAL\Platform\PlatformInterface;
-use PDO;
 
 /**
  * Date type.
@@ -47,10 +45,10 @@ class DateType implements TypeInterface
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
         if ($value === null) {
-            return null;
+            return;
         }
 
-        $phpValue = DateTime::createFromFormat('!'.$platform->getDateFormat(), $value);
+        $phpValue = \DateTime::createFromFormat('!'.$platform->getDateFormat(), $value);
 
         if ($phpValue === false) {
             throw TypeException::conversionToPHPFailed($value, $this->getName());
@@ -64,7 +62,7 @@ class DateType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_STR;
+        return \PDO::PARAM_STR;
     }
 
     /**

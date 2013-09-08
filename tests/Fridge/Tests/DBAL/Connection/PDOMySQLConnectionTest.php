@@ -24,26 +24,20 @@ class PDOMySQLConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            self::$fixture = new MySQLFixture(ConnectionUtility::PDO_MYSQL);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpConnection()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            $this->connection = ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL);
+            return ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL);
         }
-
-        parent::setUp();
     }
 }

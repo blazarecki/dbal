@@ -23,16 +23,16 @@ use Fridge\DBAL\Type\Type;
 class SchemaTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Schema */
-    protected $schema;
+    private $schema;
 
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $tableMock;
+    private $tableMock;
 
     /** @var \Fridge\DBAL\Schema\Sequence */
-    protected $sequenceMock;
+    private $sequenceMock;
 
     /** @var \Fridge\DBAL\Schema\View */
-    protected $viewMock;
+    private $viewMock;
 
     /**
      * {@inheritdoc}

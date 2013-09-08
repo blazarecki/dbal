@@ -21,7 +21,7 @@ use Fridge\DBAL\Schema\Index;
 class IndexTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Index */
-    protected $index;
+    private $index;
 
     /**
      * {@inheritdoc}

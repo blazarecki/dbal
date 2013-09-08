@@ -21,10 +21,10 @@ use Fridge\DBAL\Schema\Diff\TableDiff;
 class TableDiffTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $oldTableMock;
+    private $oldTableMock;
 
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $newTableMock;
+    private $newTableMock;
 
     /**
      * {@inheritdoc}

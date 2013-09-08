@@ -326,7 +326,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     protected function initializeMappedTypes()
     {
-        $this->mappedTypes = array(
+        return array(
             'bigint'     => Type::BIGINTEGER,
             'blob'       => Type::BLOB,
             'char'       => Type::STRING,
@@ -372,7 +372,7 @@ class MySQLPlatform extends AbstractPlatform
      *
      * @return string The integer SQL declaration snippet.
      */
-    protected function getIntegerSQLDeclarationSnippet(array $options = array())
+    private function getIntegerSQLDeclarationSnippet(array $options = array())
     {
         $length = isset($options['length']) ? (int) $options['length'] : null;
         $unsigned = isset($options['unsigned']) && $options['unsigned'] ? ' UNSIGNED' : null;
@@ -398,7 +398,7 @@ class MySQLPlatform extends AbstractPlatform
      *
      * @return string The prefix.
      */
-    protected function getStringTypePrefix($length = null)
+    private function getStringTypePrefix($length = null)
     {
         if ($length === null) {
             return 'LONG';

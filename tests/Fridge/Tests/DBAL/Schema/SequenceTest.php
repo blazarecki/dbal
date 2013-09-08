@@ -21,7 +21,7 @@ use Fridge\DBAL\Schema\Sequence;
 class SequenceTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Sequence */
-    protected $sequence;
+    private $sequence;
 
     /**
      * {@inheritdoc}

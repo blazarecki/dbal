@@ -12,7 +12,6 @@
 namespace Fridge\Tests\Fixture;
 
 use Fridge\DBAL\Schema\View;
-use PDO;
 
 /**
  * MySQL fixture.
@@ -36,8 +35,8 @@ class MySQLFixture extends AbstractFixture
     {
         $sql = sprintf(
             'select `%s`.`tcolumns`.`cinteger` AS `cinteger` from `%s`.`tcolumns`',
-            $this->settings['dbname'],
-            $this->settings['dbname']
+            $this->getSetting('dbname'),
+            $this->getSetting('dbname')
         );
 
         return array(new View('vcolumns', $sql));
@@ -153,7 +152,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function getDropSchemaSQLQueries()
+    protected function getDropSchemaSQLQueries()
     {
         return array_slice(parent::getDropSchemaSQLQueries(), 1);
     }
@@ -164,22 +163,22 @@ EOT;
     protected function getConnection($database = true)
     {
         $dsnOptions = array();
-
         $haystack = array('host', 'port');
 
         if ($database) {
             $haystack[] = 'dbname';
         }
 
-        foreach ($this->settings as $dsnKey => $dsnSetting) {
+        foreach ($this->getSettings() as $dsnKey => $dsnSetting) {
             if (in_array($dsnKey, $haystack)) {
                 $dsnOptions[] = $dsnKey.'='.$dsnSetting;
             }
         }
 
-        $username = $this->settings['username'];
-        $password = $this->settings['password'];
-
-        return new PDO('mysql:'.implode(';', $dsnOptions), $username, $password);
+        return new \PDO(
+            'mysql:'.implode(';', $dsnOptions),
+            $this->getSetting('username'),
+            $this->getSetting('password')
+        );
     }
 }

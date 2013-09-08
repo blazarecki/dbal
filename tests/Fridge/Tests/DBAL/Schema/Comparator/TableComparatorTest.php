@@ -28,43 +28,43 @@ use Fridge\DBAL\Type\Type;
 class TableComparatorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Comparator\TableComparator */
-    protected $tableComparator;
+    private $tableComparator;
 
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $oldTable;
+    private $oldTable;
 
     /** @var \Fridge\DBAL\Schema\Table */
-    protected $newTable;
+    private $newTable;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $oldColumn;
+    private $oldColumn;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $newColumn;
+    private $newColumn;
 
     /** @var \Fridge\DBAL\Schema\PrimaryKey */
-    protected $oldPrimaryKey;
+    private $oldPrimaryKey;
 
     /** @var \Fridge\DBAL\Schema\PrimaryKey */
-    protected $newPrimaryKey;
+    private $newPrimaryKey;
 
     /** @var \Fridge\DBAL\Schema\ForeignKey */
-    protected $oldForeignKey;
+    private $oldForeignKey;
 
     /** @var \Fridge\DBAL\Schema\ForeignKey */
-    protected $newForeignKey;
+    private $newForeignKey;
 
     /** @var \Fridge\DBAL\Schema\Index */
-    protected $oldIndex;
+    private $oldIndex;
 
     /** @var \Fridge\DBAL\Schema\Index */
-    protected $newIndex;
+    private $newIndex;
 
     /** @var \Fridge\DBAL\Schema\Check */
-    protected $oldCheck;
+    private $oldCheck;
 
     /** @var \Fridge\DBAL\Schema\Check */
-    protected $newCheck;
+    private $newCheck;
 
     /**
      * {@inheritdoc}

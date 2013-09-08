@@ -13,24 +13,22 @@ namespace Fridge\DBAL\Statement;
 
 use Fridge\DBAL\Connection\ConnectionInterface;
 use Fridge\DBAL\Type\TypeUtility;
-use IteratorAggregate;
-use PDO;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Statement implements StatementInterface, IteratorAggregate
+class Statement implements StatementInterface, \IteratorAggregate
 {
     /** @var \Fridge\DBAL\Driver\Statement\NativeStatementInterface */
-    protected $nativeStatement;
+    private $nativeStatement;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
-    protected $connection;
+    private $connection;
 
     /** @var string */
-    protected $sql;
+    private $sql;
 
     /**
      * Creates a statement.
@@ -83,7 +81,7 @@ class Statement implements StatementInterface, IteratorAggregate
      *
      * This method only suppports PDO type.
      */
-    public function bindParam($parameter, &$variable, $type = PDO::PARAM_STR)
+    public function bindParam($parameter, &$variable, $type = \PDO::PARAM_STR)
     {
         return $this->nativeStatement->bindParam($parameter, $variable, $type);
     }
@@ -93,7 +91,7 @@ class Statement implements StatementInterface, IteratorAggregate
      *
      * This method supports PDO or DBAL type.
      */
-    public function bindValue($parameter, $value, $type = PDO::PARAM_STR)
+    public function bindValue($parameter, $value, $type = \PDO::PARAM_STR)
     {
         TypeUtility::bindTypedValue($value, $type, $this->connection->getPlatform());
 
@@ -143,7 +141,7 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function fetch($fetchMode = PDO::FETCH_BOTH)
+    public function fetch($fetchMode = \PDO::FETCH_BOTH)
     {
         return $this->nativeStatement->fetch($fetchMode);
     }
@@ -151,7 +149,7 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function fetchAll($fetchMode = PDO::FETCH_BOTH)
+    public function fetchAll($fetchMode = \PDO::FETCH_BOTH)
     {
         return $this->nativeStatement->fetchAll($fetchMode);
     }

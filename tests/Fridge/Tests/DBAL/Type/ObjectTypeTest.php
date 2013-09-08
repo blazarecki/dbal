@@ -13,52 +13,49 @@ namespace Fridge\Tests\DBAL\Type;
 
 use Fridge\DBAL\Type\ObjectType;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Object type test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class ObjectTypeTest extends AbstractTypeTest
+class ObjectTypeTest extends AbstractTypeTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpType()
     {
-        parent::setUp();
-
-        $this->type = new ObjectType();
+        return  new ObjectType();
     }
 
     public function testSQLDeclaration()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getClobSQLDeclaration');
 
-        $this->type->getSQLDeclaration($this->platformMock);
+        $this->getType()->getSQLDeclaration($this->getPlatform());
     }
 
     public function testConvertToDatabaseValueWithValidValue()
     {
         $this->assertSame(
             'O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}',
-            $this->type->convertToDatabaseValue((object) array('foo' => 'bar'), $this->platformMock)
+            $this->getType()->convertToDatabaseValue((object) array('foo' => 'bar'), $this->getPlatform())
         );
     }
 
     public function testConvertToDatabaseValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToDatabaseValue(null, $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithValidValue()
     {
         $this->assertEquals(
             (object) array('foo' => 'bar'),
-            $this->type->convertToPHPValue('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->platformMock)
+            $this->getType()->convertToPHPValue('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->getPlatform())
         );
     }
 
@@ -67,21 +64,21 @@ class ObjectTypeTest extends AbstractTypeTest
      */
     public function testConvertToPHPValueWithInvalidValue()
     {
-        $this->type->convertToPHPValue('foo', $this->platformMock);
+        $this->getType()->convertToPHPValue('foo', $this->getPlatform());
     }
 
     public function testConvertToPHPValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToPHPValue(null, $this->getPlatform()));
     }
 
     public function testBindingType()
     {
-        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(\PDO::PARAM_STR, $this->getType()->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertSame(Type::OBJECT, $this->type->getName());
+        $this->assertSame(Type::OBJECT, $this->getType()->getName());
     }
 }

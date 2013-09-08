@@ -22,37 +22,37 @@ use Fridge\DBAL\Schema\Table;
 class TableDiff extends AbstractAssetDiff
 {
     /** @var array */
-    protected $createdColumns;
+    private $createdColumns;
 
     /** @var array */
-    protected $alteredColumns;
+    private $alteredColumns;
 
     /** @var array */
-    protected $droppedColumns;
+    private $droppedColumns;
 
     /** @var \Fridge\DBAL\Schema\PrimaryKey */
-    protected $createdPrimaryKey;
+    private $createdPrimaryKey;
 
     /** @var \Fridge\DBAL\Schema\PrimaryKey */
-    protected $droppedPrimaryKey;
+    private $droppedPrimaryKey;
 
     /** @var array */
-    protected $createdForeignKeys;
+    private $createdForeignKeys;
 
     /** @var array */
-    protected $droppedForeignKeys;
+    private $droppedForeignKeys;
 
     /** @var array */
-    protected $createdIndexes;
+    private $createdIndexes;
 
     /** @var array */
-    protected $droppedIndexes;
+    private $droppedIndexes;
 
     /** @var array */
-    protected $createdChecks;
+    private $createdChecks;
 
     /** @var array */
-    protected $droppedChecks;
+    private $droppedChecks;
 
     /**
      * Table diff constructor.
@@ -246,7 +246,7 @@ class TableDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the table has column difference else FALSE.
      */
-    protected function hasColumnDifference()
+    private function hasColumnDifference()
     {
         return !empty($this->createdColumns) || !empty($this->alteredColumns) || !empty($this->droppedColumns);
     }
@@ -256,7 +256,7 @@ class TableDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the table diff has primary key difference else FALSE.
      */
-    protected function hasPrimaryKeyDifference()
+    private function hasPrimaryKeyDifference()
     {
         return ($this->createdPrimaryKey !== null) || ($this->droppedPrimaryKey !== null);
     }
@@ -266,7 +266,7 @@ class TableDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the table diff has foreign key difference else FALSE.
      */
-    protected function hasForeignKeyDifference()
+    private function hasForeignKeyDifference()
     {
         return !empty($this->createdForeignKeys) || !empty($this->droppedForeignKeys);
     }
@@ -276,7 +276,7 @@ class TableDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the table diff has index difference else FALSE.
      */
-    protected function hasIndexDifference()
+    private function hasIndexDifference()
     {
         return !empty($this->createdIndexes) || !empty($this->droppedIndexes);
     }
@@ -286,7 +286,7 @@ class TableDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the table diff has check difference else FALSE.
      */
-    protected function hasCheckDifference()
+    private function hasCheckDifference()
     {
         return !empty($this->createdChecks) || !empty($this->droppedChecks);
     }

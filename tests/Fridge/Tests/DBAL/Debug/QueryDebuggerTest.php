@@ -21,7 +21,7 @@ use Fridge\DBAL\Debug\QueryDebugger;
 class QueryDebuggerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Debug\QueryDebugger */
-    protected $queryDebugger;
+    private $queryDebugger;
 
     /**
      * {@inheritdoc}

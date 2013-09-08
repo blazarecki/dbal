@@ -21,25 +21,25 @@ use Fridge\DBAL\Schema\Schema;
 class SchemaDiff extends AbstractAssetDiff
 {
     /** @var array */
-    protected $createdTables;
+    private $createdTables;
 
     /** @var array */
-    protected $alteredTables;
+    private $alteredTables;
 
     /** @var array */
-    protected $droppedTables;
+    private $droppedTables;
 
     /** @var array */
-    protected $createdSequences;
+    private $createdSequences;
 
     /** @var array */
-    protected $droppedSequences;
+    private $droppedSequences;
 
     /** @var array */
-    protected $createdViews;
+    private $createdViews;
 
     /** @var array */
-    protected $droppedViews;
+    private $droppedViews;
 
     /**
      * Schema diff constructor.
@@ -175,7 +175,7 @@ class SchemaDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the schema diff has table difference else FALSE.
      */
-    protected function hasTableDifference()
+    private function hasTableDifference()
     {
         return !empty($this->createdTables) || !empty($this->alteredTables) || !empty($this->droppedTables);
     }
@@ -185,7 +185,7 @@ class SchemaDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the schema diff has sequence difference else FALSE.
      */
-    protected function hasSequenceDifference()
+    private function hasSequenceDifference()
     {
         return !empty($this->createdSequences) || !empty($this->droppedSequences);
     }
@@ -195,7 +195,7 @@ class SchemaDiff extends AbstractAssetDiff
      *
      * @return boolean TRUE if the schema diff has view difference else FALSE.
      */
-    protected function hasViewDifference()
+    private function hasViewDifference()
     {
         return !empty($this->createdViews) || !empty($this->droppedViews);
     }

@@ -27,7 +27,7 @@ class MysqliException extends Exception
      */
     public static function mappedTypeDoesNotExist($type)
     {
-        return new static(sprintf('The mapped type "%s" does not exist.', $type));
+        return new self(sprintf('The mapped type "%s" does not exist.', $type));
     }
 
     /**
@@ -39,6 +39,6 @@ class MysqliException extends Exception
      */
     public static function fetchModeNotSupported($fetchMode)
     {
-        return new static(sprintf('The fetch mode "%s" is not supported.', $fetchMode));
+        return new self(sprintf('The fetch mode "%s" is not supported.', $fetchMode));
     }
 }

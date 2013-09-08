@@ -21,7 +21,7 @@ use Fridge\DBAL\Schema\ForeignKey;
 class ForeignKeyTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\ForeignKey */
-    protected $foreignKey;
+    private $foreignKey;
 
     /**
      * {@inheritdoc}

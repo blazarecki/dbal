@@ -12,7 +12,6 @@
 namespace Fridge\DBAL\Type;
 
 use Fridge\DBAL\Platform\PlatformInterface;
-use PDO;
 
 /**
  * Integer type.
@@ -50,7 +49,7 @@ class IntegerType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_INT;
+        return \PDO::PARAM_INT;
     }
 
     /**

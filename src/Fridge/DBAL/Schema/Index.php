@@ -21,10 +21,10 @@ use Fridge\DBAL\Exception\SchemaException;
 class Index extends AbstractAsset implements ConstraintInterface
 {
     /** @var array */
-    protected $columnNames;
+    private $columnNames;
 
     /** @var boolean */
-    protected $unique;
+    private $unique;
 
     /**
      * Creates an index.

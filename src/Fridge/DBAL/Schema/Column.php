@@ -22,34 +22,34 @@ use Fridge\DBAL\Type\TypeInterface;
 class Column extends AbstractAsset
 {
     /** @var \Fridge\DBAL\Type\TypeInterface */
-    protected $type;
+    private $type;
 
     /** @var integer */
-    protected $length;
+    private $length;
 
     /** @var integer */
-    protected $precision;
+    private $precision;
 
     /** @var integer */
-    protected $scale;
+    private $scale;
 
     /** @var boolean */
-    protected $unsigned;
+    private $unsigned;
 
     /** @var boolean */
-    protected $fixed;
+    private $fixed;
 
     /** @var boolean */
-    protected $notNull;
+    private $notNull;
 
     /** @var mixed */
-    protected $default;
+    private $default;
 
     /** @var boolean */
-    protected $autoIncrement;
+    private $autoIncrement;
 
     /** @var string */
-    protected $comment;
+    private $comment;
 
     /**
      * Creates a column.

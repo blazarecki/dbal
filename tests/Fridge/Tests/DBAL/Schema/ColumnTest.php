@@ -22,7 +22,7 @@ use Fridge\DBAL\Type\Type;
 class ColumnTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $column;
+    private $column;
 
     /**
      * {@inheritdoc}

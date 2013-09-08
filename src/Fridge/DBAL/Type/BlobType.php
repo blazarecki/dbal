@@ -13,7 +13,6 @@ namespace Fridge\DBAL\Type;
 
 use Fridge\DBAL\Platform\PlatformInterface;
 use Fridge\DBAL\Exception\TypeException;
-use PDO;
 
 /**
  * Blob type.
@@ -47,7 +46,7 @@ class BlobType implements TypeInterface
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
         if ($value === null) {
-            return null;
+            return;
         }
 
         if (is_string($value)) {
@@ -66,7 +65,7 @@ class BlobType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_LOB;
+        return \PDO::PARAM_LOB;
     }
 
     /**

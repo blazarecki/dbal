@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class SetCharsetSubscriber implements EventSubscriberInterface
 {
     /** @var string */
-    protected $charset;
+    private $charset;
 
     /**
      * Creates a MySQL Session initializer.

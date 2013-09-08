@@ -18,22 +18,22 @@ namespace Fridge\DBAL\Query\Expression;
  */
 class ExpressionBuilder
 {
-    /** @const The equal comparison constant */
+    /** @const string The equal comparison constant */
     const EQ  = '=';
 
-    /** @const The not equal comparison constant */
+    /** @const string The not equal comparison constant */
     const NEQ = '<>';
 
-    /** @const The greater than comparison constant */
+    /** @const string The greater than comparison constant */
     const GT  = '>';
 
-    /** @const The greater than or equal comparison constant */
+    /** @const string The greater than or equal comparison constant */
     const GTE = '>=';
 
-    /** @const The lower than comparison constant */
+    /** @const string The lower than comparison constant */
     const LT  = '<';
 
-    /** @const The lower than or equal comparison constant */
+    /** @const string The lower than or equal comparison constant */
     const LTE = '<=';
 
     /**
@@ -197,7 +197,7 @@ class ExpressionBuilder
      *
      * @return string The comparison.
      */
-    protected function comparison($x, $operator, $y)
+    private function comparison($x, $operator, $y)
     {
         return $x.' '.$operator.' '.$y;
     }

@@ -107,7 +107,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array The placeholder positions.
      */
-    protected static function determinePlaceholderPositions($query, $placeholder)
+    private static function determinePlaceholderPositions($query, $placeholder)
     {
         // Placeholder positions.
         $placeholderPositions = array();
@@ -159,7 +159,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array The new placeholders.
      */
-    protected static function generateNewPlaceholders($placeholder, $count)
+    private static function generateNewPlaceholders($placeholder, $count)
     {
         $newPlaceholders = array();
 
@@ -189,7 +189,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return string The rewritten query.
      */
-    protected static function rewriteQuery(
+    private static function rewriteQuery(
         $query,
         array $placeholderPositions,
         $placeholderLength,
@@ -237,7 +237,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
      *
      * @return array 0 => The rewritten parameters, 1 => The rewritten types.
      */
-    protected static function rewriteParameterAndType(
+    private static function rewriteParameterAndType(
         array $parameters,
         array $types,
         $parameter,

@@ -19,10 +19,10 @@ namespace Fridge\Tests\DBAL\SchemaManager;
 class SchemaManagerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\SchemaManager\AbstractSchemaManager */
-    protected $schemaManager;
+    private $schemaManager;
 
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platformMock;
+    private $platformMock;
 
     /**
      * {@inheritdoc}

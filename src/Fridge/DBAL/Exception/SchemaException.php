@@ -27,7 +27,7 @@ class SchemaException extends Exception
      */
     public static function invalidAssetName($asset)
     {
-        return new static(sprintf('The %s name must be a string.', $asset));
+        return new self(sprintf('The %s name must be a string.', $asset));
     }
 
     /**
@@ -39,7 +39,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnAutoIncrementFlag($column)
     {
-        return new static(sprintf('The auto increment flag of the column "%s" must be a boolean.', $column));
+        return new self(sprintf('The auto increment flag of the column "%s" must be a boolean.', $column));
     }
 
     /**
@@ -51,7 +51,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnComment($column)
     {
-        return new static(sprintf('The comment of the column "%s" must be a string.', $column));
+        return new self(sprintf('The comment of the column "%s" must be a string.', $column));
     }
 
     /**
@@ -63,7 +63,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnFixedFlag($column)
     {
-        return new static(sprintf('The fixed flag of the column "%s" must be a boolean.', $column));
+        return new self(sprintf('The fixed flag of the column "%s" must be a boolean.', $column));
     }
 
     /**
@@ -75,7 +75,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnLength($column)
     {
-        return new static(sprintf('The length of the column "%s" must be a positive integer.', $column));
+        return new self(sprintf('The length of the column "%s" must be a positive integer.', $column));
     }
 
     /**
@@ -87,7 +87,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnNotNullFlag($column)
     {
-        return new static(sprintf('The not null flag of the column "%s" must be a boolean.', $column));
+        return new self(sprintf('The not null flag of the column "%s" must be a boolean.', $column));
     }
 
     /**
@@ -100,7 +100,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnProperty($column, $property)
     {
-        return new static(sprintf('The property "%s" of the column "%s" does not exist.', $property, $column));
+        return new self(sprintf('The property "%s" of the column "%s" does not exist.', $property, $column));
     }
 
     /**
@@ -112,7 +112,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnPrecision($column)
     {
-        return new static(sprintf('The precision of the column "%s" must be a positive integer.', $column));
+        return new self(sprintf('The precision of the column "%s" must be a positive integer.', $column));
     }
 
     /**
@@ -124,7 +124,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnScale($column)
     {
-        return new static(sprintf('The scale of the column "%s" must be a positive integer.', $column));
+        return new self(sprintf('The scale of the column "%s" must be a positive integer.', $column));
     }
 
     /**
@@ -136,7 +136,7 @@ class SchemaException extends Exception
      */
     public static function invalidColumnUnsignedFlag($column)
     {
-        return new static(sprintf('The unsigned flag of the column "%s" must be a boolean.', $column));
+        return new self(sprintf('The unsigned flag of the column "%s" must be a boolean.', $column));
     }
 
     /**
@@ -148,7 +148,7 @@ class SchemaException extends Exception
      */
     public static function invalidForeignKeyForeignColumnName($foreignKey)
     {
-        return new static(sprintf('The foreign column name of the foreign key "%s" must be a string.', $foreignKey));
+        return new self(sprintf('The foreign column name of the foreign key "%s" must be a string.', $foreignKey));
     }
 
     /**
@@ -160,7 +160,7 @@ class SchemaException extends Exception
      */
     public static function invalidForeignKeyForeignTableName($foreignKey)
     {
-        return new static(sprintf('The foreign table name of the foreign key "%s" must be a string.', $foreignKey));
+        return new self(sprintf('The foreign table name of the foreign key "%s" must be a string.', $foreignKey));
     }
 
     /**
@@ -172,7 +172,7 @@ class SchemaException extends Exception
      */
     public static function invalidForeignKeyLocalColumnName($foreignKey)
     {
-        return new static(sprintf('The local column name of the foreign key "%s" must be a string.', $foreignKey));
+        return new self(sprintf('The local column name of the foreign key "%s" must be a string.', $foreignKey));
     }
 
     /**
@@ -184,7 +184,7 @@ class SchemaException extends Exception
      */
     public static function invalidIndexColumnName($index)
     {
-        return new static(sprintf('The column name of the index "%s" must be a string.', $index));
+        return new self(sprintf('The column name of the index "%s" must be a string.', $index));
     }
 
     /**
@@ -196,7 +196,7 @@ class SchemaException extends Exception
      */
     public static function invalidIndexUniqueFlag($index)
     {
-        return new static(sprintf('The unique flag of the index "%s" must be a boolean.', $index));
+        return new self(sprintf('The unique flag of the index "%s" must be a boolean.', $index));
     }
 
     /**
@@ -208,7 +208,7 @@ class SchemaException extends Exception
      */
     public static function invalidPrimaryKeyColumnName($primaryKey)
     {
-        return new static(sprintf('The column name of the primary key "%s" must be a string.', $primaryKey));
+        return new self(sprintf('The column name of the primary key "%s" must be a string.', $primaryKey));
     }
 
     /**
@@ -220,7 +220,7 @@ class SchemaException extends Exception
      */
     public static function invalidSequenceInitialValue($sequence)
     {
-        return new static(sprintf('The initial value of the sequence "%s" must be a positive integer.', $sequence));
+        return new self(sprintf('The initial value of the sequence "%s" must be a positive integer.', $sequence));
     }
 
     /**
@@ -232,7 +232,7 @@ class SchemaException extends Exception
      */
     public static function invalidSequenceIncrementSize($sequence)
     {
-        return new static(sprintf('The increment size of the sequence "%s" must be a positive integer.', $sequence));
+        return new self(sprintf('The increment size of the sequence "%s" must be a positive integer.', $sequence));
     }
 
     /**
@@ -244,7 +244,7 @@ class SchemaException extends Exception
      */
     public static function invalidViewSQL($view)
     {
-        return new static(sprintf('The SQL query of the view "%s" must be a string.', $view));
+        return new self(sprintf('The SQL query of the view "%s" must be a string.', $view));
     }
 
     /**
@@ -257,7 +257,7 @@ class SchemaException extends Exception
      */
     public static function tableColumnAlreadyExists($table, $column)
     {
-        return new static(sprintf('The column "%s" of the table "%s" already exists.', $column, $table));
+        return new self(sprintf('The column "%s" of the table "%s" already exists.', $column, $table));
     }
 
     /**
@@ -270,7 +270,7 @@ class SchemaException extends Exception
      */
     public static function tableColumnDoesNotExist($table, $column)
     {
-        return new static(sprintf('The column "%s" of the table "%s" does not exist.', $column, $table));
+        return new self(sprintf('The column "%s" of the table "%s" does not exist.', $column, $table));
     }
 
     /**
@@ -282,7 +282,7 @@ class SchemaException extends Exception
      */
     public static function tablePrimaryKeyAlreadyExists($table)
     {
-        return new static(sprintf('The table "%s" has already a primary key.', $table));
+        return new self(sprintf('The table "%s" has already a primary key.', $table));
     }
 
     /**
@@ -294,7 +294,7 @@ class SchemaException extends Exception
      */
     public static function tablePrimaryKeyDoesNotExist($table)
     {
-        return new static(sprintf('The table "%s" has no primary key.', $table));
+        return new self(sprintf('The table "%s" has no primary key.', $table));
     }
 
     /**
@@ -307,7 +307,7 @@ class SchemaException extends Exception
      */
     public static function tableForeignKeyAlreadyExists($table, $foreignKey)
     {
-        return new static(sprintf('The foreign key "%s" of the table "%s" already exists.', $foreignKey, $table));
+        return new self(sprintf('The foreign key "%s" of the table "%s" already exists.', $foreignKey, $table));
     }
 
     /**
@@ -320,7 +320,7 @@ class SchemaException extends Exception
      */
     public static function tableForeignKeyDoesNotExist($table, $foreignKey)
     {
-        return new static(sprintf('The foreign key "%s" of the table "%s" does not exist.', $foreignKey, $table));
+        return new self(sprintf('The foreign key "%s" of the table "%s" does not exist.', $foreignKey, $table));
     }
 
     /**
@@ -333,7 +333,7 @@ class SchemaException extends Exception
      */
     public static function tableIndexAlreadyExists($table, $index)
     {
-        return new static(sprintf('The index "%s" of the table "%s" already exists.', $index, $table));
+        return new self(sprintf('The index "%s" of the table "%s" already exists.', $index, $table));
     }
 
     /**
@@ -346,7 +346,7 @@ class SchemaException extends Exception
      */
     public static function tableIndexDoesNotExist($table, $index)
     {
-        return new static(sprintf('The index "%s" of the table "%s" does not exist.', $index, $table));
+        return new self(sprintf('The index "%s" of the table "%s" does not exist.', $index, $table));
     }
 
     /**
@@ -359,7 +359,7 @@ class SchemaException extends Exception
      */
     public static function schemaTableAlreadyExists($schema, $table)
     {
-        return new static(sprintf('The table "%s" of the schema "%s" already exists.', $table, $schema));
+        return new self(sprintf('The table "%s" of the schema "%s" already exists.', $table, $schema));
     }
 
     /**
@@ -372,7 +372,7 @@ class SchemaException extends Exception
      */
     public static function schemaTableDoesNotExist($schema, $table)
     {
-        return new static(sprintf('The table "%s" of the schema "%s" does not exist.', $table, $schema));
+        return new self(sprintf('The table "%s" of the schema "%s" does not exist.', $table, $schema));
     }
 
     /**
@@ -385,7 +385,7 @@ class SchemaException extends Exception
      */
     public static function schemaSequenceAlreadyExists($schema, $sequence)
     {
-        return new static(sprintf('The sequence "%s" of the schema "%s" already exists.', $sequence, $schema));
+        return new self(sprintf('The sequence "%s" of the schema "%s" already exists.', $sequence, $schema));
     }
 
     /**
@@ -398,7 +398,7 @@ class SchemaException extends Exception
      */
     public static function schemaSequenceDoesNotExist($schema, $sequence)
     {
-        return new static(sprintf('The sequence "%s" of the schema "%s" does not exist.', $sequence, $schema));
+        return new self(sprintf('The sequence "%s" of the schema "%s" does not exist.', $sequence, $schema));
     }
 
     /**
@@ -411,7 +411,7 @@ class SchemaException extends Exception
      */
     public static function schemaViewAlreadyExists($schema, $view)
     {
-        return new static(sprintf('The view "%s" of the schema "%s" already exists.', $view, $schema));
+        return new self(sprintf('The view "%s" of the schema "%s" already exists.', $view, $schema));
     }
 
     /**
@@ -424,7 +424,7 @@ class SchemaException extends Exception
      */
     public static function schemaViewDoesNotExist($schema, $view)
     {
-        return new static(sprintf('The view "%s" of the schema "%s" does not exist.', $view, $schema));
+        return new self(sprintf('The view "%s" of the schema "%s" does not exist.', $view, $schema));
     }
 
     /**
@@ -437,7 +437,7 @@ class SchemaException extends Exception
      */
     public static function tableCheckDoesNotExist($table, $check)
     {
-        return new static(sprintf('The check "%s" of the table "%s" does not exist.', $check, $table));
+        return new self(sprintf('The check "%s" of the table "%s" does not exist.', $check, $table));
     }
 
     /**
@@ -450,6 +450,6 @@ class SchemaException extends Exception
      */
     public static function tableCheckAlreadyExists($table, $check)
     {
-        return new static(sprintf('The check "%s" of the table "%s" already exists.', $check, $table));
+        return new self(sprintf('The check "%s" of the table "%s" already exists.', $check, $table));
     }
 }

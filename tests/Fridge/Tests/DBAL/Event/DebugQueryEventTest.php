@@ -20,14 +20,35 @@ use Fridge\DBAL\Event\DebugQueryEvent;
  */
 class DebugQueryEventTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDebugger()
+    /** @var \Fridge\DBAL\Event\DebugQueryEvent */
+    private $debugQueryEvent;
+
+    /** @var \Fridge\DBAL\Debug\QueryDebugger */
+    private $queryDebugger;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
-        $queryDebuggerMock = $this->getMockBuilder('Fridge\DBAL\Debug\QueryDebugger')
+        $this->queryDebugger = $this->getMockBuilder('Fridge\DBAL\Debug\QueryDebugger')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $event = new DebugQueryEvent($queryDebuggerMock);
+        $this->debugQueryEvent = new DebugQueryEvent($this->queryDebugger);
+    }
 
-        $this->assertSame($queryDebuggerMock, $event->getQueryDebugger());
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        unset($this->debugQueryEvent);
+        unset($this->queryDebugger);
+    }
+
+    public function testDebugger()
+    {
+        $this->assertSame($this->queryDebugger, $this->debugQueryEvent->getQueryDebugger());
     }
 }

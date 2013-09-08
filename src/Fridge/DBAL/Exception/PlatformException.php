@@ -27,7 +27,7 @@ class PlatformException extends Exception
      */
     public static function constraintNotSupported($constraint)
     {
-        return new static(sprintf('The constraint "%s" is not supported.', $constraint));
+        return new self(sprintf('The constraint "%s" is not supported.', $constraint));
     }
 
     /**
@@ -37,7 +37,7 @@ class PlatformException extends Exception
      */
     public static function invalidVarcharFixedFlag()
     {
-        return new static('The varchar fixed flag must be a boolean.');
+        return new self('The varchar fixed flag must be a boolean.');
     }
 
     /**
@@ -47,7 +47,7 @@ class PlatformException extends Exception
      */
     public static function invalidVarcharLength()
     {
-        return new static('The varchar length must be a positive integer.');
+        return new self('The varchar length must be a positive integer.');
     }
 
     /**
@@ -57,7 +57,7 @@ class PlatformException extends Exception
      */
     public static function invalidStringTypePrefixLength()
     {
-        return new static('The string type prefix length must be a strict positive integer.');
+        return new self('The string type prefix length must be a strict positive integer.');
     }
 
     /**
@@ -69,7 +69,7 @@ class PlatformException extends Exception
      */
     public static function mappedTypeAlreadyExists($type)
     {
-        return new static(sprintf('The mapped type "%s" already exists.', $type));
+        return new self(sprintf('The mapped type "%s" already exists.', $type));
     }
 
     /**
@@ -81,7 +81,7 @@ class PlatformException extends Exception
      */
     public static function mappedTypeDoesNotExist($type)
     {
-        return new static(sprintf('The mapped type "%s" does not exist.', $type));
+        return new self(sprintf('The mapped type "%s" does not exist.', $type));
     }
 
     /**
@@ -93,7 +93,7 @@ class PlatformException extends Exception
      */
     public static function customTypeAlreadyExists($type)
     {
-        return new static(sprintf('The custom type "%s" already exists.', $type));
+        return new self(sprintf('The custom type "%s" already exists.', $type));
     }
 
     /**
@@ -105,7 +105,7 @@ class PlatformException extends Exception
      */
     public static function customTypeDoesNotExist($type)
     {
-        return new static(sprintf('The custom type "%s" does not exist.', $type));
+        return new self(sprintf('The custom type "%s" does not exist.', $type));
     }
 
     /**
@@ -117,6 +117,6 @@ class PlatformException extends Exception
      */
     public static function transactionIsolationDoesNotExist($isolation)
     {
-        return new static(sprintf('The transaction isolation "%s" does not exist.', $isolation));
+        return new self(sprintf('The transaction isolation "%s" does not exist.', $isolation));
     }
 }

@@ -31,24 +31,25 @@ use Fridge\DBAL\Type\Type;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
+class AlterSchemaSQLCollectorTest extends AbstractSQLCollectorTestCase
 {
-    /** @var \Fridge\DBAL\SchemaManager\SQLCollector\AlterSchemaSQLCollector */
-    protected $sqlCollector;
-
-    /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platformMock;
-
     /** @var \Fridge\DBAL\Schema\Diff\SchemaDiff */
-    protected $schemaDiff;
+    private $schemaDiff;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUpSQLCollector()
+    {
+        return new AlterSchemaSQLCollector($this->getPlatform());
+    }
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
-        $this->sqlCollector = new AlterSchemaSQLCollector($this->platformMock);
+        parent::setUp();
 
         $this->schemaDiff = new SchemaDiff(
             new Schema('foo'),
@@ -104,9 +105,34 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->sqlCollector);
-        unset($this->platformMock);
+        parent::tearDown();
+
         unset($this->schemaDiff);
+    }
+
+    /**
+     * Asserts the initial state.
+     */
+    private function assertInitialState()
+    {
+        $this->assertEmpty($this->getSQLCollector()->getDropSequenceQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropViewQueries());
+        $this->assertEmpty($this->getSQLCollector()->getRenameTableQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropIndexQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropForeignKeyQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropTableQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropPrimaryKeyQueries());
+        $this->assertEmpty($this->getSQLCollector()->getDropColumnQueries());
+        $this->assertEmpty($this->getSQLCollector()->getAlterColumnQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateColumnQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreatePrimaryKeyQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateIndexQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateTableQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateForeignKeyQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateViewQueries());
+        $this->assertEmpty($this->getSQLCollector()->getCreateSequenceQueries());
+        $this->assertEmpty($this->getSQLCollector()->getRenameSchemaQueries());
+        $this->assertEmpty($this->getSQLCollector()->getQueries());
     }
 
     public function testInitialState()
@@ -116,12 +142,12 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testPlatform()
     {
-        $this->assertSame($this->platformMock, $this->sqlCollector->getPlatform());
+        $this->assertSame($this->getPlatform(), $this->getSQLCollector()->getPlatform());
 
         $platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
-        $this->sqlCollector->setPlatform($platformMock);
+        $this->getSQLCollector()->setPlatform($platformMock);
 
-        $this->assertSame($platformMock, $this->sqlCollector->getPlatform());
+        $this->assertSame($platformMock, $this->getSQLCollector()->getPlatform());
     }
 
     public function testCollect()
@@ -140,6 +166,7 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $alteredColumns = $alteredTables[0]->getAlteredColumns();
         $droppedColumns = $alteredTables[0]->getDroppedColumns();
 
+        // FIXME
         $droppedForeignKeys = $alteredTables[0]->getDroppedForeignKeys();
         $createdForeignKeys = $alteredTables[0]->getCreatedForeignKeys();
 
@@ -149,42 +176,42 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $droppedChecks = $alteredTables[0]->getDroppedChecks();
         $createdChecks = $alteredTables[0]->getCreatedChecks();
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropSequenceSQLQueries')
             ->with($this->equalTo($droppedSequences[0]))
             ->will($this->returnValue(array('DROP SEQUENCE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropViewSQLQueries')
             ->with($this->equalTo($droppedViews[0]))
             ->will($this->returnValue(array('DROP VIEW')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getRenameTableSQLQueries')
             ->with($this->equalTo($alteredTables[0]))
             ->will($this->returnValue(array('RENAME TABLE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropCheckSQLQueries')
             ->with($this->equalTo($droppedChecks[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('DROP CHECK')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->any())
             ->method('getDropForeignKeySQLQueries')
             ->will($this->returnValue(array('DROP FOREIGN KEY')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropIndexSQLQueries')
             ->with($this->equalTo($droppedIndexes[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('DROP INDEX')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropPrimaryKeySQLQueries')
             ->with(
@@ -193,37 +220,37 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(array('DROP PRIMARY KEY')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropTableSQLQueries')
             ->with($this->equalTo($droppedTables[0]))
             ->will($this->returnValue(array('DROP TABLE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropColumnSQLQueries')
             ->with($this->equalTo($droppedColumns[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('DROP COLUMN')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getAlterColumnSQLQueries')
             ->with($this->equalTo($alteredColumns[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('ALTER COLUMN')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateColumnSQLQueries')
             ->with($this->equalTo($createdColumns[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('CREATE COLUMN')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
             ->with($this->equalTo($createdTables[0]), array('foreign_key' => false))
             ->will($this->returnValue(array('CREATE TABLE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreatePrimaryKeySQLQueries')
             ->with(
@@ -232,68 +259,68 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(array('CREATE PRIMARY KEY')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateIndexSQLQueries')
             ->with($this->equalTo($createdIndexes[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('CREATE INDEX')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->any())
             ->method('getCreateForeignKeySQLQueries')
             ->will($this->returnValue(array('CREATE FOREIGN KEY')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateCheckSQLQueries')
             ->with($this->equalTo($createdChecks[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue(array('CREATE CHECK')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateViewSQLQueries')
             ->with($this->equalTo($createdViews[0]))
             ->will($this->returnValue(array('CREATE VIEW')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateSequenceSQLQueries')
             ->with($this->equalTo($createdSequences[0]))
             ->will($this->returnValue(array('CREATE SEQUENCE')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getRenameDatabaseSQLQueries')
             ->with($this->equalTo($this->schemaDiff))
             ->will($this->returnValue(array('RENAME SCHEMA')));
 
-        $this->sqlCollector->collect($this->schemaDiff);
+        $this->getSQLCollector()->collect($this->schemaDiff);
 
-        $this->assertSame(array('DROP SEQUENCE'), $this->sqlCollector->getDropSequenceQueries());
-        $this->assertSame(array('DROP VIEW'), $this->sqlCollector->getDropViewQueries());
-        $this->assertSame(array('RENAME TABLE'), $this->sqlCollector->getRenameTableQueries());
-        $this->assertSame(array('DROP CHECK'), $this->sqlCollector->getDropCheckQueries());
+        $this->assertSame(array('DROP SEQUENCE'), $this->getSQLCollector()->getDropSequenceQueries());
+        $this->assertSame(array('DROP VIEW'), $this->getSQLCollector()->getDropViewQueries());
+        $this->assertSame(array('RENAME TABLE'), $this->getSQLCollector()->getRenameTableQueries());
+        $this->assertSame(array('DROP CHECK'), $this->getSQLCollector()->getDropCheckQueries());
         $this->assertSame(
             array('DROP FOREIGN KEY', 'DROP FOREIGN KEY'),
-            $this->sqlCollector->getDropForeignKeyQueries()
+            $this->getSQLCollector()->getDropForeignKeyQueries()
         );
-        $this->assertSame(array('DROP INDEX'), $this->sqlCollector->getDropIndexQueries());
-        $this->assertSame(array('DROP PRIMARY KEY'), $this->sqlCollector->getDropPrimaryKeyQueries());
-        $this->assertSame(array('DROP TABLE'), $this->sqlCollector->getDropTableQueries());
-        $this->assertSame(array('DROP COLUMN'), $this->sqlCollector->getDropColumnQueries());
-        $this->assertSame(array('ALTER COLUMN'), $this->sqlCollector->getAlterColumnQueries());
-        $this->assertSame(array('CREATE COLUMN'), $this->sqlCollector->getCreateColumnQueries());
-        $this->assertSame(array('CREATE TABLE'), $this->sqlCollector->getCreateTableQueries());
-        $this->assertSame(array('CREATE PRIMARY KEY'), $this->sqlCollector->getCreatePrimaryKeyQueries());
-        $this->assertSame(array('CREATE INDEX'), $this->sqlCollector->getCreateIndexQueries());
+        $this->assertSame(array('DROP INDEX'), $this->getSQLCollector()->getDropIndexQueries());
+        $this->assertSame(array('DROP PRIMARY KEY'), $this->getSQLCollector()->getDropPrimaryKeyQueries());
+        $this->assertSame(array('DROP TABLE'), $this->getSQLCollector()->getDropTableQueries());
+        $this->assertSame(array('DROP COLUMN'), $this->getSQLCollector()->getDropColumnQueries());
+        $this->assertSame(array('ALTER COLUMN'), $this->getSQLCollector()->getAlterColumnQueries());
+        $this->assertSame(array('CREATE COLUMN'), $this->getSQLCollector()->getCreateColumnQueries());
+        $this->assertSame(array('CREATE TABLE'), $this->getSQLCollector()->getCreateTableQueries());
+        $this->assertSame(array('CREATE PRIMARY KEY'), $this->getSQLCollector()->getCreatePrimaryKeyQueries());
+        $this->assertSame(array('CREATE INDEX'), $this->getSQLCollector()->getCreateIndexQueries());
         $this->assertSame(
             array('CREATE FOREIGN KEY', 'CREATE FOREIGN KEY'),
-            $this->sqlCollector->getCreateForeignKeyQueries()
+            $this->getSQLCollector()->getCreateForeignKeyQueries()
         );
-        $this->assertSame(array('CREATE CHECK'), $this->sqlCollector->getCreateCheckQueries());
-        $this->assertSame(array('CREATE VIEW'), $this->sqlCollector->getCreateViewQueries());
-        $this->assertSame(array('CREATE SEQUENCE'), $this->sqlCollector->getCreateSequenceQueries());
-        $this->assertSame(array('RENAME SCHEMA'), $this->sqlCollector->getRenameSchemaQueries());
+        $this->assertSame(array('CREATE CHECK'), $this->getSQLCollector()->getCreateCheckQueries());
+        $this->assertSame(array('CREATE VIEW'), $this->getSQLCollector()->getCreateViewQueries());
+        $this->assertSame(array('CREATE SEQUENCE'), $this->getSQLCollector()->getCreateSequenceQueries());
+        $this->assertSame(array('RENAME SCHEMA'), $this->getSQLCollector()->getRenameSchemaQueries());
         $this->assertSame(
             array(
                 'DROP SEQUENCE',
@@ -318,136 +345,111 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
                 'CREATE SEQUENCE',
                 'RENAME SCHEMA',
             ),
-            $this->sqlCollector->getQueries()
+            $this->getSQLCollector()->getQueries()
         );
     }
 
     public function testInit()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropSequenceSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropViewSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getRenameTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropCheckSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->any())
             ->method('getDropForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropIndexSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropPrimaryKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDropColumnSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getAlterColumnSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateColumnSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreatePrimaryKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateIndexSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->any())
             ->method('getCreateForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateCheckSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateViewSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getCreateSequenceSQLQueries')
             ->will($this->returnValue(array('foo')));
 
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getRenameDatabaseSQLQueries')
             ->with($this->equalTo($this->schemaDiff))
             ->will($this->returnValue(array('foo')));
 
-        $this->sqlCollector->collect($this->schemaDiff);
-        $this->sqlCollector->init();
+        $this->getSQLCollector()->collect($this->schemaDiff);
+        $this->getSQLCollector()->init();
 
         $this->assertInitialState();
-    }
-
-    /**
-     * Asserts the initial state.
-     */
-    protected function assertInitialState()
-    {
-        $this->assertEmpty($this->sqlCollector->getDropSequenceQueries());
-        $this->assertEmpty($this->sqlCollector->getDropViewQueries());
-        $this->assertEmpty($this->sqlCollector->getRenameTableQueries());
-        $this->assertEmpty($this->sqlCollector->getDropIndexQueries());
-        $this->assertEmpty($this->sqlCollector->getDropForeignKeyQueries());
-        $this->assertEmpty($this->sqlCollector->getDropTableQueries());
-        $this->assertEmpty($this->sqlCollector->getDropPrimaryKeyQueries());
-        $this->assertEmpty($this->sqlCollector->getDropColumnQueries());
-        $this->assertEmpty($this->sqlCollector->getAlterColumnQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateColumnQueries());
-        $this->assertEmpty($this->sqlCollector->getCreatePrimaryKeyQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateIndexQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateTableQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateForeignKeyQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateViewQueries());
-        $this->assertEmpty($this->sqlCollector->getCreateSequenceQueries());
-        $this->assertEmpty($this->sqlCollector->getRenameSchemaQueries());
-        $this->assertEmpty($this->sqlCollector->getQueries());
     }
 }

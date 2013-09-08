@@ -13,7 +13,6 @@ namespace Fridge\Tests\DBAL\Statement;
 
 use Fridge\DBAL\Statement\Statement;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Statement test.
@@ -23,16 +22,16 @@ use PDO;
 class StatementTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Statement\Statement */
-    protected $statement;
+    private $statement;
 
     /** @var \Fridge\DBAL\Driver\Statement\NativeStatementInterface */
-    protected $nativeStatementMock;
+    private $nativeStatementMock;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
-    protected $connectionMock;
+    private $connectionMock;
 
     /** @var \Fridge\DBAL\Driver\Connection\NativeConnectionInterface */
-    protected $nativeConnectionMock;
+    private $nativeConnectionMock;
 
     /**
      * {@inheritdoc}
@@ -114,7 +113,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo('foo'),
                 $this->equalTo('bar'),
-                $this->equalTo(PDO::PARAM_STR)
+                $this->equalTo(\PDO::PARAM_STR)
             )
             ->will($this->returnValue('bar'));
 
@@ -136,11 +135,11 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo('foo'),
                 $this->equalTo('bar'),
-                $this->equalTo(PDO::PARAM_INT)
+                $this->equalTo(\PDO::PARAM_INT)
             )
             ->will($this->returnValue('bar'));
 
-        $this->assertSame('bar', $this->statement->bindValue('foo', 'bar', PDO::PARAM_INT));
+        $this->assertSame('bar', $this->statement->bindValue('foo', 'bar', \PDO::PARAM_INT));
     }
 
     public function testBindValueWithFridgeType()
@@ -158,7 +157,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo('foo'),
                 $this->equalTo(true),
-                $this->equalTo(PDO::PARAM_BOOL)
+                $this->equalTo(\PDO::PARAM_BOOL)
             )
             ->will($this->returnValue('bar'));
 

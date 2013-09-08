@@ -11,8 +11,6 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use \ReflectionMethod;
-
 /**
  * Abstract asset test.
  *
@@ -21,7 +19,7 @@ use \ReflectionMethod;
 class AbstractAssetTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\AbstractAsset */
-    protected $asset;
+    private $asset;
 
     /**
      * {@inheritdoc}
@@ -69,7 +67,7 @@ class AbstractAssetTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateIdentifier()
     {
-        $method = new ReflectionMethod('Fridge\DBAL\Schema\AbstractAsset', 'generateIdentifier');
+        $method = new \ReflectionMethod('Fridge\DBAL\Schema\AbstractAsset', 'generateIdentifier');
         $method->setAccessible(true);
 
         $identifier = $method->invoke($this->asset, 'bar_', 10);

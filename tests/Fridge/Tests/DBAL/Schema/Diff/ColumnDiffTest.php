@@ -22,10 +22,10 @@ use Fridge\DBAL\Schema\Diff\ColumnDiff;
 class ColumnDiffTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $oldColumnMock;
+    private $oldColumnMock;
 
     /** @var \Fridge\DBAL\Schema\Column */
-    protected $newColumnMock;
+    private $newColumnMock;
 
     /**
      * {@inheritdoc}

@@ -21,7 +21,7 @@ use Fridge\DBAL\Schema\PrimaryKey;
 class PrimaryKeyTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Schema\PrimaryKey */
-    protected $primaryKey;
+    private $primaryKey;
 
     /**
      * {@inheritdoc}

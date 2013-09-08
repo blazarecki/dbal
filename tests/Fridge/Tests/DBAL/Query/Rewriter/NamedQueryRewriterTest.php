@@ -11,7 +11,6 @@
 
 namespace Fridge\Tests\DBAL\Query\Rewriter;
 
-use DateTime;
 use Fridge\DBAL\Connection\Connection;
 use Fridge\DBAL\Query\Rewriter\NamedQueryRewriter;
 use Fridge\DBAL\Type\Type;
@@ -90,7 +89,7 @@ class NamedQueryRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithPartialNamedTypes()
     {
-        $date = new DateTime();
+        $date = new \DateTime();
 
         $query = 'SELECT * FROM foo WHERE foo IN (:foo) AND bar = :bar AND baz < :baz';
         $parameters = array('foo' => array(1, 2), 'bar' => 'bar', 'baz' => $date);
@@ -122,7 +121,7 @@ class NamedQueryRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithMultiplePartialNamedTypes()
     {
-        $date = new DateTime();
+        $date = new \DateTime();
 
         $query = 'SELECT * FROM foo WHERE foo IN (:foo) AND bar = :bar AND baz IN (:baz) AND bat < :bat';
 

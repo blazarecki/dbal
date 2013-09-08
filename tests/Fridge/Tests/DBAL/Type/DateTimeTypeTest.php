@@ -11,18 +11,24 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \DateTime;
 use Fridge\DBAL\Type\DateTimeType;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * DateTime type test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class DateTimeTypeTest extends AbstractTypeTest
+class DateTimeTypeTest extends AbstractTypeTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUpType()
+    {
+        return new DateTimeType();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,9 +36,7 @@ class DateTimeTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new DateTimeType();
-
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->any())
             ->method('getDateTimeFormat')
             ->will($this->returnValue('Y-m-d H:i:s'));
@@ -40,31 +44,31 @@ class DateTimeTypeTest extends AbstractTypeTest
 
     public function testSQLDeclaration()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getDateTimeSQLDeclaration');
 
-        $this->type->getSQLDeclaration($this->platformMock);
+        $this->getType()->getSQLDeclaration($this->getPlatform());
     }
 
     public function testConvertToDatabaseValueWithValidValue()
     {
         $this->assertSame(
             '2012-01-01 01:23:45',
-            $this->type->convertToDatabaseValue(new DateTime('2012-01-01 01:23:45'), $this->platformMock)
+            $this->getType()->convertToDatabaseValue(new \DateTime('2012-01-01 01:23:45'), $this->getPlatform())
         );
     }
 
     public function testConvertToDatabaseValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToDatabaseValue(null, $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithValidValue()
     {
         $this->assertEquals(
-            new DateTime('2012-01-01 01:23:45'),
-            $this->type->convertToPHPValue('2012-01-01 01:23:45', $this->platformMock)
+            new \DateTime('2012-01-01 01:23:45'),
+            $this->getType()->convertToPHPValue('2012-01-01 01:23:45', $this->getPlatform())
         );
     }
 
@@ -73,21 +77,21 @@ class DateTimeTypeTest extends AbstractTypeTest
      */
     public function testConvertToPHPValueWithInvalidValue()
     {
-        $this->type->convertToPHPValue('foo', $this->platformMock);
+        $this->getType()->convertToPHPValue('foo', $this->getPlatform());
     }
 
     public function testConvertToPHPValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToPHPValue(null, $this->getPlatform()));
     }
 
     public function testBindingType()
     {
-        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(\PDO::PARAM_STR, $this->getType()->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertSame(Type::DATETIME, $this->type->getName());
+        $this->assertSame(Type::DATETIME, $this->getType()->getName());
     }
 }

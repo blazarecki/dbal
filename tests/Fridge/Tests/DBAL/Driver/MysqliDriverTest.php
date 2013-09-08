@@ -25,26 +25,18 @@ class MysqliDriverTest extends AbstractDriverTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
-            self::$fixture = new MySQLFixture(PHPUnitUtility::MYSQLI);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(PHPUnitUtility::MYSQLI);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpDriver()
     {
-        if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
-            $this->driver = new MysqliDriver();
-        }
-
-        parent::setUp();
+        return new MysqliDriver();
     }
 }

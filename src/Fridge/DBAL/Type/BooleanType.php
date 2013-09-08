@@ -12,7 +12,6 @@
 namespace Fridge\DBAL\Type;
 
 use Fridge\DBAL\Platform\PlatformInterface;
-use PDO;
 
 /**
  * Boolean type.
@@ -50,7 +49,7 @@ class BooleanType implements TypeInterface
      */
     public function getBindingType()
     {
-        return PDO::PARAM_BOOL;
+        return \PDO::PARAM_BOOL;
     }
 
     /**

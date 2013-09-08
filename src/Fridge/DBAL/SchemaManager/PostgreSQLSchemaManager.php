@@ -58,7 +58,7 @@ class PostgreSQLSchemaManager extends AbstractSchemaManager
 
             $this->getConnection()->setDatabase(null);
 
-            foreach ($this->connection->getPlatform()->getRenameDatabaseSQLQueries($schemaDiff) as $query) {
+            foreach ($this->getConnection()->getPlatform()->getRenameDatabaseSQLQueries($schemaDiff) as $query) {
                 $this->getConnection()->executeUpdate($query);
             }
 

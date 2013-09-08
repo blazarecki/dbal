@@ -11,7 +11,6 @@
 
 namespace Fridge\Tests\DBAL\Platform;
 
-use DateTime;
 use Fridge\DBAL\Connection\Connection;
 use Fridge\DBAL\Schema\Check;
 use Fridge\DBAL\Schema\Column;
@@ -26,7 +25,6 @@ use Fridge\DBAL\Schema\Sequence;
 use Fridge\DBAL\Schema\Table;
 use Fridge\DBAL\Schema\View;
 use Fridge\DBAL\Type\Type;
-use ReflectionMethod;
 
 /**
  * Platform test.
@@ -36,7 +34,7 @@ use ReflectionMethod;
 class PlatformTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Platform\AbstractPlatform */
-    protected $platform;
+    private $platform;
 
     /**
      * {@inheritdoc}
@@ -72,7 +70,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the platform mapped types.
      */
-    protected function initializeMappedTypes()
+    private function initializeMappedTypes()
     {
         $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'mappedTypes');
         $property->setAccessible(true);
@@ -83,7 +81,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the platform mandatory types.
      */
-    protected function initializeCustomTypes()
+    private function initializeCustomTypes()
     {
         $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'customTypes');
         $property->setAccessible(true);
@@ -883,7 +881,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransactionIsolationSQLDeclarationWithValidTransactionIsolation($isolation)
     {
-        $method = new ReflectionMethod($this->platform, 'getTransactionIsolationSQLDeclaration');
+        $method = new \ReflectionMethod($this->platform, 'getTransactionIsolationSQLDeclaration');
         $method->setAccessible(true);
 
         $this->assertSame($isolation, $method->invoke($this->platform, $isolation));
@@ -895,7 +893,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransactionIsolationSQLDeclarationWithInvalidTransactionIsolation()
     {
-        $method = new ReflectionMethod($this->platform, 'getTransactionIsolationSQLDeclaration');
+        $method = new \ReflectionMethod($this->platform, 'getTransactionIsolationSQLDeclaration');
         $method->setAccessible(true);
 
         $method->invoke($this->platform, 'foo');
@@ -914,7 +912,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
+        $method = new \ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
 
         $this->assertSame(
@@ -928,10 +926,10 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $column = new Column(
             'foo',
             Type::getType(Type::DATETIME),
-            array('default' => new DateTime('2012-01-01 12:12:12'))
+            array('default' => new \DateTime('2012-01-01 12:12:12'))
         );
 
-        $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
+        $method = new \ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
 
         $this->assertSame('\'2012-01-01 12:12:12\'', substr($method->invoke($this->platform, $column), -21));
@@ -941,7 +939,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $column = new Column('foo', Type::getType(Type::TARRAY));
 
-        $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
+        $method = new \ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
 
         $this->assertSame('\'(FridgeType::ARRAY)\'', substr($method->invoke($this->platform, $column), -21));
@@ -954,7 +952,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             new Column('bar', Type::getType(Type::INTEGER)),
         );
 
-        $method = new ReflectionMethod($this->platform, 'getColumnsSQLDeclaration');
+        $method = new \ReflectionMethod($this->platform, 'getColumnsSQLDeclaration');
         $method->setAccessible(true);
 
         $this->assertSame('foo INT, bar INT', $method->invoke($this->platform, $columns));

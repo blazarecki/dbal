@@ -11,7 +11,6 @@
 
 namespace Fridge\Tests\DBAL\Query\Rewriter;
 
-use DateTime;
 use Fridge\DBAL\Connection\Connection;
 use Fridge\DBAL\Query\Rewriter\PositionalQueryRewriter;
 use Fridge\DBAL\Type\Type;
@@ -103,7 +102,7 @@ class PositionalQueryRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithPartialPositionalTypes()
     {
-        $date = new DateTime();
+        $date = new \DateTime();
 
         $query = 'SELECT * FROM foo WHERE foo IN (?) AND bar = ? AND baz < ?';
         $parameters = array(array(1, 2), 'bar', $date);
@@ -118,7 +117,7 @@ class PositionalQueryRewriterTest extends \PHPUnit_Framework_TestCase
 
     public function testRewriteWithMultiplePartialPositionalTypes()
     {
-        $date = new DateTime();
+        $date = new \DateTime();
 
         $query = 'SELECT * FROM foo WHERE foo IN (?) AND bar = ? AND baz IN (?) AND bat < ?';
         $parameters = array(array(1, 2), 'bar', array('published', 'draft'), $date);

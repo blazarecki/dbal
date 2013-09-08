@@ -13,61 +13,58 @@ namespace Fridge\Tests\DBAL\Type;
 
 use Fridge\DBAL\Type\BigIntegerType;
 use Fridge\DBAL\Type\Type;
-use PDO;
 
 /**
  * Big integer type test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class BigIntegerTypeTest extends AbstractTypeTest
+class BigIntegerTypeTest extends AbstractTypeTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpType()
     {
-        parent::setUp();
-
-        $this->type = new BigIntegerType();
+        return new BigIntegerType();
     }
 
     public function testSQLDeclaration()
     {
-        $this->platformMock
+        $this->getPlatform()
             ->expects($this->once())
             ->method('getBigIntegerSQLDeclaration');
 
-        $this->type->getSQLDeclaration($this->platformMock);
+        $this->getType()->getSQLDeclaration($this->getPlatform());
     }
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertSame('1000000000', $this->type->convertToDatabaseValue(1000000000, $this->platformMock));
+        $this->assertSame('1000000000', $this->getType()->convertToDatabaseValue(1000000000, $this->getPlatform()));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToDatabaseValue(null, $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertSame(1000000000, $this->type->convertToPHPValue('1000000000', $this->platformMock));
+        $this->assertSame(1000000000, $this->getType()->convertToPHPValue('1000000000', $this->getPlatform()));
     }
 
     public function testConvertToPHPValueWithNullValue()
     {
-        $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
+        $this->assertNull($this->getType()->convertToPHPValue(null, $this->getPlatform()));
     }
 
     public function testBindingType()
     {
-        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(\PDO::PARAM_STR, $this->getType()->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertSame(Type::BIGINTEGER, $this->type->getName());
+        $this->assertSame(Type::BIGINTEGER, $this->getType()->getName());
     }
 }

@@ -24,26 +24,20 @@ class MysqliConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            self::$fixture = new MySQLFixture(ConnectionUtility::MYSQLI);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(ConnectionUtility::MYSQLI);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpConnection()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            $this->connection = ConnectionUtility::getConnection(ConnectionUtility::MYSQLI);
+            return ConnectionUtility::getConnection(ConnectionUtility::MYSQLI);
         }
-
-        parent::setUp();
     }
 }

@@ -38,29 +38,35 @@ use Fridge\DBAL\Type\Type;
 abstract class AbstractPlatform implements PlatformInterface
 {
     /** @var array */
-    protected $mappedTypes;
-
-    /** @var boolean */
-    protected $useStrictTypeMapping;
-
-    /** @var string */
-    protected $fallbackMappedType;
+    private $mappedTypes;
 
     /** @var array */
-    protected $customTypes;
+    private $customTypes;
+
+    /** @var boolean */
+    private $useStrictTypeMapping;
+
+    /** @var string */
+    private $fallbackMappedType;
 
     /**
      * Platform constructor.
      */
     public function __construct()
     {
-        $this->initializeMappedTypes();
+        $this->mappedTypes = $this->initializeMappedTypes();
+        $this->customTypes = $this->initializeCustomTypes();
 
         $this->useStrictTypeMapping = true;
         $this->fallbackMappedType = Type::TEXT;
-
-        $this->initializeCustomTypes();
     }
+
+    /**
+     * Initializes the mapped types.
+     *
+     * @return array The initial mapped types.
+     */
+    abstract protected function initializeMappedTypes();
 
     /**
      * {@inheritdoc}
@@ -143,40 +149,6 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function useStrictTypeMapping($useStrictTypeMapping = null)
-    {
-        if ($useStrictTypeMapping !== null) {
-            $this->useStrictTypeMapping = (bool) $useStrictTypeMapping;
-        }
-
-        return $this->useStrictTypeMapping;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFallbackMappedType()
-    {
-        return $this->fallbackMappedType;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist.
-     */
-    public function setFallbackMappedType($fallbackMappedType)
-    {
-        if (!Type::hasType($fallbackMappedType)) {
-            throw TypeException::typeDoesNotExist($fallbackMappedType);
-        }
-
-        $this->fallbackMappedType = $fallbackMappedType;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasCustomType($type)
     {
         return in_array($type, $this->customTypes);
@@ -214,6 +186,40 @@ abstract class AbstractPlatform implements PlatformInterface
 
         $index = array_search($type, $this->customTypes);
         unset($this->customTypes[$index]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function useStrictTypeMapping($useStrictTypeMapping = null)
+    {
+        if ($useStrictTypeMapping !== null) {
+            $this->useStrictTypeMapping = (bool) $useStrictTypeMapping;
+        }
+
+        return $this->useStrictTypeMapping;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFallbackMappedType()
+    {
+        return $this->fallbackMappedType;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist.
+     */
+    public function setFallbackMappedType($fallbackMappedType)
+    {
+        if (!Type::hasType($fallbackMappedType)) {
+            throw TypeException::typeDoesNotExist($fallbackMappedType);
+        }
+
+        $this->fallbackMappedType = $fallbackMappedType;
     }
 
     /**
@@ -1005,16 +1011,13 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Initializes the mapped types.
-     */
-    abstract protected function initializeMappedTypes();
-
-    /**
      * Initializes the custom types.
+     *
+     * @return array The initial custom types.
      */
     protected function initializeCustomTypes()
     {
-        $this->customTypes = array(Type::TARRAY, Type::OBJECT);
+        return array(Type::TARRAY, Type::OBJECT);
     }
 
     /**

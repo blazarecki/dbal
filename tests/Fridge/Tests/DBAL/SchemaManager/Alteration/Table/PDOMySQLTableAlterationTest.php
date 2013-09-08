@@ -19,31 +19,23 @@ use Fridge\Tests\Fixture\MySQLFixture;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOMySQLAlterationTest extends AbstractMySQLAlterationTest
+class PDOMySQLTableAlterationTest extends AbstractMySQLTableAlterationTest
 {
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    protected static function setUpFixture()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            self::$fixture = new MySQLFixture(ConnectionUtility::PDO_MYSQL);
-        } else {
-            self::$fixture = null;
+            return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
         }
-
-        parent::setUpBeforeClass();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUpSchemaManager()
     {
-        if (self::$fixture !== null) {
-            $this->connection = ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL);
-        }
-
-        parent::setUp();
+        return ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL)->getSchemaManager();
     }
 }

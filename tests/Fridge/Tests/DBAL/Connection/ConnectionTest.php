@@ -21,7 +21,7 @@ use Fridge\DBAL\Connection\Connection;
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Driver\DriverInterface */
-    protected $driverMock;
+    private $driverMock;
 
     /**
      * {@inheritdoc}

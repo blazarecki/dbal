@@ -21,7 +21,7 @@ use Fridge\DBAL\Platform\AbstractPlatform;
 class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /**
      * {@inheritdoc}

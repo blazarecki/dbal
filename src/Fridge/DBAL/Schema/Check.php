@@ -21,7 +21,7 @@ use Fridge\DBAL\Query\Expression\Expression;
 class Check extends AbstractAsset implements ConstraintInterface
 {
     /** @var string */
-    protected $definition;
+    private $definition;
 
     /**
      * Creates a check.

@@ -21,10 +21,10 @@ use Fridge\DBAL\Connection\ConnectionInterface;
 abstract class AbstractDriver implements DriverInterface
 {
     /** @var \Fridge\DBAL\Platform\PlatformInterface */
-    protected $platform;
+    private $platform;
 
     /** @var \Fridge\DBAL\SchemaManager\SchemaManagerInterface */
-    protected $schemaManager;
+    private $schemaManager;
 
     /**
      * Creates a platform.

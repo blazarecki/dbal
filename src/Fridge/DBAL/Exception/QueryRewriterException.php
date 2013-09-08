@@ -29,7 +29,7 @@ class QueryRewriterException extends Exception
      */
     public static function namedPlaceholderDoesNotExist($placeholder, $query)
     {
-        return new static(sprintf(
+        return new self(sprintf(
             'The named placeholder "%s" does not exist in the query: "%s".',
             $placeholder,
             $query
@@ -47,7 +47,7 @@ class QueryRewriterException extends Exception
      */
     public static function positionalPlaceholderDoesNotExist($position, $query)
     {
-        return new static(sprintf(
+        return new self(sprintf(
             'The positional placeholder (%d) does not exist in the query: "%s".',
             $position,
             $query

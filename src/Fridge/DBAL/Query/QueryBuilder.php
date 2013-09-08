@@ -20,44 +20,44 @@ use Fridge\DBAL\Connection\ConnectionInterface;
  */
 class QueryBuilder
 {
-    /** @const The select query type */
+    /** @const integer The select query type */
     const SELECT = 0;
 
-    /** @const The insert query type */
+    /** @const integer The insert query type */
     const INSERT = 1;
 
-    /** @const The update query type */
+    /** @const integer The update query type */
     const UPDATE = 2;
 
-    /** @const The delete query type */
+    /** @const integer The delete query type */
     const DELETE = 3;
 
-    /** @const The parameter positional mode */
+    /** @const integer The parameter positional mode */
     const MODE_POSITIONAL = 0;
 
-    /** @const The parameter named mode */
+    /** @const integer The parameter named mode */
     const MODE_NAMED = 1;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
-    protected $connection;
+    private $connection;
 
     /** @var integer */
-    protected $type;
+    private $type;
 
     /** @var integer */
-    protected $mode;
+    private $mode;
 
     /** @var array */
-    protected $parts;
+    private $parts;
 
     /** @var array */
-    protected $parameters;
+    private $parameters;
 
     /** @var array */
-    protected $parameterTypes;
+    private $parameterTypes;
 
     /** @var array */
-    protected $parameterCounters;
+    private $parameterCounters;
 
     /**
      * Query builder constructor.
@@ -708,7 +708,7 @@ class QueryBuilder
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
-    protected function addExpression($part, $type, $expression)
+    private function addExpression($part, $type, $expression)
     {
         if (!($expression instanceof Expression\Expression)) {
             $expression = new Expression\Expression($type, (array) $expression);
@@ -736,7 +736,7 @@ class QueryBuilder
      *
      * @return string The "SELECT" query.
      */
-    protected function getSelectQuery()
+    private function getSelectQuery()
     {
         return 'SELECT '.(empty($this->parts['select']) ? '*' : implode(', ', $this->parts['select'])).
                ' FROM '.$this->getFromClause().
@@ -753,7 +753,7 @@ class QueryBuilder
      *
      * @return string The "INSERT" query.
      */
-    protected function getInsertQuery()
+    private function getInsertQuery()
     {
         return 'INSERT INTO '.$this->parts['from'][0]['table'].
                ' ('.implode(', ', array_keys($this->parts['set'])).')'.
@@ -766,7 +766,7 @@ class QueryBuilder
      *
      * @return string The "UPDATE" query.
      */
-    protected function getUpdateQuery()
+    private function getUpdateQuery()
     {
         if (isset($this->parts['from'][0]['alias'])) {
             $fromClause = $this->parts['from'][0]['alias'].' FROM '.$this->getFromClause();
@@ -790,7 +790,7 @@ class QueryBuilder
      *
      * @return string The "DELETE" query.
      */
-    protected function getDeleteQuery()
+    private function getDeleteQuery()
     {
         $fromClause = null;
 
@@ -809,7 +809,7 @@ class QueryBuilder
      *
      * @return string The "FROM" clause.
      */
-    protected function getFromClause()
+    private function getFromClause()
     {
         $fromClauses = array();
 

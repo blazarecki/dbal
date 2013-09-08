@@ -21,7 +21,7 @@ use Fridge\DBAL\Exception\SchemaException;
 class View extends AbstractAsset
 {
     /** @var string */
-    protected $sql;
+    private $sql;
 
     /**
      * Creates a view.
