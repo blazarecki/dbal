@@ -15,9 +15,9 @@ use Fridge\DBAL\Configuration;
 use Fridge\DBAL\Debug\QueryDebugger;
 use Fridge\DBAL\Driver\DriverInterface;
 use Fridge\DBAL\Driver\Statement\NativeStatementInterface;
-use Fridge\DBAL\Event\DebugQueryEvent;
 use Fridge\DBAL\Event\Events;
 use Fridge\DBAL\Event\PostConnectEvent;
+use Fridge\DBAL\Event\QueryDebugEvent;
 use Fridge\DBAL\Exception\ConnectionException;
 use Fridge\DBAL\Query\Expression\ExpressionBuilder;
 use Fridge\DBAL\Query\QueryBuilder;
@@ -690,11 +690,7 @@ class Connection implements ConnectionInterface
      */
     private function createQueryDebugger($query, array $parameters = array(), array $types = array())
     {
-        if (
-            $this->getConfiguration()->getDebug()
-            &&
-            $this->getConfiguration()->getEventDispatcher()->hasListeners(Events::DEBUG_QUERY)
-        ) {
+        if ($this->getConfiguration()->getDebug()) {
             return new QueryDebugger($query, $parameters, $types);
         }
     }
@@ -709,8 +705,8 @@ class Connection implements ConnectionInterface
         $queryDebugger->stop();
 
         $this->getConfiguration()->getEventDispatcher()->dispatch(
-            Events::DEBUG_QUERY,
-            new DebugQueryEvent($queryDebugger)
+            Events::QUERY_DEBUG,
+            new QueryDebugEvent($queryDebugger)
         );
     }
 

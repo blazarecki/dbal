@@ -87,7 +87,11 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
         $eventDispatcherMock
             ->expects($this->once())
-            ->method('dispatch');
+            ->method('dispatch')
+            ->with(
+                $this->identicalTo(Events::POST_CONNECT),
+                $this->isInstanceOf('Fridge\DBAL\Event\PostConnectEvent')
+            );
 
         $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
@@ -143,7 +147,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
 
-    public function testExecuteQueryDoesNotDispatchEventWithoutListeners()
+    public function testExecuteQueryDispatchEventWithDebug()
     {
         $this->getConnection()->connect();
 
@@ -151,33 +155,16 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $eventDispatcherMock
             ->expects($this->any())
             ->method('hasListeners')
-            ->with($this->equalTo(Events::DEBUG_QUERY))
-            ->will($this->returnValue(false));
-
-        $eventDispatcherMock
-            ->expects($this->never())
-            ->method('dispatch');
-
-        $this->getConnection()->getConfiguration()->setDebug(true);
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
-
-        $this->getConnection()->executeQuery(self::getFixture()->getQuery());
-    }
-
-    public function testExecuteQueryDispatchEventWithDebugAndListeners()
-    {
-        $this->getConnection()->connect();
-
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
-        $eventDispatcherMock
-            ->expects($this->any())
-            ->method('hasListeners')
-            ->with($this->equalTo(Events::DEBUG_QUERY))
+            ->with($this->equalTo(Events::QUERY_DEBUG))
             ->will($this->returnValue(true));
 
         $eventDispatcherMock
             ->expects($this->once())
-            ->method('dispatch');
+            ->method('dispatch')
+            ->with(
+                $this->identicalTo(Events::QUERY_DEBUG),
+                $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
+            );;
 
         $this->getConnection()->getConfiguration()->setDebug(true);
         $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
@@ -274,7 +261,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
 
-    public function testExecuteUpdateDoesNotDispatchEventWithoutListeners()
+    public function testExecuteUpdateDispatchEventWithDebug()
     {
         $this->getConnection()->connect();
 
@@ -282,33 +269,16 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $eventDispatcherMock
             ->expects($this->any())
             ->method('hasListeners')
-            ->with($this->equalTo(Events::DEBUG_QUERY))
-            ->will($this->returnValue(false));
-
-        $eventDispatcherMock
-            ->expects($this->never())
-            ->method('dispatch');
-
-        $this->getConnection()->getConfiguration()->setDebug(true);
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
-
-        $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
-    }
-
-    public function testExecuteUpdateDispatchEventWithDebugAndListeners()
-    {
-        $this->getConnection()->connect();
-
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
-        $eventDispatcherMock
-            ->expects($this->any())
-            ->method('hasListeners')
-            ->with($this->equalTo(Events::DEBUG_QUERY))
+            ->with($this->equalTo(Events::QUERY_DEBUG))
             ->will($this->returnValue(true));
 
         $eventDispatcherMock
             ->expects($this->once())
-            ->method('dispatch');
+            ->method('dispatch')
+            ->with(
+                $this->equalTo(Events::QUERY_DEBUG),
+                $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
+            );
 
         $this->getConnection()->getConfiguration()->setDebug(true);
         $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
