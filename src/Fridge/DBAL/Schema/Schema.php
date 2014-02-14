@@ -41,10 +41,6 @@ class Schema extends AbstractAsset
     {
         parent::__construct($name);
 
-        $this->tables = array();
-        $this->sequences = array();
-        $this->views = array();
-
         $this->setTables($tables);
         $this->setSequences($sequences);
         $this->setViews($views);
@@ -163,9 +159,7 @@ class Schema extends AbstractAsset
      */
     public function setTables(array $tables)
     {
-        foreach ($this->tables as $table) {
-            $this->dropTable($table->getName());
-        }
+        $this->tables = array();
 
         foreach ($tables as $table) {
             $this->addTable($table);
@@ -307,9 +301,7 @@ class Schema extends AbstractAsset
      */
     public function setSequences(array $sequences)
     {
-        foreach ($this->sequences as $sequence) {
-            $this->dropSequence($sequence->getName());
-        }
+        $this->sequences = array();
 
         foreach ($sequences as $sequence) {
             $this->addSequence($sequence);
@@ -446,9 +438,7 @@ class Schema extends AbstractAsset
      */
     public function setViews(array $views)
     {
-        foreach ($this->views as $view) {
-            $this->dropView($view->getName());
-        }
+        $this->views = array();
 
         foreach ($views as $view) {
             $this->addView($view);

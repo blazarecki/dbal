@@ -35,12 +35,8 @@ class Configuration
      */
     public function __construct($debug = false, EventDispatcher $eventDispatcher = null)
     {
-        if ($eventDispatcher === null) {
-            $eventDispatcher = new EventDispatcher();
-        }
-
         $this->setDebug($debug);
-        $this->setEventDispatcher($eventDispatcher);
+        $this->setEventDispatcher($eventDispatcher ?: new EventDispatcher());
     }
 
     /**

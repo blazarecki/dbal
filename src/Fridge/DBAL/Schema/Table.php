@@ -59,11 +59,6 @@ class Table extends AbstractAsset
     ) {
         parent::__construct($name);
 
-        $this->columns = array();
-        $this->foreignKeys = array();
-        $this->indexes = array();
-        $this->checks = array();
-
         $this->setColumns($columns);
 
         if ($primaryKey !== null) {
@@ -157,9 +152,7 @@ class Table extends AbstractAsset
      */
     public function setColumns(array $columns)
     {
-        foreach ($this->columns as $column) {
-            $this->dropColumn($column->getName());
-        }
+        $this->columns = array();
 
         foreach ($columns as $column) {
             $this->addColumn($column);
@@ -397,9 +390,7 @@ class Table extends AbstractAsset
      */
     public function setForeignKeys(array $foreignKeys)
     {
-        foreach ($this->foreignKeys as $foreignKey) {
-            $this->dropForeignKey($foreignKey->getName());
-        }
+        $this->foreignKeys = array();
 
         foreach ($foreignKeys as $foreignKey) {
             $this->addForeignKey($foreignKey);
@@ -551,9 +542,7 @@ class Table extends AbstractAsset
      */
     public function setIndexes(array $indexes)
     {
-        foreach ($this->indexes as $index) {
-            $this->dropIndex($index->getName());
-        }
+        $this->indexes = array();
 
         foreach ($indexes as $index) {
             $this->addIndex($index);
@@ -729,9 +718,7 @@ class Table extends AbstractAsset
      */
     public function setChecks(array $checks)
     {
-        foreach ($this->checks as $check) {
-            $this->dropCheck($check->getName());
-        }
+        $this->checks = array();
 
         foreach ($checks as $check) {
             $this->addCheck($check);

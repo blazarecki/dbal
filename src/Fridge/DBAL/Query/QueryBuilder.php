@@ -42,22 +42,36 @@ class QueryBuilder
     private $connection;
 
     /** @var integer */
-    private $type;
+    private $type = self::SELECT;
 
     /** @var integer */
-    private $mode;
+    private $mode = self::MODE_POSITIONAL;
 
     /** @var array */
-    private $parts;
+    private $parts = array(
+        'select'   => array(),
+        'from'     => array(),
+        'join'     => array(),
+        'set'      => array(),
+        'where'    => null,
+        'group_by' => array(),
+        'having'   => null,
+        'order_by' => array(),
+        'offset'   => null,
+        'limit'    => null,
+    );
 
     /** @var array */
-    private $parameters;
+    private $parameters = array();
 
     /** @var array */
-    private $parameterTypes;
+    private $parameterTypes = array();
 
     /** @var array */
-    private $parameterCounters;
+    private $parameterCounters = array(
+        'positional' => 0,
+        'named'      => array(),
+    );
 
     /**
      * Query builder constructor.
@@ -67,29 +81,6 @@ class QueryBuilder
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
-
-        $this->type = self::SELECT;
-        $this->mode = self::MODE_POSITIONAL;
-
-        $this->parts = array(
-            'select'   => array(),
-            'from'     => array(),
-            'join'     => array(),
-            'set'      => array(),
-            'where'    => null,
-            'group_by' => array(),
-            'having'   => null,
-            'order_by' => array(),
-            'offset'   => null,
-            'limit'    => null,
-        );
-
-        $this->parameters = array();
-        $this->parameterTypes = array();
-        $this->parameterCounters = array(
-            'positional' => 0,
-            'named'      => array(),
-        );
     }
 
     /**

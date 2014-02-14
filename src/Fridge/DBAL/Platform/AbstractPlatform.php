@@ -44,10 +44,10 @@ abstract class AbstractPlatform implements PlatformInterface
     private $customTypes;
 
     /** @var boolean */
-    private $useStrictTypeMapping;
+    private $useStrictTypeMapping = true;
 
     /** @var string */
-    private $fallbackMappedType;
+    private $fallbackMappedType = Type::TEXT;
 
     /**
      * Platform constructor.
@@ -56,9 +56,6 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         $this->mappedTypes = $this->initializeMappedTypes();
         $this->customTypes = $this->initializeCustomTypes();
-
-        $this->useStrictTypeMapping = true;
-        $this->fallbackMappedType = Type::TEXT;
     }
 
     /**

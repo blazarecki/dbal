@@ -80,14 +80,10 @@ class Connection implements ConnectionInterface
      */
     public function __construct(array $parameters, DriverInterface $driver, Configuration $configuration = null)
     {
-        if ($configuration === null) {
-            $configuration = new Configuration();
-        }
-
         $this->parameters = $parameters;
         $this->driver = $driver;
         $this->expressionBuilder = new ExpressionBuilder();
-        $this->configuration = $configuration;
+        $this->configuration = $configuration ?: new Configuration();
 
         $this->close();
     }

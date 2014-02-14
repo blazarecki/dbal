@@ -40,7 +40,7 @@ class Column extends AbstractAsset
     private $fixed;
 
     /** @var boolean */
-    private $notNull;
+    private $notNull = false;
 
     /** @var mixed */
     private $default;
@@ -72,8 +72,6 @@ class Column extends AbstractAsset
     public function __construct($name, TypeInterface $type, array $properties = array())
     {
         parent::__construct($name);
-
-        $this->notNull = false;
 
         $this->setType($type);
         $this->setProperties($properties);

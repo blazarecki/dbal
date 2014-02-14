@@ -30,7 +30,7 @@ class StatementRewriter
     private $statement;
 
     /** @var array */
-    private $parameters;
+    private $parameters = array();
 
     /**
      * Statement rewriter constructor.
@@ -40,8 +40,6 @@ class StatementRewriter
     public function __construct($statement)
     {
         $this->statement = $statement;
-        $this->parameters = array();
-
         $this->rewrite();
     }
 

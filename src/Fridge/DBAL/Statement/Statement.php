@@ -40,7 +40,6 @@ class Statement implements StatementInterface, \IteratorAggregate
     {
         $this->sql = $sql;
         $this->connection = $connection;
-
         $this->nativeStatement = $this->connection->getNativeConnection()->prepare($this->sql);
     }
 

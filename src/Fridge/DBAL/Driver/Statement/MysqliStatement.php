@@ -40,22 +40,22 @@ class MysqliStatement implements NativeStatementInterface, \IteratorAggregate
     private $statementRewriter;
 
     /** @var integer */
-    private $defaultFetchMode;
+    private $defaultFetchMode = \PDO::FETCH_BOTH;
 
     /** @var array */
-    private $bindedParameters;
+    private $bindedParameters = array();
 
     /** @var array */
-    private $bindedTypes;
+    private $bindedTypes = array();
 
     /** @var array */
-    private $bindedValues;
+    private $bindedValues = array();
 
     /** @var array */
-    private $resultFields;
+    private $resultFields = array();
 
     /** @var array */
-    private $result;
+    private $result = array();
 
     /**
      * Mysqli statement constructor.
@@ -75,12 +75,6 @@ class MysqliStatement implements NativeStatementInterface, \IteratorAggregate
         if ($this->mysqliStatement === false) {
             throw new MysqliException($connection->getMysqli()->error, $connection->getMysqli()->errno);
         }
-
-        $this->defaultFetchMode = \PDO::FETCH_BOTH;
-
-        $this->bindedParameters = array();
-        $this->bindedTypes = array();
-        $this->bindedValues = array();
     }
 
     /**

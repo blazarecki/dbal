@@ -25,7 +25,7 @@ class MysqliConnection implements NativeConnectionInterface
     private $mysqli;
 
     /** @var boolean */
-    private $inTransaction;
+    private $inTransaction = false;
 
     /** @var integer */
     private $maxAllowedPacket;
@@ -63,8 +63,6 @@ class MysqliConnection implements NativeConnectionInterface
         if (isset($parameters['charset']) && ($this->mysqli->set_charset($parameters['charset']) === false)) {
             throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
         }
-
-        $this->inTransaction = false;
     }
 
     /**
