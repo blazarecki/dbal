@@ -49,8 +49,7 @@ class ConnectionFactory
      *  OR
      *  - driver_class (string) (ex: Fridge\DBAL\Driver\MySQLDriver)
      *
-     * If you use driver & driver_class parameters simultaneously,
-     * the driver_class will be used.
+     * If you use driver & driver_class parameters simultaneously, the driver_class will be used.
      *
      * $parameters can contain:
      *  - connection_class (string) (ex: Fridge\DBAL\Connection\Connection)
@@ -60,8 +59,7 @@ class ConnectionFactory
      *  - host (string)
      *  - port (integer)
      *
-     * If you don't use the connection_class parameter,
-     * the class Fridge\DBAL\Connection\Connection will be used.
+     * If you don't use the connection_class parameter, the class Fridge\DBAL\Connection\Connection will be used.
      *
      * $parameters can contain some specific database parameters:
      *  - pdo_mysql: unix_socket (string), charset (string), driver_options (array)
