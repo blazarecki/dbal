@@ -11,17 +11,17 @@
 
 namespace Fridge\Tests\DBAL\Event;
 
-use Fridge\DBAL\Event\DebugQueryEvent;
+use Fridge\DBAL\Event\QueryDebugEvent;
 
 /**
- * Debug query event test.
+ * Query debug event test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class DebugQueryEventTest extends \PHPUnit_Framework_TestCase
+class QueryDebugEventTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \Fridge\DBAL\Event\DebugQueryEvent */
-    private $debugQueryEvent;
+    /** @var \Fridge\DBAL\Event\QueryDebugEvent */
+    private $queryDebugEvent;
 
     /** @var \Fridge\DBAL\Debug\QueryDebugger */
     private $queryDebugger;
@@ -35,7 +35,7 @@ class DebugQueryEventTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->debugQueryEvent = new DebugQueryEvent($this->queryDebugger);
+        $this->queryDebugEvent = new QueryDebugEvent($this->queryDebugger);
     }
 
     /**
@@ -43,12 +43,12 @@ class DebugQueryEventTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->debugQueryEvent);
+        unset($this->queryDebugEvent);
         unset($this->queryDebugger);
     }
 
     public function testDebugger()
     {
-        $this->assertSame($this->queryDebugger, $this->debugQueryEvent->getQueryDebugger());
+        $this->assertSame($this->queryDebugger, $this->queryDebugEvent->getDebugger());
     }
 }
