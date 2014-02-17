@@ -21,16 +21,15 @@ use Fridge\DBAL\Platform\PlatformInterface;
 class TypeUtility
 {
     /**
-     * Binds a value according to a DBAL or PDO type and a platform.
+     * Converts a value/type to its database representation according to a platform.
      *
-     * Binding means the value and the type are converted respectivly
-     * to this database and PDO representation.
-     *
-     * @param mixed                                          &$value   The value.
-     * @param string|integer|\Fridge\DBAL\Type\TypeInterface &$type    The type (PDO or DBAL).
+     * @param mixed                                          $value    The value.
+     * @param string|integer|\Fridge\DBAL\Type\TypeInterface $type     The type (PDO or DBAL).
      * @param \Fridge\DBAL\Platform\PlatformInterface        $platform The platform.
+     *
+     * @return array 0 => The converted value, 1 => The converted type.
      */
-    public static function bindTypedValue(&$value, &$type, PlatformInterface $platform)
+    public static function convertToDatabase($value, $type, PlatformInterface $platform)
     {
         if (is_string($type)) {
             $type = Type::getType($type);
@@ -40,5 +39,7 @@ class TypeUtility
             $value = $type->convertToDatabaseValue($value, $platform);
             $type = $type->getBindingType();
         }
+
+        return array($value, $type);
     }
 }

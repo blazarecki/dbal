@@ -92,7 +92,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function bindValue($parameter, $value, $type = \PDO::PARAM_STR)
     {
-        TypeUtility::bindTypedValue($value, $type, $this->connection->getPlatform());
+        list($value, $type) = TypeUtility::convertToDatabase($value, $type, $this->connection->getPlatform());
 
         return $this->nativeStatement->bindValue($parameter, $value, $type);
     }

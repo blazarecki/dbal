@@ -582,7 +582,7 @@ class Connection implements ConnectionInterface
      */
     public function quote($string, $type = \PDO::PARAM_STR)
     {
-        TypeUtility::bindTypedValue($string, $type, $this->getPlatform());
+        list($string, $type) = TypeUtility::convertToDatabase($string, $type, $this->getPlatform());
 
         return $this->getNativeConnection()->quote($string, $type);
     }
@@ -652,8 +652,13 @@ class Connection implements ConnectionInterface
             }
 
             if (isset($types[$key])) {
-                TypeUtility::bindTypedValue($parameter, $types[$key], $this->getPlatform());
-                $statement->bindValue($placeholder, $parameter, $types[$key]);
+                list($parameter, $type) = TypeUtility::convertToDatabase(
+                    $parameter,
+                    $types[$key],
+                    $this->getPlatform()
+                );
+
+                $statement->bindValue($placeholder, $parameter, $type);
             } else {
                 $statement->bindValue($placeholder, $parameter);
             }
