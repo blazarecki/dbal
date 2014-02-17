@@ -24,34 +24,34 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     /** @var \Fridge\DBAL\Statement\Statement */
     private $statement;
 
-    /** @var \Fridge\DBAL\Driver\Statement\NativeStatementInterface */
-    private $nativeStatementMock;
+    /** @var \Fridge\DBAL\Driver\Statement\DriverStatementInterface */
+    private $driverStatementMock;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     private $connectionMock;
 
-    /** @var \Fridge\DBAL\Driver\Connection\NativeConnectionInterface */
-    private $nativeConnectionMock;
+    /** @var \Fridge\DBAL\Driver\Connection\DriverConnectionInterface */
+    private $driverConnectionMock;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->nativeStatementMock = $this->getMock('\Fridge\DBAL\Driver\Statement\NativeStatementInterface');
+        $this->driverStatementMock = $this->getMock('\Fridge\DBAL\Driver\Statement\DriverStatementInterface');
 
-        $this->nativeConnectionMock = $this->getMock('\Fridge\DBAL\Driver\Connection\NativeConnectionInterface');
-        $this->nativeConnectionMock
+        $this->driverConnectionMock = $this->getMock('\Fridge\DBAL\Driver\Connection\DriverConnectionInterface');
+        $this->driverConnectionMock
             ->expects($this->any())
             ->method('prepare')
             ->with($this->equalTo('foo'))
-            ->will($this->returnValue($this->nativeStatementMock));
+            ->will($this->returnValue($this->driverStatementMock));
 
         $this->connectionMock = $this->getMock('\Fridge\DBAL\Connection\ConnectionInterface');
         $this->connectionMock
             ->expects($this->any())
-            ->method('getNativeConnection')
-            ->will($this->returnValue($this->nativeConnectionMock));
+            ->method('getDriverConnection')
+            ->will($this->returnValue($this->driverConnectionMock));
 
         $this->statement = new Statement('foo', $this->connectionMock);
     }
@@ -61,22 +61,22 @@ class StatementTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->nativeConnectionMock);
+        unset($this->driverConnectionMock);
         unset($this->connectionMock);
-        unset($this->nativeStatementMock);
+        unset($this->driverStatementMock);
         unset($this->statement);
     }
 
     public function testInitialState()
     {
-        $this->assertSame($this->nativeStatementMock, $this->statement->getNativeStatement());
+        $this->assertSame($this->driverStatementMock, $this->statement->getDriverStatement());
         $this->assertSame($this->connectionMock, $this->statement->getConnection());
         $this->assertSame('foo', $this->statement->getSQL());
     }
 
     public function testIterator()
     {
-        $this->assertSame($this->nativeStatementMock, $this->statement->getIterator());
+        $this->assertSame($this->driverStatementMock, $this->statement->getIterator());
     }
 
     public function testBindParam()
@@ -85,7 +85,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $variable = 'bar';
         $type = 'foobar';
 
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('bindParam')
             ->with(
@@ -107,7 +107,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('getPlatform')
             ->will($this->returnValue($platformMock));
 
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('bindValue')
             ->with(
@@ -129,7 +129,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('getPlatform')
             ->will($this->returnValue($platformMock));
 
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('bindValue')
             ->with(
@@ -151,7 +151,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('getPlatform')
             ->will($this->returnValue($platformMock));
 
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('bindValue')
             ->with(
@@ -166,7 +166,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testCloseCursor()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('closeCursor')
             ->will($this->returnValue('bar'));
@@ -176,7 +176,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testColumnCount()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('columnCount')
             ->will($this->returnValue('bar'));
@@ -186,7 +186,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testErrorCode()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('errorCode')
             ->will($this->returnValue('bar'));
@@ -196,7 +196,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testErrorInfo()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('errorInfo')
             ->will($this->returnValue('bar'));
@@ -206,7 +206,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('execute')
             ->with($this->equalTo(array('foo')))
@@ -217,7 +217,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetch()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('fetch')
             ->with($this->equalTo(1))
@@ -228,7 +228,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchAll()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('fetchAll')
             ->with($this->equalTo(1))
@@ -239,7 +239,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchColumn()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('fetchColumn')
             ->with($this->equalTo(1))
@@ -250,7 +250,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testRowCount()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('rowCount')
             ->will($this->returnValue('bar'));
@@ -260,7 +260,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testSetFetchMode()
     {
-        $this->nativeStatementMock
+        $this->driverStatementMock
             ->expects($this->once())
             ->method('setFetchMode')
             ->with($this->equalTo(1))

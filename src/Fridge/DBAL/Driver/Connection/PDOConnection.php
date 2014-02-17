@@ -16,7 +16,7 @@ namespace Fridge\DBAL\Driver\Connection;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOConnection extends \PDO implements NativeConnectionInterface
+class PDOConnection extends \PDO implements DriverConnectionInterface
 {
     /**
      * Creates a PDO connection.

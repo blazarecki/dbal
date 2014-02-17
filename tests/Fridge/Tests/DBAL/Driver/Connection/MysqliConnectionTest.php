@@ -16,11 +16,11 @@ use Fridge\Tests\PHPUnitUtility;
 use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
- * Mysqli native connection tests.
+ * Mysqli driver connection tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliNativeConnectionTest extends AbstractNativeConnectionTest
+class MysqliConnectionTest extends AbstractDriverConnectionTest
 {
     /**
      * {@inheritdoc}
@@ -170,7 +170,7 @@ class MysqliNativeConnectionTest extends AbstractNativeConnectionTest
         $this->setUpConnection();
 
         $this->assertInstanceOf(
-            '\Fridge\DBAL\Driver\Statement\NativeStatementInterface',
+            '\Fridge\DBAL\Driver\Statement\DriverStatementInterface',
             $this->getConnection()->query(self::getFixture()->getQuery())
         );
     }
@@ -180,7 +180,7 @@ class MysqliNativeConnectionTest extends AbstractNativeConnectionTest
         $this->setUpConnection();
 
         $this->assertInstanceOf(
-            '\Fridge\DBAL\Driver\Statement\NativeStatementInterface',
+            '\Fridge\DBAL\Driver\Statement\DriverStatementInterface',
             $this->getConnection()->query(self::getFixture()->getQuery())
         );
     }

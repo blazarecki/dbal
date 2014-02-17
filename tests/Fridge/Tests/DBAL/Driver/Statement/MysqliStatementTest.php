@@ -17,11 +17,11 @@ use Fridge\Tests\PHPUnitUtility;
 use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
- * Mysqli native statement tests.
+ * Mysqli driver statement tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliNativeStatementTest extends AbstractNativeStatementTest
+class MysqliStatementTest extends AbstractDriverStatementTest
 {
     /**
      * {@inheritdoc}

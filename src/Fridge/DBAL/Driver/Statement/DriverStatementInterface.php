@@ -18,7 +18,7 @@ namespace Fridge\DBAL\Driver\Statement;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface NativeStatementInterface
+interface DriverStatementInterface
 {
     /**
      * Binds a parameter to a PHP variable.

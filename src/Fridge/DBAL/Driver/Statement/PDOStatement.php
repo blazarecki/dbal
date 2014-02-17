@@ -18,7 +18,7 @@ use PDOStatement as BaseStatement;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOStatement extends BaseStatement implements NativeStatementInterface
+class PDOStatement extends BaseStatement implements DriverStatementInterface
 {
     /**
      * Disabeld constructor.

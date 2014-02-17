@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Statement;
 
-use Fridge\DBAL\Driver\Statement\NativeStatementInterface;
+use Fridge\DBAL\Driver\Statement\DriverStatementInterface;
 
 /**
  * Statement.
@@ -20,14 +20,14 @@ use Fridge\DBAL\Driver\Statement\NativeStatementInterface;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface StatementInterface extends NativeStatementInterface
+interface StatementInterface extends DriverStatementInterface
 {
     /**
      * Gets the low-level statement.
      *
-     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The low-level statement.
+     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The low-level statement.
      */
-    public function getNativeStatement();
+    public function getDriverStatement();
 
     /**
      * Gets the connection linked to the statement.

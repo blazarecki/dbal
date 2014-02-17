@@ -31,7 +31,7 @@ interface DriverInterface
      * @param string $password      The database password.
      * @param array  $driverOptions The database driver options.
      *
-     * @return \Fridge\DBAL\Driver\Connection\NativeConnectionInterface The low-level connection.
+     * @return \Fridge\DBAL\Driver\Connection\DriverConnectionInterface The low-level connection.
      */
     public function connect(array $parameters, $username = null, $password = null, array $driverOptions = array());
 

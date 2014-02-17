@@ -19,7 +19,7 @@ use Fridge\DBAL\Exception\MysqliException;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliStatement implements NativeStatementInterface, \IteratorAggregate
+class MysqliStatement implements DriverStatementInterface, \IteratorAggregate
 {
     /** @var array */
     private static $mappedTypes = array(

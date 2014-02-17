@@ -29,7 +29,7 @@ abstract class AbstractDriverTest extends AbstractDriverTestCase
     public function testConnect()
     {
         $this->assertInstanceOf(
-            'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
+            'Fridge\DBAL\Driver\Connection\DriverConnectionInterface',
             $this->getDriver()->connect(
                 self::getFixture()->getSettings(),
                 self::getFixture()->getSetting('username'),

@@ -11,23 +11,23 @@
 
 namespace Fridge\Tests\DBAL\Driver\Statement;
 
-use Fridge\DBAL\Driver\Statement\NativeStatementInterface;
-use Fridge\Tests\DBAL\Driver\Connection\AbstractNativeConnectionTestCase;
+use Fridge\DBAL\Driver\Statement\DriverStatementInterface;
+use Fridge\Tests\DBAL\Driver\Connection\AbstractDriverConnectionTestCase;
 
 /**
- * Abstract native statement test case.
+ * Abstract driver statement test case.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractNativeStatementTestCase extends AbstractNativeConnectionTestCase
+abstract class AbstractDriverStatementTestCase extends AbstractDriverConnectionTestCase
 {
-    /** @var \Fridge\DBAL\Driver\Statement\NativeStatementInterface */
+    /** @var \Fridge\DBAL\Driver\Statement\DriverStatementInterface */
     private $statement;
 
     /**
      * Sets up the statement.
      *
-     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The statement.
+     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The statement.
      */
     abstract protected function setUpStatement();
 
@@ -54,7 +54,7 @@ abstract class AbstractNativeStatementTestCase extends AbstractNativeConnectionT
     /**
      * Gets the statement.
      *
-     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The statement.
+     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The statement.
      */
     protected function getStatement()
     {
@@ -64,9 +64,9 @@ abstract class AbstractNativeStatementTestCase extends AbstractNativeConnectionT
     /**
      * Sets the statement.
      *
-     * @param \Fridge\DBAL\Driver\Statement\NativeStatementInterface $statement The statement.
+     * @param \Fridge\DBAL\Driver\Statement\DriverStatementInterface $statement The statement.
      */
-    protected function setStatement(NativeStatementInterface $statement)
+    protected function setStatement(DriverStatementInterface $statement)
     {
         $this->statement = $statement;
     }

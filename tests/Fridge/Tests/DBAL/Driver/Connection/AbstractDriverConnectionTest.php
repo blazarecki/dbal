@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Driver\Statement;
+namespace Fridge\Tests\DBAL\Driver\Connection;
 
 /**
- * Abstract native statement test.
+ * Abstract driver connection test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractNativeStatementTest extends AbstractNativeStatementTestCase
+abstract class AbstractDriverConnectionTest extends AbstractDriverConnectionTestCase
 {
     /**
      * {@inheritdoc}

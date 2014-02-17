@@ -18,7 +18,7 @@ namespace Fridge\DBAL\Driver\Connection;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface NativeConnectionInterface
+interface DriverConnectionInterface
 {
     /**
      * Starts a transaction.
@@ -61,7 +61,7 @@ interface NativeConnectionInterface
     /**
      * Executes an SQL query.
      *
-     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The executed query.
+     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The executed query.
      */
     public function query();
 
@@ -70,7 +70,7 @@ interface NativeConnectionInterface
      *
      * @param string $statement The statement to prepare.
      *
-     * @return \Fridge\DBAL\Driver\Statement\NativeStatementInterface The prepared statement.
+     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The prepared statement.
      */
     public function prepare($statement);
 

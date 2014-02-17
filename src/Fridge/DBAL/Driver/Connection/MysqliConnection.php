@@ -19,7 +19,7 @@ use Fridge\DBAL\Exception\MysqliException;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MysqliConnection implements NativeConnectionInterface
+class MysqliConnection implements DriverConnectionInterface
 {
     /** @var \mysqli */
     private $mysqli;

@@ -16,11 +16,11 @@ use Fridge\Tests\PHPUnitUtility;
 use Fridge\Tests\Fixture\MySQLFixture;
 
 /**
- * PDO native connection tests.
+ * PDO driver connection tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDONativeConnectionTest extends AbstractNativeConnectionTest
+class PDOConnectionTest extends AbstractDriverConnectionTest
 {
     /**
      * {@inheritdoc}

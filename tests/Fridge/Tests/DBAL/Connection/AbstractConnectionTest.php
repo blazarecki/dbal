@@ -98,11 +98,11 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $this->getConnection()->connect();
     }
 
-    public function testNativeConnection()
+    public function testDriverConnection()
     {
         $this->assertInstanceOf(
-            'Fridge\DBAL\Driver\Connection\NativeConnectionInterface',
-            $this->getConnection()->getNativeConnection()
+            'Fridge\DBAL\Driver\Connection\DriverConnectionInterface',
+            $this->getConnection()->getDriverConnection()
         );
     }
 

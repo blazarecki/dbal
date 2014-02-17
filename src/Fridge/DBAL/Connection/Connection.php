@@ -14,7 +14,7 @@ namespace Fridge\DBAL\Connection;
 use Fridge\DBAL\Configuration;
 use Fridge\DBAL\Debug\QueryDebugger;
 use Fridge\DBAL\Driver\DriverInterface;
-use Fridge\DBAL\Driver\Statement\NativeStatementInterface;
+use Fridge\DBAL\Driver\Statement\DriverStatementInterface;
 use Fridge\DBAL\Event\Events;
 use Fridge\DBAL\Event\PostConnectEvent;
 use Fridge\DBAL\Event\QueryDebugEvent;
@@ -32,8 +32,8 @@ use Fridge\DBAL\Type\TypeUtility;
  */
 class Connection implements ConnectionInterface
 {
-    /** @var \Fridge\DBAL\Driver\Connection\NativeConnectionInterface */
-    private $nativeConnection;
+    /** @var \Fridge\DBAL\Driver\Connection\DriverConnectionInterface */
+    private $driverConnection;
 
     /** @var \Fridge\DBAL\Driver\DriverInterface */
     private $driver;
@@ -76,11 +76,11 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function getNativeConnection()
+    public function getDriverConnection()
     {
         $this->connect();
 
-        return $this->nativeConnection;
+        return $this->driverConnection;
     }
 
     /**
@@ -319,7 +319,7 @@ class Connection implements ConnectionInterface
             return true;
         }
 
-        $this->nativeConnection = $this->getDriver()->connect(
+        $this->driverConnection = $this->getDriver()->connect(
             $this->getParameters(),
             $this->getUsername(),
             $this->getPassword(),
@@ -337,7 +337,7 @@ class Connection implements ConnectionInterface
      */
     public function close()
     {
-        unset($this->nativeConnection);
+        unset($this->driverConnection);
 
         $this->transactionLevel = 0;
         $this->transactionIsolation = $this->getPlatform()->getDefaultTransactionIsolation();
@@ -385,7 +385,7 @@ class Connection implements ConnectionInterface
 
         if (!empty($parameters)) {
             list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
-            $statement = $this->getNativeConnection()->prepare($query);
+            $statement = $this->getDriverConnection()->prepare($query);
 
             if (!empty($types)) {
                 $this->bindStatementParameters($statement, $parameters, $types);
@@ -394,7 +394,7 @@ class Connection implements ConnectionInterface
                 $statement->execute($parameters);
             }
         } else {
-            $statement = $this->getNativeConnection()->query($query);
+            $statement = $this->getDriverConnection()->query($query);
         }
 
         if ($queryDebugger !== null) {
@@ -492,7 +492,7 @@ class Connection implements ConnectionInterface
 
         if (!empty($parameters)) {
             list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
-            $statement = $this->getNativeConnection()->prepare($query);
+            $statement = $this->getDriverConnection()->prepare($query);
 
             if (!empty($types)) {
                 $this->bindStatementParameters($statement, $parameters, $types);
@@ -503,7 +503,7 @@ class Connection implements ConnectionInterface
 
             $affectedRows = $statement->rowCount();
         } else {
-            $affectedRows = $this->getNativeConnection()->exec($query);
+            $affectedRows = $this->getDriverConnection()->exec($query);
         }
 
         if ($queryDebugger !== null) {
@@ -521,9 +521,9 @@ class Connection implements ConnectionInterface
         $this->transactionLevel++;
 
         if ($this->transactionLevel === 1) {
-            $this->getNativeConnection()->beginTransaction();
+            $this->getDriverConnection()->beginTransaction();
         } else {
-            $this->getNativeConnection()->exec(
+            $this->getDriverConnection()->exec(
                 $this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName())
             );
         }
@@ -539,9 +539,9 @@ class Connection implements ConnectionInterface
         if ($this->transactionLevel === 0) {
             throw ConnectionException::noActiveTransaction();
         } elseif ($this->transactionLevel === 1) {
-            $this->getNativeConnection()->commit();
+            $this->getDriverConnection()->commit();
         } else {
-            $this->getNativeConnection()->exec(
+            $this->getDriverConnection()->exec(
                 $this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName())
             );
         }
@@ -559,9 +559,9 @@ class Connection implements ConnectionInterface
         if ($this->transactionLevel === 0) {
             throw ConnectionException::noActiveTransaction();
         } elseif ($this->transactionLevel === 1) {
-            $this->getNativeConnection()->rollBack();
+            $this->getDriverConnection()->rollBack();
         } else {
-            $this->getNativeConnection()->exec(
+            $this->getDriverConnection()->exec(
                 $this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName())
             );
         }
@@ -584,7 +584,7 @@ class Connection implements ConnectionInterface
     {
         list($string, $type) = TypeUtility::convertToDatabase($string, $type, $this->getPlatform());
 
-        return $this->getNativeConnection()->quote($string, $type);
+        return $this->getDriverConnection()->quote($string, $type);
     }
 
     /**
@@ -592,7 +592,7 @@ class Connection implements ConnectionInterface
      */
     public function query()
     {
-        return call_user_func_array(array($this->getNativeConnection(), 'query'), func_get_args());
+        return call_user_func_array(array($this->getDriverConnection(), 'query'), func_get_args());
     }
 
     /**
@@ -608,7 +608,7 @@ class Connection implements ConnectionInterface
      */
     public function exec($statement)
     {
-        return $this->getNativeConnection()->exec($statement);
+        return $this->getDriverConnection()->exec($statement);
     }
 
     /**
@@ -616,7 +616,7 @@ class Connection implements ConnectionInterface
      */
     public function lastInsertId($name = null)
     {
-        return $this->getNativeConnection()->lastInsertId($name);
+        return $this->getDriverConnection()->lastInsertId($name);
     }
 
     /**
@@ -624,7 +624,7 @@ class Connection implements ConnectionInterface
      */
     public function errorCode()
     {
-        return $this->getNativeConnection()->errorCode();
+        return $this->getDriverConnection()->errorCode();
     }
 
     /**
@@ -632,17 +632,17 @@ class Connection implements ConnectionInterface
      */
     public function errorInfo()
     {
-        return $this->getNativeConnection()->errorInfo();
+        return $this->getDriverConnection()->errorInfo();
     }
 
     /**
      * Binds typed parameters to a statement.
      *
-     * @param \Fridge\DBAL\Driver\Statement\NativeStatementInterface $statement  The statement to bind on.
+     * @param \Fridge\DBAL\Driver\Statement\DriverStatementInterface $statement  The statement to bind on.
      * @param array                                                  $parameters The statement parameters.
      * @param array                                                  $types      The statement parameter types.
      */
-    private function bindStatementParameters(NativeStatementInterface $statement, array $parameters, array $types)
+    private function bindStatementParameters(DriverStatementInterface $statement, array $parameters, array $types)
     {
         foreach ($parameters as $key => $parameter) {
             if (is_int($key)) {

@@ -11,23 +11,23 @@
 
 namespace Fridge\Tests\DBAL\Driver\Connection;
 
-use Fridge\DBAL\Driver\Connection\NativeConnectionInterface;
+use Fridge\DBAL\Driver\Connection\DriverConnectionInterface;
 use Fridge\Tests\Fixture\AbstractFixtureTestCase;
 
 /**
- * Abstract native connection test case.
+ * Abstract driver connection test case.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractNativeConnectionTestCase extends AbstractFixtureTestCase
+abstract class AbstractDriverConnectionTestCase extends AbstractFixtureTestCase
 {
-    /** @var \Fridge\DBAL\Driver\Connection\NativeConnectionInterface */
+    /** @var \Fridge\DBAL\Driver\Connection\DriverConnectionInterface */
     private $connection;
 
     /**
      * Sets up the connection.
      *
-     * @return \Fridge\DBAL\Driver\Connection\NativeConnectionInterface The connection.
+     * @return \Fridge\DBAL\Driver\Connection\DriverConnectionInterface The connection.
      */
     abstract protected function setUpConnection();
 
@@ -52,7 +52,7 @@ abstract class AbstractNativeConnectionTestCase extends AbstractFixtureTestCase
     /**
      * Gets the connection.
      *
-     * @return \Fridge\DBAL\Driver\Connection\NativeConnectionInterface The connection.
+     * @return \Fridge\DBAL\Driver\Connection\DriverConnectionInterface The connection.
      */
     protected function getConnection()
     {
@@ -62,9 +62,9 @@ abstract class AbstractNativeConnectionTestCase extends AbstractFixtureTestCase
     /**
      * Sets the connection.
      *
-     * @param \Fridge\Tests\DBAL\Driver\Connection\NativeConnectionInterface $connection The connection.
+     * @param \Fridge\Tests\DBAL\Driver\Connection\DriverConnectionInterface $connection The connection.
      */
-    protected function setConnection(NativeConnectionInterface $connection)
+    protected function setConnection(DriverConnectionInterface $connection)
     {
         $this->connection = $connection;
     }

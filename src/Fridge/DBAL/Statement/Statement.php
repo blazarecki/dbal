@@ -21,8 +21,8 @@ use Fridge\DBAL\Type\TypeUtility;
  */
 class Statement implements StatementInterface, \IteratorAggregate
 {
-    /** @var \Fridge\DBAL\Driver\Statement\NativeStatementInterface */
-    private $nativeStatement;
+    /** @var \Fridge\DBAL\Driver\Statement\DriverStatementInterface */
+    private $driverStatement;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     private $connection;
@@ -40,15 +40,15 @@ class Statement implements StatementInterface, \IteratorAggregate
     {
         $this->sql = $sql;
         $this->connection = $connection;
-        $this->nativeStatement = $this->connection->getNativeConnection()->prepare($this->sql);
+        $this->driverStatement = $this->connection->getDriverConnection()->prepare($this->sql);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNativeStatement()
+    public function getDriverStatement()
     {
-        return $this->nativeStatement;
+        return $this->driverStatement;
     }
 
     /**
@@ -72,7 +72,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function getIterator()
     {
-        return $this->nativeStatement;
+        return $this->getDriverStatement();
     }
 
     /**
@@ -82,7 +82,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function bindParam($parameter, &$variable, $type = \PDO::PARAM_STR)
     {
-        return $this->nativeStatement->bindParam($parameter, $variable, $type);
+        return $this->getDriverStatement()->bindParam($parameter, $variable, $type);
     }
 
     /**
@@ -94,7 +94,7 @@ class Statement implements StatementInterface, \IteratorAggregate
     {
         list($value, $type) = TypeUtility::convertToDatabase($value, $type, $this->connection->getPlatform());
 
-        return $this->nativeStatement->bindValue($parameter, $value, $type);
+        return $this->getDriverStatement()->bindValue($parameter, $value, $type);
     }
 
     /**
@@ -102,7 +102,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function closeCursor()
     {
-        return $this->nativeStatement->closeCursor();
+        return $this->getDriverStatement()->closeCursor();
     }
 
     /**
@@ -110,7 +110,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function columnCount()
     {
-        return $this->nativeStatement->columnCount();
+        return $this->getDriverStatement()->columnCount();
     }
 
     /**
@@ -118,7 +118,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function errorCode()
     {
-        return $this->nativeStatement->errorCode();
+        return $this->getDriverStatement()->errorCode();
     }
 
     /**
@@ -126,7 +126,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function errorInfo()
     {
-        return $this->nativeStatement->errorInfo();
+        return $this->getDriverStatement()->errorInfo();
     }
 
     /**
@@ -134,7 +134,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function execute($parameters = array())
     {
-        return $this->nativeStatement->execute($parameters);
+        return $this->getDriverStatement()->execute($parameters);
     }
 
     /**
@@ -142,7 +142,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function fetch($fetchMode = \PDO::FETCH_BOTH)
     {
-        return $this->nativeStatement->fetch($fetchMode);
+        return $this->getDriverStatement()->fetch($fetchMode);
     }
 
     /**
@@ -150,7 +150,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function fetchAll($fetchMode = \PDO::FETCH_BOTH)
     {
-        return $this->nativeStatement->fetchAll($fetchMode);
+        return $this->getDriverStatement()->fetchAll($fetchMode);
     }
 
     /**
@@ -158,7 +158,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function fetchColumn($columnIndex = 0)
     {
-        return $this->nativeStatement->fetchColumn($columnIndex);
+        return $this->getDriverStatement()->fetchColumn($columnIndex);
     }
 
     /**
@@ -166,7 +166,7 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function rowCount()
     {
-        return $this->nativeStatement->rowCount();
+        return $this->getDriverStatement()->rowCount();
     }
 
     /**
@@ -174,6 +174,6 @@ class Statement implements StatementInterface, \IteratorAggregate
      */
     public function setFetchMode($fetchMode)
     {
-        return $this->nativeStatement->setFetchMode($fetchMode);
+        return $this->getDriverStatement()->setFetchMode($fetchMode);
     }
 }

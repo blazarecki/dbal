@@ -11,14 +11,14 @@
 
 namespace Fridge\Tests\DBAL\Connection;
 
-use Fridge\Tests\DBAL\Driver\Connection\AbstractNativeConnectionTestCase;
+use Fridge\Tests\DBAL\Driver\Connection\AbstractDriverConnectionTestCase;
 
 /**
  * Abstract connection test case.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractConnectionTestCase extends AbstractNativeConnectionTestCase
+abstract class AbstractConnectionTestCase extends AbstractDriverConnectionTestCase
 {
     /**
      * {@inheritdoc}
