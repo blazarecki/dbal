@@ -327,11 +327,7 @@ class Connection implements ConnectionInterface
         );
 
         $this->isConnected = true;
-
-        if ($this->getConfiguration()->getEventDispatcher()->hasListeners(Events::POST_CONNECT)) {
-            $event = new PostConnectEvent($this);
-            $this->getConfiguration()->getEventDispatcher()->dispatch(Events::POST_CONNECT, $event);
-        }
+        $this->getConfiguration()->getEventDispatcher()->dispatch(Events::POST_CONNECT, new PostConnectEvent($this));
 
         return true;
     }
