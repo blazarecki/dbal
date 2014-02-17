@@ -32,21 +32,6 @@ use Fridge\DBAL\Type\TypeUtility;
  */
 class Connection implements ConnectionInterface
 {
-    /** @const string Transaction read commited constant. */
-    const TRANSACTION_READ_COMMITTED = 'READ COMMITTED';
-
-    /** @const string Transaction read uncommited constant. */
-    const TRANSACTION_READ_UNCOMMITTED = 'READ UNCOMMITTED';
-
-    /** @const string Transaction repeatable read constant. */
-    const TRANSACTION_REPEATABLE_READ = 'REPEATABLE READ';
-
-    /** @const string Transaction read commited constant. */
-    const TRANSACTION_SERIALIZABLE = 'SERIALIZABLE';
-
-    /** @const string Array parameter constant which enables query rewritting. */
-    const PARAM_ARRAY = '[]';
-
     /** @var \Fridge\DBAL\Driver\Connection\NativeConnectionInterface */
     private $nativeConnection;
 
