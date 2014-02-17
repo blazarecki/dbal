@@ -397,7 +397,7 @@ class Connection implements ConnectionInterface
             $statement = $this->getNativeConnection()->query($query);
         }
 
-        if ($queryDebugger) {
+        if ($queryDebugger !== null) {
             $this->debugQuery($queryDebugger);
         }
 
@@ -506,7 +506,7 @@ class Connection implements ConnectionInterface
             $affectedRows = $this->getNativeConnection()->exec($query);
         }
 
-        if ($queryDebugger) {
+        if ($queryDebugger !== null) {
             $this->debugQuery($queryDebugger);
         }
 
