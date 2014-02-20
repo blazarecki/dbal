@@ -25,11 +25,17 @@ class PDOPostgreSQLDriverTest extends AbstractDriverTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_PGSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_PGSQL)) {
-            return new PostgreSQLFixture();
-        }
+        return new PostgreSQLFixture();
     }
 
     /**

@@ -48,7 +48,7 @@ class Connection implements ConnectionInterface
     private $parameters;
 
     /** @var boolean */
-    private $isConnected;
+    private $connected;
 
     /** @var integer */
     private $transactionLevel;
@@ -134,6 +134,14 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
+    public function hasParameters()
+    {
+        return !empty($this->parameters);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParameters()
     {
         return $this->parameters;
@@ -144,27 +152,39 @@ class Connection implements ConnectionInterface
      */
     public function setParameters(array $parameters)
     {
-        $this->close();
-
-        $this->parameters = array_merge($this->parameters, $parameters);
+        foreach ($parameters as $name => $value) {
+            $this->setParameter($name, $value);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getParameter($parameter)
+    public function hasParameter($name)
     {
-        return isset($this->parameters[$parameter]) ? $this->parameters[$parameter] : null;
+        return isset($this->parameters[$name]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setParameter($parameter, $value)
+    public function getParameter($name)
+    {
+        return $this->hasParameter($name) ? $this->parameters[$name] : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameter($name, $value)
     {
         $this->close();
 
-        $this->parameters[$parameter] = $value;
+        if ($value !== null) {
+            $this->parameters[$name] = $value;
+        } else {
+            unset($this->parameters[$name]);
+        }
     }
 
     /**
@@ -258,7 +278,7 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function setDriverOptions(array $options)
+    public function setDriverOptions(array $options = null)
     {
         $this->setParameter('driver_options', $options);
     }
@@ -307,7 +327,7 @@ class Connection implements ConnectionInterface
      */
     public function isConnected()
     {
-        return $this->isConnected;
+        return $this->connected;
     }
 
     /**
@@ -326,7 +346,7 @@ class Connection implements ConnectionInterface
             $this->getDriverOptions()
         );
 
-        $this->isConnected = true;
+        $this->connected = true;
         $this->getConfiguration()->getEventDispatcher()->dispatch(Events::POST_CONNECT, new PostConnectEvent($this));
 
         return true;
@@ -341,7 +361,7 @@ class Connection implements ConnectionInterface
 
         $this->transactionLevel = 0;
         $this->transactionIsolation = $this->getPlatform()->getDefaultTransactionIsolation();
-        $this->isConnected = false;
+        $this->connected = false;
     }
 
     /**
@@ -412,9 +432,13 @@ class Connection implements ConnectionInterface
         $queryBuilder = $this->createQueryBuilder()->insert($tableName);
 
         foreach ($datas as $identifier => $data) {
-            $dataType = isset($types[$identifier]) ? $types[$identifier] : null;
-
-            $queryBuilder->set($identifier, $queryBuilder->createPositionalParameter($data, $dataType));
+            $queryBuilder->set(
+                $identifier,
+                $queryBuilder->createPositionalParameter(
+                    $data,
+                    isset($types[$identifier]) ? $types[$identifier] : null
+                )
+            );
         }
 
         return $queryBuilder->execute();
@@ -438,26 +462,28 @@ class Connection implements ConnectionInterface
             ->setMode($isPositional ? QueryBuilder::MODE_POSITIONAL : QueryBuilder::MODE_NAMED);
 
         foreach ($datas as $identifier => $value) {
-            $dataType = isset($dataTypes[$identifier]) ? $dataTypes[$identifier] : null;
-            $queryBuilder->set($identifier, $queryBuilder->createParameter($value, $dataType));
+            $queryBuilder->set(
+                $identifier,
+                $queryBuilder->createParameter(
+                    $value,
+                    isset($dataTypes[$identifier]) ? $dataTypes[$identifier] : null
+                )
+            );
         }
 
         if ($expression !== null) {
-            if ($isPositional && (($datasCount = count($datas)) > 0)) {
-                $fixer = function (&$parameters, $fix) {
-                    foreach ($parameters as $parameter => $value) {
-                        $parameters[$parameter + $fix] = $value;
-                        unset($parameters[$parameter]);
-                    }
-                };
+            $queryBuilder->where($expression);
 
-                $fixer($expressionParameters, $datasCount);
-                $fixer($expressionParameterTypes, $datasCount);
+            $datasCount = count($datas);
+            foreach ($expressionParameters as $parameter => $value) {
+                $fixedParameter = $isPositional ? $parameter + $datasCount : $parameter;
+
+                $queryBuilder->setParameter(
+                    $fixedParameter,
+                    $value,
+                    isset($expressionParameterTypes[$parameter]) ? $expressionParameterTypes[$parameter] : null
+                );
             }
-
-            $queryBuilder
-                ->where($expression)
-                ->setParameters($expressionParameters, $expressionParameterTypes);
         }
 
         return $queryBuilder->execute();
@@ -538,7 +564,9 @@ class Connection implements ConnectionInterface
     {
         if ($this->transactionLevel === 0) {
             throw ConnectionException::noActiveTransaction();
-        } elseif ($this->transactionLevel === 1) {
+        }
+
+        if ($this->transactionLevel === 1) {
             $this->getDriverConnection()->commit();
         } else {
             $this->getDriverConnection()->exec(
@@ -558,7 +586,9 @@ class Connection implements ConnectionInterface
     {
         if ($this->transactionLevel === 0) {
             throw ConnectionException::noActiveTransaction();
-        } elseif ($this->transactionLevel === 1) {
+        }
+
+        if ($this->transactionLevel === 1) {
             $this->getDriverConnection()->rollBack();
         } else {
             $this->getDriverConnection()->exec(

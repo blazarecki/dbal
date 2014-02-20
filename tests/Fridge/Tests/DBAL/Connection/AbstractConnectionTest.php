@@ -16,7 +16,7 @@ use Fridge\DBAL\Event\Events;
 use Fridge\DBAL\Type\Type;
 
 /**
- * Executes the functional connection test suite on a specific database.
+ * Connection tests which needs a database.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -38,29 +38,6 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         return self::MODE_DATAS;
     }
 
-    /**
-     * Asserts a query result.
-     *
-     * @param array $expectedResult The expected result.
-     * @param mixed $actualResult   The actual result.
-     */
-    private function assertQueryResult(array $expectedResult, $actualResult)
-    {
-        $this->assertInternalType('array', $actualResult);
-
-        $this->assertCount(count($expectedResult), $actualResult);
-
-        foreach ($expectedResult as $key => $result) {
-            $this->assertArrayHasKey($key, $actualResult);
-
-            if (is_resource($actualResult[$key])) {
-                $actualResult[$key] = fread($actualResult[$key], strlen($result));
-            }
-
-            $this->assertEquals($result, $actualResult[$key]);
-        }
-    }
-
     public function testConnectAndClose()
     {
         $this->assertTrue($this->getConnection()->connect());
@@ -70,20 +47,17 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $this->assertFalse($this->getConnection()->isConnected());
     }
 
-    public function testConnectIfConnectionIsAlreadyEstablished()
+    public function testConnectWithConnectionAlreadyEstablished()
     {
-        $this->getConnection()->connect();
+        $this->assertTrue($this->getConnection()->connect());
         $this->assertTrue($this->getConnection()->connect());
     }
 
     public function testConnectDispatchEvent()
     {
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
-        $eventDispatcherMock
-            ->expects($this->any())
-            ->method('hasListeners')
-            ->with($this->equalTo(Events::POST_CONNECT))
-            ->will($this->returnValue(true));
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
 
         $eventDispatcherMock
             ->expects($this->once())
@@ -92,8 +66,6 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
                 $this->identicalTo(Events::POST_CONNECT),
                 $this->isInstanceOf('Fridge\DBAL\Event\PostConnectEvent')
             );
-
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
         $this->getConnection()->connect();
     }
@@ -118,6 +90,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         }
 
         $this->getConnection()->setTransactionIsolation(Connection::TRANSACTION_READ_COMMITTED);
+        $this->assertSame(Connection::TRANSACTION_READ_COMMITTED, $this->getConnection()->getTransactionIsolation());
     }
 
     public function testCharset()
@@ -137,12 +110,13 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     {
         $this->getConnection()->connect();
 
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
+
         $eventDispatcherMock
             ->expects($this->never())
             ->method('dispatch');
-
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
         $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
@@ -151,12 +125,10 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     {
         $this->getConnection()->connect();
 
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
-        $eventDispatcherMock
-            ->expects($this->any())
-            ->method('hasListeners')
-            ->with($this->equalTo(Events::QUERY_DEBUG))
-            ->will($this->returnValue(true));
+        $this->getConnection()->getConfiguration()->setDebug(true);
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
 
         $eventDispatcherMock
             ->expects($this->once())
@@ -164,10 +136,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
             ->with(
                 $this->identicalTo(Events::QUERY_DEBUG),
                 $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
-            );;
-
-        $this->getConnection()->getConfiguration()->setDebug(true);
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
+            );
 
         $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
@@ -244,19 +213,20 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
     public function testExecuteUpdateWithoutParameters()
     {
-        $this->assertSame(1, $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery()));
+        $this->assertUpdateResult($this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery()));
     }
 
     public function testExecuteUpdateDoesNotDispatchEventWithoutDebug()
     {
         $this->getConnection()->connect();
 
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
+
         $eventDispatcherMock
             ->expects($this->never())
             ->method('dispatch');
-
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
 
         $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
@@ -265,12 +235,10 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     {
         $this->getConnection()->connect();
 
-        $eventDispatcherMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
-        $eventDispatcherMock
-            ->expects($this->any())
-            ->method('hasListeners')
-            ->with($this->equalTo(Events::QUERY_DEBUG))
-            ->will($this->returnValue(true));
+        $this->getConnection()->getConfiguration()->setDebug(true);
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
 
         $eventDispatcherMock
             ->expects($this->once())
@@ -280,70 +248,54 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
                 $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
             );
 
-        $this->getConnection()->getConfiguration()->setDebug(true);
-        $this->getConnection()->getConfiguration()->setEventDispatcher($eventDispatcherMock);
-
         $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
 
     public function testExecuteUpdateWithNamedParameters()
     {
-        $count = $this->getConnection()->executeUpdate(
+        $this->assertUpdateResult($this->getConnection()->executeUpdate(
             self::getFixture()->getUpdateQueryWithNamedParameters(),
             self::getFixture()->getNamedQueryParameters()
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testExecuteUpdateWithNamedTypedParameters()
     {
-        $count = $this->getConnection()->executeUpdate(
+        $this->assertUpdateResult($this->getConnection()->executeUpdate(
             self::getFixture()->getUpdateQueryWithNamedParameters(),
             self::getFixture()->getNamedTypedQueryParameters(),
             self::getFixture()->getNamedQueryTypes()
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testExecuteUpdateWithPositionalParameters()
     {
-        $count = $this->getConnection()->executeUpdate(
+        $this->assertUpdateResult($this->getConnection()->executeUpdate(
             self::getFixture()->getUpdateQueryWithPositionalParameters(),
             self::getFixture()->getPositionalQueryParameters()
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testExecuteUpdateWithPositionalTypedParameters()
     {
-        $count = $this->getConnection()->executeUpdate(
+        $this->assertUpdateResult($this->getConnection()->executeUpdate(
             self::getFixture()->getUpdateQueryWithPositionalParameters(),
             self::getFixture()->getPositionalTypedQueryParameters(),
             self::getFixture()->getPositionalQueryTypes()
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testFetchAll()
     {
-        $expected = array(self::getFixture()->getQueryResult());
-
         $results = $this->getConnection()->fetchAll(
             self::getFixture()->getQueryWithNamedParameters(),
             self::getFixture()->getNamedTypedQueryParameters(),
             self::getFixture()->getNamedQueryTypes()
         );
 
-        $this->assertCount(count($expected), $results);
-
-        foreach ($expected as $key => $value) {
-            $this->assertArrayHasKey($key, $results);
-            $this->assertQueryResult($value, $results[$key]);
-        }
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey(0, $results);
+        $this->assertQueryResult(self::getFixture()->getQueryResult(), $results[0]);
     }
 
     public function testFetchArray()
@@ -386,83 +338,72 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
     public function testInsertWithTypedParameters()
     {
-        $count = $this->getConnection()->insert(
+        $this->assertUpdateResult($this->getConnection()->insert(
             'tcolumns',
             self::getFixture()->getNamedTypedQueryParameters(),
             self::getFixture()->getNamedQueryTypes()
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testInsertWithPartialTypedParameters()
     {
-        $count = $this->getConnection()->insert(
+        $this->assertUpdateResult($this->getConnection()->insert(
             'tcolumns',
             self::getFixture()->getNamedTypedQueryParameters(),
             self::getFixture()->getPartialNamedQueryTypes()
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testUpdateWithoutExpression()
     {
-        $datas = array_merge(self::getFixture()->getNamedTypedQueryParameters(), array('carray' => array('bar' => 'foo')));
-        $count = $this->getConnection()->update('tcolumns', $datas, self::getFixture()->getNamedQueryTypes());
-
-        $this->assertSame(1, $count);
+        $this->assertUpdateResult($this->getConnection()->update(
+            'tcolumns',
+            array_merge(self::getFixture()->getNamedTypedQueryParameters(), array('cboolean' => false)),
+            self::getFixture()->getNamedQueryTypes()
+        ));
     }
 
     public function testUpdateWithTypedPositionalExpressionParameters()
     {
-        $originalDatas = self::getFixture()->getNamedTypedQueryParameters();
-        $datas = array_merge($originalDatas, array('carray' => array('bar' => 'foo')));
+        $datas = self::getFixture()->getNamedTypedQueryParameters();
 
-        $count = $this->getConnection()->update(
+        $this->assertUpdateResult($this->getConnection()->update(
             'tcolumns',
-            $datas,
+            array_merge($datas, array('cboolean' => false)),
             self::getFixture()->getNamedQueryTypes(),
             'carray = ?',
-            array($originalDatas['carray']),
+            array($datas['carray']),
             array(Type::TARRAY)
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testUpdateWithTypedNamedExpressionParameters()
     {
-        $originalDatas = self::getFixture()->getNamedTypedQueryParameters();
-        $datas = array_merge($originalDatas, array('carray' => array('bar' => 'foo')));
+        $datas = self::getFixture()->getNamedTypedQueryParameters();
 
-        $count = $this->getConnection()->update(
+        $this->assertUpdateResult($this->getConnection()->update(
             'tcolumns',
-            $datas,
+            array_merge($datas, array('cboolean' => false)),
             self::getFixture()->getNamedQueryTypes(),
             'carray = :carrayParameter',
-            array('carrayParameter' => $originalDatas['carray']),
+            array('carrayParameter' => $datas['carray']),
             array('carrayParameter' => Type::TARRAY)
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testDeleteWithoutExpression()
     {
-        $this->assertSame(1, $this->getConnection()->delete('tcolumns'));
+        $this->assertUpdateResult($this->getConnection()->delete('tcolumns'));
     }
 
     public function testDeleteWithTypedExpressionParameters()
     {
-        $count = $this->getConnection()->delete(
+        $this->assertUpdateResult($this->getConnection()->delete(
             'tcolumns',
             'carray = :carrayParameter',
             array('carrayParameter' => array('foo' => 'bar')),
             array('carrayParameter' => Type::TARRAY)
-        );
-
-        $this->assertSame(1, $count);
+        ));
     }
 
     public function testBeginTransaction()
@@ -479,14 +420,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     public function testTransactionWithCommit()
     {
         $this->getConnection()->beginTransaction();
-
-        try {
-            $this->getConnection()->commit();
-        } catch (\Exception $e) {
-            $this->getConnection()->rollBack();
-
-            $this->fail($e->getMessage());
-        }
+        $this->getConnection()->commit();
 
         $this->assertFalse($this->getConnection()->inTransaction());
         $this->assertSame(0, $this->getConnection()->getTransactionLevel());
@@ -495,12 +429,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     public function testTransactionWithRollback()
     {
         $this->getConnection()->beginTransaction();
-
-        try {
-            throw new \Exception();
-        } catch (\Exception $e) {
-            $this->getConnection()->rollBack();
-        }
+        $this->getConnection()->rollBack();
 
         $this->assertFalse($this->getConnection()->inTransaction());
         $this->assertSame(0, $this->getConnection()->getTransactionLevel());
@@ -509,55 +438,27 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     public function testNestedTransactionWithCommit()
     {
         $this->getConnection()->beginTransaction();
+        $this->getConnection()->beginTransaction();
+        $this->assertSame(2, $this->getConnection()->getTransactionLevel());
 
-        try {
-            $this->getConnection()->beginTransaction();
-            $this->assertSame(2, $this->getConnection()->getTransactionLevel());
+        $this->getConnection()->commit();
+        $this->assertSame(1, $this->getConnection()->getTransactionLevel());
 
-            try {
-                $this->getConnection()->commit();
-            } catch (\Exception $e) {
-                $this->getConnection()->rollBack();
-
-                $this->fail($e->getMessage());
-            }
-
-            $this->assertSame(1, $this->getConnection()->getTransactionLevel());
-
-            $this->getConnection()->commit();
-        } catch (\Exception $e) {
-            $this->getConnection()->rollBack();
-
-            if ($this->getConnection()->getPlatform()->supportSavepoints()) {
-                $this->fail($e->getMessage());
-            }
-        }
-
-        $this->assertFalse($this->getConnection()->inTransaction());
+        $this->getConnection()->commit();
+        $this->assertSame(0, $this->getConnection()->getTransactionLevel());
     }
 
     public function testNestedTransactionWithRollback()
     {
         $this->getConnection()->beginTransaction();
+        $this->getConnection()->beginTransaction();
+        $this->assertSame(2, $this->getConnection()->getTransactionLevel());
 
-        try {
-            $this->getConnection()->beginTransaction();
-            $this->assertSame(2, $this->getConnection()->getTransactionLevel());
+        $this->getConnection()->rollBack();
+        $this->assertSame(1, $this->getConnection()->getTransactionLevel());
 
-            try {
-                throw new \Exception();
-            } catch (\Exception $e) {
-                $this->getConnection()->rollBack();
-            }
-
-            $this->assertSame(1, $this->getConnection()->getTransactionLevel());
-
-            throw new \Exception();
-        } catch (\Exception $e) {
-            $this->getConnection()->rollBack();
-        }
-
-        $this->assertFalse($this->getConnection()->inTransaction());
+        $this->getConnection()->rollBack();
+        $this->assertSame(0, $this->getConnection()->getTransactionLevel());
     }
 
     /**
@@ -605,7 +506,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
     public function testExec()
     {
-        $this->assertSame(1, $this->getConnection()->exec(self::getFixture()->getUpdateQuery()));
+        $this->assertUpdateResult($this->getConnection()->exec(self::getFixture()->getUpdateQuery()));
     }
 
     public function testLastInsertId()
@@ -642,5 +543,47 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
             $this->assertArrayHasKey(2, $errorInfo);
             $this->assertInternalType('string', $errorInfo[2]);
         }
+    }
+
+    /**
+     * Creates an event dispatcher mock.
+     *
+     * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface The event dispatcher mock.
+     */
+    private function createEventDispatcherMock()
+    {
+        return $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+    }
+
+    /**
+     * Asserts a query result.
+     *
+     * @param array $expected The expected query result.
+     * @param mixed $actual   The actual query result.
+     */
+    private function assertQueryResult(array $expected, $actual)
+    {
+        $this->assertInternalType('array', $actual);
+        $this->assertCount(count($expected), $actual);
+
+        foreach ($expected as $key => $result) {
+            $this->assertArrayHasKey($key, $actual);
+
+            if (is_resource($actual[$key])) {
+                $actual[$key] = fread($actual[$key], strlen($result));
+            }
+
+            $this->assertEquals($result, $actual[$key]);
+        }
+    }
+
+    /**
+     * Asserts an update result.
+     *
+     * @param integer $actual The expected affected rows.
+     */
+    private function assertUpdateResult($actual)
+    {
+        $this->assertSame(1, $actual);
     }
 }

@@ -26,11 +26,17 @@ class MysqliStatementTest extends AbstractDriverStatementTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
-            return new MySQLFixture(PHPUnitUtility::MYSQLI);
-        }
+        return new MySQLFixture(PHPUnitUtility::MYSQLI);
     }
 
     /**

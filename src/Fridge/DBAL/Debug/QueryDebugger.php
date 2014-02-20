@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Debug;
 
 /**
- * Debugs the execution time of a query (it is designed for a unique usage).
+ * Debugs the execution time of a query.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -59,7 +59,7 @@ class QueryDebugger
     /**
      * Gets the debugged query.
      *
-     * @return string The debugged query
+     * @return string The debugged query.
      */
     public function getQuery()
     {
@@ -89,7 +89,7 @@ class QueryDebugger
     /**
      * Gets the execution time of the query in ms.
      *
-     * @return float The execution time of the query
+     * @return float The execution time of the query.
      */
     public function getTime()
     {

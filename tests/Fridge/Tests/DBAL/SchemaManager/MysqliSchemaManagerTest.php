@@ -24,11 +24,17 @@ class MysqliSchemaManagerTest extends AbstractMySQLSchemaManagerTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            return new MySQLFixture(ConnectionUtility::MYSQLI);
-        }
+        return new MySQLFixture(ConnectionUtility::MYSQLI);
     }
 
     /**

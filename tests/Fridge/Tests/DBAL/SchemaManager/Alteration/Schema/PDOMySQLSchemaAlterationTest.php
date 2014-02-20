@@ -24,11 +24,17 @@ class PDOMySQLSchemaAlterationTest extends AbstractMySQLSchemaAlterationTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
-        }
+        return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
     }
 
     /**

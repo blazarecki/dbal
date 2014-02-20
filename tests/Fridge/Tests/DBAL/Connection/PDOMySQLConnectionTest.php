@@ -24,11 +24,17 @@ class PDOMySQLConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
-        }
+        return new MySQLFixture(ConnectionUtility::PDO_MYSQL);
     }
 
     /**
@@ -36,8 +42,6 @@ class PDOMySQLConnectionTest extends AbstractConnectionTest
      */
     protected function setUpConnection()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            return ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL);
-        }
+        return ConnectionUtility::getConnection(ConnectionUtility::PDO_MYSQL);
     }
 }

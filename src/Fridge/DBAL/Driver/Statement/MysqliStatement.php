@@ -78,9 +78,9 @@ class MysqliStatement implements DriverStatementInterface, \IteratorAggregate
     }
 
     /**
-     * Gets the mysqli low-level statement.
+     * Gets the mysqli driver statement.
      *
-     * @return \mysqli_stmt The mysqli low-level statement.
+     * @return \mysqli_stmt The mysqli driver statement.
      */
     public function getMysqliStatement()
     {
@@ -329,7 +329,7 @@ class MysqliStatement implements DriverStatementInterface, \IteratorAggregate
     }
 
     /**
-     * Binds the parameters on the low-level statement.
+     * Binds the parameters on the driver statement.
      */
     private function bindParameters()
     {
@@ -362,7 +362,7 @@ class MysqliStatement implements DriverStatementInterface, \IteratorAggregate
     }
 
     /**
-     * Binds the low-level result fields.
+     * Binds the driver result fields.
      */
     private function bindResultFields()
     {
@@ -380,7 +380,7 @@ class MysqliStatement implements DriverStatementInterface, \IteratorAggregate
     }
 
     /**
-     * Binds the low-level statement result.
+     * Binds the driver statement result.
      */
     private function bindResult()
     {

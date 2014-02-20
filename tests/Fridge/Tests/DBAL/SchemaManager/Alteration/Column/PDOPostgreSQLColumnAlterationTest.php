@@ -24,11 +24,17 @@ class PDOPostgreSQLColumnAlterationTest extends AbstractColumnAlterationTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            return new PostgreSQLFixture();
-        }
+        return new PostgreSQLFixture();
     }
 
     /**

@@ -24,11 +24,17 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            return new PostgreSQLFixture();
-        }
+        return new PostgreSQLFixture();
     }
 
     /**
@@ -36,8 +42,6 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
      */
     protected function setUpConnection()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            return ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL);
-        }
+        return ConnectionUtility::getConnection(ConnectionUtility::PDO_PGSQL);
     }
 }

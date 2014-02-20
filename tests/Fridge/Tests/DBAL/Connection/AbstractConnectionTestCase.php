@@ -14,7 +14,7 @@ namespace Fridge\Tests\DBAL\Connection;
 use Fridge\Tests\DBAL\Driver\Connection\AbstractDriverConnectionTestCase;
 
 /**
- * Abstract connection test case.
+ * Connection test case.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

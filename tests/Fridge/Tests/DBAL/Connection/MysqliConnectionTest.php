@@ -24,11 +24,17 @@ class MysqliConnectionTest extends AbstractConnectionTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            return new MySQLFixture(ConnectionUtility::MYSQLI);
-        }
+        return new MySQLFixture(ConnectionUtility::MYSQLI);
     }
 
     /**
@@ -36,8 +42,6 @@ class MysqliConnectionTest extends AbstractConnectionTest
      */
     protected function setUpConnection()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            return ConnectionUtility::getConnection(ConnectionUtility::MYSQLI);
-        }
+        return ConnectionUtility::getConnection(ConnectionUtility::MYSQLI);
     }
 }

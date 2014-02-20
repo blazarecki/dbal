@@ -66,9 +66,9 @@ class MysqliConnection implements DriverConnectionInterface
     }
 
     /**
-     * Gets the mysqli low-level connection.
+     * Gets the mysqli driver connection.
      *
-     * @return \mysqli The mysqli low-level connection.
+     * @return \mysqli The mysqli driver connection.
      */
     public function getMysqli()
     {

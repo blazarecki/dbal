@@ -24,11 +24,17 @@ class PDOPostgreSQLSchemaManagerTest extends AbstractSchemaManagerTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function setUpFixture()
     {
-        if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
-            return new PostgreSQLFixture();
-        }
+        return new PostgreSQLFixture();
     }
 
     /**

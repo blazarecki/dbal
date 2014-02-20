@@ -43,9 +43,19 @@ abstract class AbstractFixtureTestCase extends \PHPUnit_Framework_TestCase
     private static $setUpFixtureMode;
 
     /**
+     * Checks if there is a fixture.
+     *
+     * @return boolean TRUE if there is a fixture else FALSE.
+     */
+    protected static function hasFixture()
+    {
+        throw new \Exception('You must implement your own "hasFixture" method.');
+    }
+
+    /**
      * Sets up the fixture.
      *
-     * @return \Fridge\Tests\Fixture\FixtureInterface|null The fixture or null if there is none.
+     * @return \Fridge\Tests\Fixture\FixtureInterface The fixture.
      */
     protected static function setUpFixture()
     {
@@ -77,16 +87,15 @@ abstract class AbstractFixtureTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::setSetUpBeforeClassFixtureMode(static::setUpBeforeClassFixtureMode());
-        self::setSetUpFixtureMode(static::setUpFixtureMode());
-
-        self::$fixture = static::setUpFixture();
-
-        if (!self::hasFixture()) {
+        if (!static::hasFixture()) {
             self::markTestSkipped();
         }
 
-        self::handleFixtureMode(self::$setUpBeforeClassFixtureMode);
+        self::setSetUpBeforeClassFixtureMode(static::setUpBeforeClassFixtureMode());
+        self::setSetUpFixtureMode(static::setUpFixtureMode());
+
+        self::setFixture(static::setUpFixture());
+        self::handleFixtureMode(self::getSetUpBeforeClassFixtureMode());
     }
 
     /**
@@ -94,10 +103,8 @@ abstract class AbstractFixtureTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        if (
-            (self::getSetUpBeforeClassFixtureMode() > self::MODE_NONE)
-            ||
-            (self::getSetUpFixtureMode() > self::MODE_NONE)
+        if ((self::getSetUpBeforeClassFixtureMode() > self::MODE_NONE)
+            || (self::getSetUpFixtureMode() > self::MODE_NONE)
         ) {
             self::$fixture->drop();
         }
@@ -108,17 +115,7 @@ abstract class AbstractFixtureTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        self::handleFixtureMode(self::$setUpFixtureMode);
-    }
-
-    /**
-     * Checks if there is a fixture.
-     *
-     * @return boolean TRUE if there is a fixture else FALSE.
-     */
-    protected static function hasFixture()
-    {
-        return self::$fixture !== null;
+        self::handleFixtureMode(self::getSetUpFixtureMode());
     }
 
     /**
@@ -129,6 +126,16 @@ abstract class AbstractFixtureTestCase extends \PHPUnit_Framework_TestCase
     protected static function getFixture()
     {
         return self::$fixture;
+    }
+
+    /**
+     * Sets the fixture.
+     *
+     * @param \Fridge\Tests\Fixture\FixtureInterface $fixture The fixture.
+     */
+    protected static function setFixture(FixtureInterface $fixture)
+    {
+        self::$fixture = $fixture;
     }
 
     /**

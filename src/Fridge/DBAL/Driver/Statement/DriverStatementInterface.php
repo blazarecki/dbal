@@ -14,7 +14,7 @@ namespace Fridge\DBAL\Driver\Statement;
 /**
  * Low-level class representing a prepared SQL statement.
  *
- * All low-level statements must implement this interface.
+ * All driver statements must implement this interface.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

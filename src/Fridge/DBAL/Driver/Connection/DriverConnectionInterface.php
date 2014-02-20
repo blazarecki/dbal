@@ -12,9 +12,7 @@
 namespace Fridge\DBAL\Driver\Connection;
 
 /**
- * Low-level class representing a database connection.
- *
- * All low-level connections must implement this interface.
+ * Driver connection.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

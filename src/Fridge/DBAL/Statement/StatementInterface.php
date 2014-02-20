@@ -23,9 +23,9 @@ use Fridge\DBAL\Driver\Statement\DriverStatementInterface;
 interface StatementInterface extends DriverStatementInterface
 {
     /**
-     * Gets the low-level statement.
+     * Gets the driver statement.
      *
-     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The low-level statement.
+     * @return \Fridge\DBAL\Driver\Statement\DriverStatementInterface The driver statement.
      */
     public function getDriverStatement();
 

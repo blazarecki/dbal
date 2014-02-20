@@ -25,11 +25,17 @@ class PDOConnectionTest extends AbstractDriverConnectionTest
     /**
      * {@inheritdoc}
      */
+    protected static function hasFixture()
+    {
+        return PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function setUpFixture()
     {
-        if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            return new MySQLFixture(PHPUnitUtility::PDO_MYSQL);
-        }
+        return new MySQLFixture(PHPUnitUtility::PDO_MYSQL);
     }
 
     /**

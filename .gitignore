@@ -2,15 +2,10 @@
 /autoload.php
 
 # Composer
-/installer
-/composer.phar
-/composer.lock
 /bin
 /vendor
+/composer.lock
 
 # PHPUnit
 /phpunit.xml
 /report
-
-# ApiGen
-/api

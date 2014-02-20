@@ -14,10 +14,8 @@ namespace Fridge\DBAL\Connection;
 use Fridge\DBAL\Driver\Connection\DriverConnectionInterface;
 
 /**
- * Adds some incredible features to a low-level connection like asynchronous connection, nested transactions,
- * transaction isolation, advanced types support and more.
- *
- * All connections must implement this interface.
+ * Adds some incredible features to a driver connection like asynchronous connection, nested transactions,
+ * transaction isolation, query debugging/rewritting, advanced types support and more.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -39,37 +37,37 @@ interface ConnectionInterface extends DriverConnectionInterface
     const PARAM_ARRAY = '[]';
 
     /**
-     * Gets the low-level connection used by the connection.
+     * Gets the driver connection.
      *
-     * @return \Fridge\DBAL\Driver\Connection\DriverConnectionInterface The low-level connection.
+     * @return \Fridge\DBAL\Driver\Connection\DriverConnectionInterface The driver connection.
      */
     public function getDriverConnection();
 
     /**
-     * Gets the driver used by the connection.
+     * Gets the driver.
      *
      * @return \Fridge\DBAL\Driver\DriverInterface The connection driver.
      */
     public function getDriver();
 
     /**
-     * Convenient method allowing to retrieve the driver platform.
+     * Gets the driver platform.
      *
      * @return \Fridge\DBAL\Platform\PlatformInterface The driver platform.
      */
     public function getPlatform();
 
     /**
-     * Convenient method allowing to retrieve the driver schema manager using this connection.
+     * Gets the driver schema manager.
      *
      * @return \Fridge\DBAL\SchemaManager\SchemaManagerInterface The driver schema manager using the connection.
      */
     public function getSchemaManager();
 
     /**
-     * Creates a query builder using this connection.
+     * Creates a query builder.
      *
-     * @return \Fridge\DBAL\Query\QueryBuilder The query builder using the connection.
+     * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
     public function createQueryBuilder();
 
@@ -88,7 +86,14 @@ interface ConnectionInterface extends DriverConnectionInterface
     public function getConfiguration();
 
     /**
-     * Gets the connection parameters like it was passed to the constructor.
+     * Checks if the connection has parameters.
+     *
+     * @return boolean TRUE if the connection has parameters else FALSE.
+     */
+    public function hasParameters();
+
+    /**
+     * Gets the connection parameters.
      *
      * @return array The connection parameters.
      */
@@ -102,106 +107,114 @@ interface ConnectionInterface extends DriverConnectionInterface
     public function setParameters(array $parameters);
 
     /**
+     * Checks if the connection has a parameter.
+     *
+     * @param string $name The connection parameter name.
+     *
+     * @return boolean TRUE if the connection has the parameter else FALSE.
+     */
+    public function hasParameter($name);
+
+    /**
      * Gets a connection parameter.
      *
-     * @param string $parameter The connection parameter name.
+     * @param string $name The connection parameter name.
      *
      * @return mixed The connection parameter value.
      */
-    public function getParameter($parameter);
+    public function getParameter($name);
 
     /**
      * Sets a connection parameter.
      *
-     * @param string $parameter The connection parameter name.
-     * @param mixed  $value     The connection parameter value.
+     * @param string $name  The connection parameter name.
+     * @param mixed  $value The connection parameter value (NULL to remove it).
      */
-    public function setParameter($parameter, $value);
+    public function setParameter($name, $value);
 
     /**
-     * Gets the database username.
+     * Gets the username from the parameters.
      *
-     * @return string The connection username if it is defined else NULL.
+     * @return string|null The username if it is defined else NULL.
      */
     public function getUsername();
 
     /**
-     * Sets the database username.
+     * Sets the username as parameter.
      *
-     * @param string $username The database username.
+     * @param string|null $username The username (NULL to remove it).
      */
     public function setUsername($username);
 
     /**
-     * Gets the database password.
+     * Gets the password from the parameters.
      *
-     * @return string The connection password if it is defined else NULL.
+     * @return string|null The password if it is defined else NULL.
      */
     public function getPassword();
 
     /**
-     * Sets the database password.
+     * Sets the password as parameter.
      *
-     * @param string $password The database password.
+     * @param string|null $password The password (NULL to remove it).
      */
     public function setPassword($password);
 
     /**
-     * Gets the database name. If it is not defined in the parameters, a request to the database will be done
-     * in order to determine the current database name.
+     * Gets the database name from the parameters. If it is not defined, it will be fetched by the schema manager.
      *
      * @return string The database name.
      */
     public function getDatabase();
 
     /**
-     * Sets the database name.
+     * Sets the database name as parameter.
      *
-     * @param string $database The database name.
+     * @param string|null $database The database name (NULL to remove it).
      */
     public function setDatabase($database);
 
     /**
-     * Gets the connection host.
+     * Gets the host from the parameters.
      *
-     * @return string The connection host if it is defined else NULL.
+     * @return string|null The host if it is defined else NULL.
      */
     public function getHost();
 
     /**
-     * Sets the connection host.
+     * Sets the host as parameter.
      *
-     * @param string $host The connection host.
+     * @param string|null $host The host (NULL to remove it).
      */
     public function setHost($host);
 
     /**
-     * Gets the connection port.
+     * Gets the port from the parameters.
      *
-     * @return integer The connection port if it is defined else NULL.
+     * @return integer|null The port if it is defined else NULL.
      */
     public function getPort();
 
     /**
-     * Sets the connection port
+     * Sets the port as parameter.
      *
-     * @param integer $port The connection port.
+     * @param integer|null $port The port (NULL to remove it).
      */
     public function setPort($port);
 
     /**
-     * Gets the connection driver options.
+     * Gets the driver options from the parameters.
      *
-     * @return array The connection driver options.
+     * @return array The driver options.
      */
     public function getDriverOptions();
 
     /**
-     * Sets the connection driver options.
+     * Sets the driver options as parameter.
      *
-     * @param array $options The connection driver options.
+     * @param array|null $options The driver options (NULL to remove it).
      */
-    public function setDriverOptions(array $options);
+    public function setDriverOptions(array $options = null);
 
     /**
      * Gets the transaction level.
@@ -225,14 +238,14 @@ interface ConnectionInterface extends DriverConnectionInterface
     public function setTransactionIsolation($isolation);
 
     /**
-     * Sets the connection charset.
+     * Sets the charset.
      *
-     * @param string $charset The connection charset.
+     * @param string $charset The charset.
      */
     public function setCharset($charset);
 
     /**
-     * Checks if the connection with the database has been established.
+     * Checks if the connectionhas been established.
      *
      * @return boolean TRUE if the connection has been established else FALSE.
      */
@@ -322,13 +335,12 @@ interface ConnectionInterface extends DriverConnectionInterface
      *
      * @param string $tableName                The table name to update on.
      * @param array  $datas                    Associative array that describes column name => value pairs.
-     * @param array  $dataTypes                Associative array that describes column name => type pairs
-     *                                         (PDO or DBAL).
+     * @param array  $dataTypes                Associative array that describes column name => type pairs (PDO or DBAL).
      * @param string $expression               The update where expression.
      * @param array  $expressionParameters     Associative array that describes expression parameter name => value
      *                                         pairs.
-     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type
-     *                                         pairs (PDO or DBAL).
+     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type pairs
+     *                                         (PDO or DBAL).
      *
      * @return integer The number of affected rows.
      */
@@ -348,8 +360,8 @@ interface ConnectionInterface extends DriverConnectionInterface
      * @param string $expression               The delete where expression.
      * @param array  $expressionParameters     Associative array that describes expression parameter name => value
      *                                         pairs.
-     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type
-     *                                         pairs (PDO or DBAL).
+     * @param array  $expressionParameterTypes Associative array that describes expression parameter name => type pairs
+     *                                         (PDO or DBAL).
      *
      * @return integer The number of affected rows.
      */
