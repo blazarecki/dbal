@@ -521,7 +521,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
             $this->fail();
         } catch (\Exception $e) {
-            $this->assertSame($e->getCode(), $this->getConnection()->errorCode());
+            $this->assertTrue(ctype_digit($this->getConnection()->errorCode()));
         }
     }
 
@@ -535,7 +535,7 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
             $errorInfo = $this->getConnection()->errorInfo();
 
             $this->assertArrayHasKey(0, $errorInfo);
-            $this->assertSame($e->getCode(), $errorInfo[0]);
+            $this->assertTrue(ctype_digit($errorInfo[0]));
 
             $this->assertArrayHasKey(1, $errorInfo);
             $this->assertInternalType('int', $errorInfo[1]);

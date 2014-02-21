@@ -40,6 +40,10 @@ class PHPUnitUtility
      */
     public static function hasSettings($prefix)
     {
+        if (defined('HHVM_VERSION') && in_array($prefix, array(self::PDO_PGSQL, self::MYSQLI))) {
+            return false;
+        }
+
         $settings = static::retrieveSettings($prefix);
 
         return !empty($settings);
