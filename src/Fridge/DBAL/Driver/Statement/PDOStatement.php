@@ -25,7 +25,7 @@ class PDOStatement extends BaseStatement implements DriverStatementInterface
      *
      * @codeCoverageIgnore
      */
-    final private function __construct()
+    protected function __construct()
     {
 
     }

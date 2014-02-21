@@ -11,12 +11,11 @@
 
 namespace Fridge\DBAL\Driver;
 
+use Fridge\DBAL\Driver\Connection\HHVMConnection;
 use Fridge\DBAL\Driver\Connection\PDOConnection;
 
 /**
- * The abstract PDO driver allows to easily support driver PDO connections by adding the DSN notion.
- *
- * All drivers using a driver PDO connection must extend this class.
+ * The PDO driver allows to easily support PDO driver connections by adding the DSN notion.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -27,6 +26,10 @@ abstract class AbstractPDODriver extends AbstractDriver
      */
     public function connect(array $parameters, $username = null, $password = null, array $driverOptions = array())
     {
+        if (defined('HHVM_VERSION')) {
+            return new HHVMConnection($this->generateDSN($parameters), $username, $password, $driverOptions);
+        }
+
         return new PDOConnection($this->generateDSN($parameters), $username, $password, $driverOptions);
     }
 

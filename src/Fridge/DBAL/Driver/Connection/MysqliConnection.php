@@ -124,9 +124,7 @@ class MysqliConnection implements DriverConnectionInterface
      */
     public function query()
     {
-        $args = func_get_args();
-
-        $statement = $this->prepare($args[0]);
+        $statement = $this->prepare(func_get_arg(0));
         $statement->execute();
 
         return $statement;
