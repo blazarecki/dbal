@@ -417,9 +417,7 @@ class Connection implements ConnectionInterface
             $statement = $this->getDriverConnection()->query($query);
         }
 
-        if ($queryDebugger !== null) {
-            $this->debugQuery($queryDebugger);
-        }
+        $this->debugQuery($queryDebugger);
 
         return $statement;
     }
@@ -532,9 +530,7 @@ class Connection implements ConnectionInterface
             $affectedRows = $this->getDriverConnection()->exec($query);
         }
 
-        if ($queryDebugger !== null) {
-            $this->debugQuery($queryDebugger);
-        }
+        $this->debugQuery($queryDebugger);
 
         return $affectedRows;
     }
@@ -547,11 +543,11 @@ class Connection implements ConnectionInterface
         $this->transactionLevel++;
 
         if ($this->transactionLevel === 1) {
+            $queryDebugger = $this->createQueryDebugger('BEGIN TRANSACTION');
             $this->getDriverConnection()->beginTransaction();
+            $this->debugQuery($queryDebugger);
         } else {
-            $this->getDriverConnection()->exec(
-                $this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName())
-            );
+            $this->exec($this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName()));
         }
     }
 
@@ -567,11 +563,11 @@ class Connection implements ConnectionInterface
         }
 
         if ($this->transactionLevel === 1) {
+            $queryDebugger = $this->createQueryDebugger('COMMIT TRANSACTION');
             $this->getDriverConnection()->commit();
+            $this->debugQuery($queryDebugger);
         } else {
-            $this->getDriverConnection()->exec(
-                $this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName())
-            );
+            $this->exec($this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName()));
         }
 
         $this->transactionLevel--;
@@ -589,11 +585,11 @@ class Connection implements ConnectionInterface
         }
 
         if ($this->transactionLevel === 1) {
+            $queryDebugger = $this->createQueryDebugger('ROLLBACK TRANSACTION');
             $this->getDriverConnection()->rollBack();
+            $this->debugQuery($queryDebugger);
         } else {
-            $this->getDriverConnection()->exec(
-                $this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName())
-            );
+            $this->exec($this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName()));
         }
 
         $this->transactionLevel--;
@@ -622,7 +618,13 @@ class Connection implements ConnectionInterface
      */
     public function query()
     {
-        return call_user_func_array(array($this->getDriverConnection(), 'query'), func_get_args());
+        $args = func_get_args();
+
+        $queryDebugger = $this->createQueryDebugger($args[0]);
+        $statement = call_user_func_array(array($this->getDriverConnection(), 'query'), $args);
+        $this->debugQuery($queryDebugger);
+
+        return $statement;
     }
 
     /**
@@ -638,7 +640,11 @@ class Connection implements ConnectionInterface
      */
     public function exec($statement)
     {
-        return $this->getDriverConnection()->exec($statement);
+        $queryDebugger = $this->createQueryDebugger($statement);
+        $affectedRows = $this->getDriverConnection()->exec($statement);
+        $this->debugQuery($queryDebugger);
+
+        return $affectedRows;
     }
 
     /**
@@ -714,10 +720,14 @@ class Connection implements ConnectionInterface
     /**
      * Debugs a query.
      *
-     * @param \Fridge\DBAL\Debug\QueryDebugger $queryDebugger The query debugger.
+     * @param \Fridge\DBAL\Debug\QueryDebugger|null $queryDebugger The query debugger.
      */
-    private function debugQuery(QueryDebugger $queryDebugger)
+    private function debugQuery(QueryDebugger $queryDebugger = null)
     {
+        if ($queryDebugger === null) {
+            return;
+        }
+
         $queryDebugger->stop();
 
         $this->getConfiguration()->getEventDispatcher()->dispatch(

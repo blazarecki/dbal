@@ -108,35 +108,16 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
     public function testExecuteQueryDoesNotDispatchEventWithoutDebug()
     {
-        $this->getConnection()->connect();
-
-        $this->getConnection()
-            ->getConfiguration()
-            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
-
-        $eventDispatcherMock
-            ->expects($this->never())
-            ->method('dispatch');
+        $this->assertNoQueryDebug();
 
         $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
 
     public function testExecuteQueryDispatchEventWithDebug()
     {
-        $this->getConnection()->connect();
-
         $this->getConnection()->getConfiguration()->setDebug(true);
-        $this->getConnection()
-            ->getConfiguration()
-            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
 
-        $eventDispatcherMock
-            ->expects($this->once())
-            ->method('dispatch')
-            ->with(
-                $this->identicalTo(Events::QUERY_DEBUG),
-                $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
-            );
+        $this->assertQueryDebug();
 
         $this->getConnection()->executeQuery(self::getFixture()->getQuery());
     }
@@ -218,35 +199,16 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
     public function testExecuteUpdateDoesNotDispatchEventWithoutDebug()
     {
-        $this->getConnection()->connect();
-
-        $this->getConnection()
-            ->getConfiguration()
-            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
-
-        $eventDispatcherMock
-            ->expects($this->never())
-            ->method('dispatch');
+        $this->assertNoQueryDebug();
 
         $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
 
     public function testExecuteUpdateDispatchEventWithDebug()
     {
-        $this->getConnection()->connect();
-
         $this->getConnection()->getConfiguration()->setDebug(true);
-        $this->getConnection()
-            ->getConfiguration()
-            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
 
-        $eventDispatcherMock
-            ->expects($this->once())
-            ->method('dispatch')
-            ->with(
-                $this->equalTo(Events::QUERY_DEBUG),
-                $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
-            );
+        $this->assertQueryDebug();
 
         $this->getConnection()->executeUpdate(self::getFixture()->getUpdateQuery());
     }
@@ -417,6 +379,22 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $this->assertSame(1, $this->getConnection()->getTransactionLevel());
     }
 
+    public function testBeginTransactionDoesNotDispatchEventWithoutDebug()
+    {
+        $this->assertNoQueryDebug();
+
+        $this->getConnection()->beginTransaction();
+    }
+
+    public function testBeginTransactionDispatchEventWithDebug()
+    {
+        $this->getConnection()->getConfiguration()->setDebug(true);
+
+        $this->assertQueryDebug();
+
+        $this->getConnection()->beginTransaction();
+    }
+
     public function testTransactionWithCommit()
     {
         $this->getConnection()->beginTransaction();
@@ -426,6 +404,25 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         $this->assertSame(0, $this->getConnection()->getTransactionLevel());
     }
 
+    public function testTransactionWithCommitDoesNotDispatchEventWithoutDebug()
+    {
+        $this->getConnection()->beginTransaction();
+
+        $this->assertNoQueryDebug();
+
+        $this->getConnection()->commit();
+    }
+
+    public function testTransactionWithCommitDispatchEventWithDebug()
+    {
+        $this->getConnection()->beginTransaction();
+        $this->getConnection()->getConfiguration()->setDebug(true);
+
+        $this->assertQueryDebug();
+
+        $this->getConnection()->commit();
+    }
+
     public function testTransactionWithRollback()
     {
         $this->getConnection()->beginTransaction();
@@ -433,6 +430,25 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
         $this->assertFalse($this->getConnection()->inTransaction());
         $this->assertSame(0, $this->getConnection()->getTransactionLevel());
+    }
+
+    public function testTransactionWithRollbackDoesNotDispatchEventWithoutDebug()
+    {
+        $this->getConnection()->beginTransaction();
+
+        $this->assertNoQueryDebug();
+
+        $this->getConnection()->rollBack();
+    }
+
+    public function testTransactionWithRollbackDispatchEventWithDebug()
+    {
+        $this->getConnection()->beginTransaction();
+        $this->getConnection()->getConfiguration()->setDebug(true);
+
+        $this->assertQueryDebug();
+
+        $this->getConnection()->rollBack();
     }
 
     public function testNestedTransactionWithCommit()
@@ -496,6 +512,28 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
         );
     }
 
+    public function testQueryDoesNotDispatchEventWithoutDebug()
+    {
+        $this->assertNoQueryDebug();
+
+        $this->assertQueryResult(
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->query(self::getFixture()->getQuery())->fetch(\PDO::FETCH_ASSOC)
+        );
+    }
+
+    public function testQueryDispatchEventWithDebug()
+    {
+        $this->getConnection()->getConfiguration()->setDebug(true);
+
+        $this->assertQueryDebug();
+
+        $this->assertQueryResult(
+            self::getFixture()->getQueryResult(),
+            $this->getConnection()->query(self::getFixture()->getQuery())->fetch(\PDO::FETCH_ASSOC)
+        );
+    }
+
     public function testPrepare()
     {
         $this->assertInstanceOf(
@@ -506,6 +544,22 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
 
     public function testExec()
     {
+        $this->assertUpdateResult($this->getConnection()->exec(self::getFixture()->getUpdateQuery()));
+    }
+
+    public function testExecDoesNotDispatchEventWithoutDebug()
+    {
+        $this->assertNoQueryDebug();
+
+        $this->assertUpdateResult($this->getConnection()->exec(self::getFixture()->getUpdateQuery()));
+    }
+
+     public function testExecDispatchEventWithDebug()
+    {
+        $this->getConnection()->getConfiguration()->setDebug(true);
+
+        $this->assertQueryDebug();
+
         $this->assertUpdateResult($this->getConnection()->exec(self::getFixture()->getUpdateQuery()));
     }
 
@@ -585,5 +639,41 @@ abstract class AbstractConnectionTest extends AbstractConnectionTestCase
     private function assertUpdateResult($actual)
     {
         $this->assertSame(1, $actual);
+    }
+
+    /**
+     * Asserts a query debug.
+     */
+    private function assertQueryDebug()
+    {
+        $this->getConnection()->connect();
+
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
+
+        $eventDispatcherMock
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(
+                $this->identicalTo(Events::QUERY_DEBUG),
+                $this->isInstanceOf('Fridge\DBAL\Event\QueryDebugEvent')
+            );
+    }
+
+    /**
+     * Asserts no query debug.
+     */
+    private function assertNoQueryDebug()
+    {
+        $this->getConnection()->connect();
+
+        $this->getConnection()
+            ->getConfiguration()
+            ->setEventDispatcher($eventDispatcherMock = $this->createEventDispatcherMock());
+
+        $eventDispatcherMock
+            ->expects($this->never())
+            ->method('dispatch');
     }
 }
