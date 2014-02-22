@@ -8,13 +8,16 @@ php:
     - 5.6
     - hhvm
 
+env:
+    - PHPUNIT_CONFIG=phpunit.xml.dist
+    - PHPUNIT_CONFIG=phpunit.travis.xml
+
 before_script:
     - composer self-update
     - composer install --prefer-source
 
 script:
-    - bin/phpunit
-    - bin/phpunit --configuration phpunit.travis.xml
+    - bin/phpunit --configuration $PHPUNIT_CONFIG
 
 notifications:
     email: geloen.eric@gmail.com
