@@ -38,7 +38,7 @@ class ConnectionFactory
      */
     public static function getAvailableDrivers()
     {
-        return array_keys(static::$mappedDriverClasses);
+        return array_keys(self::$mappedDriverClasses);
     }
 
     /**
@@ -84,13 +84,13 @@ class ConnectionFactory
 
             $driverClass = $parameters['driver_class'];
         } elseif (isset($parameters['driver'])) {
-            if (!isset(static::$mappedDriverClasses[$parameters['driver']])) {
-                throw FactoryException::driverDoesNotExist($parameters['driver'], static::getAvailableDrivers());
+            if (!isset(self::$mappedDriverClasses[$parameters['driver']])) {
+                throw FactoryException::driverDoesNotExist($parameters['driver'], self::getAvailableDrivers());
             }
 
-            $driverClass = static::$mappedDriverClasses[$parameters['driver']];
+            $driverClass = self::$mappedDriverClasses[$parameters['driver']];
         } else {
-            throw FactoryException::driverRequired(static::getAvailableDrivers());
+            throw FactoryException::driverRequired(self::getAvailableDrivers());
         }
 
         if (isset($parameters['connection_class'])) {
