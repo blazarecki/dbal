@@ -42,10 +42,11 @@ class QueryDebugger
      */
     public function __construct($query, array $parameters, array $types)
     {
-        $this->start = microtime(true);
         $this->query = $query;
         $this->parameters = $parameters;
         $this->types = $types;
+
+        $this->start = microtime(true);
     }
 
     /**
