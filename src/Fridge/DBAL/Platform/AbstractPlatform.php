@@ -179,8 +179,7 @@ abstract class AbstractPlatform implements PlatformInterface
             throw PlatformException::customTypeDoesNotExist($type);
         }
 
-        $index = array_search($type, $this->customTypes);
-        unset($this->customTypes[$index]);
+        unset($this->customTypes[array_search($type, $this->customTypes)]);
     }
 
     /**
