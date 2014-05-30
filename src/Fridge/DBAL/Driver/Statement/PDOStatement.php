@@ -14,7 +14,7 @@ namespace Fridge\DBAL\Driver\Statement;
 use PDOStatement as BaseStatement;
 
 /**
- * {@inheritdoc}
+ * PDO driver statement.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

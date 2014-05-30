@@ -17,8 +17,6 @@ use Fridge\DBAL\Connection\ConnectionInterface;
  * A driver allows to connect to a database by instantiating a driver connection object.
  * Additionally, it retrieves the associated platform and schema manager.
  *
- * All drivers must implement this interface.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 interface DriverInterface

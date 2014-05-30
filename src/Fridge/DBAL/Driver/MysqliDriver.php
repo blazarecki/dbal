@@ -17,7 +17,7 @@ use Fridge\DBAL\Platform\MySQLPlatform;
 use Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 
 /**
- * The Mysqli driver.
+ * Mysqli driver.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

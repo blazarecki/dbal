@@ -14,8 +14,6 @@ namespace Fridge\DBAL\Query\Rewriter;
 /**
  * Rewrites a query in order to expand it according to the Connection::PARAM_ARRAY.
  *
- * This implementation can rewrite a positional or named query.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class QueryRewriter

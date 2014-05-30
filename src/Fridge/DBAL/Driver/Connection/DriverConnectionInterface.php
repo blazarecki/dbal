@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Driver\Connection;
 
 /**
- * Driver connection.
+ * Driver connection around PDO.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

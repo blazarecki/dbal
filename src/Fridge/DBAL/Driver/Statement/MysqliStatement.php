@@ -15,7 +15,7 @@ use Fridge\DBAL\Driver\Connection\MysqliConnection;
 use Fridge\DBAL\Exception\MysqliException;
 
 /**
- * {@inheritdoc}
+ * Mysqli driver statement.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

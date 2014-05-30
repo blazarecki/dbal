@@ -25,9 +25,7 @@ use Fridge\DBAL\Schema\Table;
 use Fridge\DBAL\Schema\View;
 
 /**
- * A platform allows to know each specific database behaviors.
- *
- * All platforms must implement this interface.
+ * A platform describes a specific database behavior.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

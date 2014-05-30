@@ -12,14 +12,14 @@
 namespace Fridge\DBAL\Driver\Connection;
 
 /**
- * {@inheritdoc}
+ * HHVM driver connection.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class HHVMConnection extends \PDO implements DriverConnectionInterface
 {
     /**
-     * Creates a PDO connection.
+     * Creates an HHVM connection.
      *
      * @param string $dsn           The database DSN.
      * @param string $username      The database username.

@@ -14,7 +14,7 @@ namespace Fridge\DBAL\Driver;
 use Fridge\DBAL\Connection\ConnectionInterface;
 
 /**
- * The abstract driver wraps the platform and the schema manager.
+ * Abstract driver.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

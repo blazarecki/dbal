@@ -29,9 +29,7 @@ use Fridge\DBAL\Schema\View;
 use Fridge\DBAL\Type\Type;
 
 /**
- * {@inheritdoc}
- *
- * All platforms must extend this class.
+ * Abstract platform.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -50,7 +48,7 @@ abstract class AbstractPlatform implements PlatformInterface
     private $fallbackMappedType = Type::TEXT;
 
     /**
-     * Platform constructor.
+     * Creates a platform.
      */
     public function __construct()
     {
@@ -76,7 +74,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\PlatformException If te mapped type does not exist.
+     * @throws \Fridge\DBAL\Exception\PlatformException If the mapped type does not exist.
      */
     public function getMappedType($type)
     {

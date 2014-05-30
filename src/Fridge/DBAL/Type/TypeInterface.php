@@ -16,8 +16,6 @@ use Fridge\DBAL\Platform\PlatformInterface;
 /**
  * Represents a generic database type.
  *
- * All types must implement this interface.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 interface TypeInterface

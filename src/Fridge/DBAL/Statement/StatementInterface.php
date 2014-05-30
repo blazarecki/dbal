@@ -16,8 +16,6 @@ use Fridge\DBAL\Driver\Statement\DriverStatementInterface;
 /**
  * Statement.
  *
- * All statements must implement this interface.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 interface StatementInterface extends DriverStatementInterface
@@ -30,9 +28,9 @@ interface StatementInterface extends DriverStatementInterface
     public function getDriverStatement();
 
     /**
-     * Gets the connection linked to the statement.
+     * Gets the connection.
      *
-     * @return \Fridge\DBAL\Connection\ConnectionInterface The connection linked to the statement.
+     * @return \Fridge\DBAL\Connection\ConnectionInterface The connection.
      */
     public function getConnection();
 

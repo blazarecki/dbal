@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Event;
 
 /**
- * Describes the available events.
+ * Fridge DBAL events.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Query\Expression;
 
 /**
- * An expression builder allows to easily build "WHERE" or "HAVING" expressions.
+ * An expression builder allows to easily build expressions.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

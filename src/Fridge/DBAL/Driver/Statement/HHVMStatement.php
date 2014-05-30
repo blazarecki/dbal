@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Driver\Statement;
 
 /**
- * {@inheritdoc}
+ * HHVM driver statement.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

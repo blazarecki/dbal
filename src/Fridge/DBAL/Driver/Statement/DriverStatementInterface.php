@@ -12,9 +12,7 @@
 namespace Fridge\DBAL\Driver\Statement;
 
 /**
- * Low-level class representing a prepared SQL statement.
- *
- * All driver statements must implement this interface.
+ * Driver statement around PDO.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

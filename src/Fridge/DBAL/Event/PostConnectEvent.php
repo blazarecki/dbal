@@ -15,7 +15,7 @@ use Fridge\DBAL\Connection\ConnectionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This event is dispatched after a connection has been established with the database.
+ * Event dispatched just after a connection has been established.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

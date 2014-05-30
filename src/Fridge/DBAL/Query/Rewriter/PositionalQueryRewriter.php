@@ -14,9 +14,7 @@ namespace Fridge\DBAL\Query\Rewriter;
 use Fridge\DBAL\Exception\QueryRewriterException;
 
 /**
- * {@inheritdoc}
- *
- * This implementation can only rewrite a positional query.
+ * Rewrites a positional query in order to expand it according to the Connection::PARAM_ARRAY ([]).
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

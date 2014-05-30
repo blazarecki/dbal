@@ -28,8 +28,6 @@ use Fridge\DBAL\Schema\View;
 /**
  * A schema manager allows to fetch / create / drop schema entities.
  *
- * All schema managers must implement this interface.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 interface SchemaManagerInterface

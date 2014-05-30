@@ -15,7 +15,7 @@ use Fridge\DBAL\Debug\QueryDebugger;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Query debug event which wraps the query debugger.
+ * Event dispatched when a query is debugged.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

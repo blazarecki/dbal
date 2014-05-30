@@ -15,7 +15,7 @@ use Fridge\DBAL\Driver\Connection\HHVMConnection;
 use Fridge\DBAL\Driver\Connection\PDOConnection;
 
 /**
- * The PDO driver allows to easily support PDO driver connections by adding the DSN notion.
+ * Abstract PDO driver.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

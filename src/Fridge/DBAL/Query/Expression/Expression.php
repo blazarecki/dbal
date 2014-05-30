@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Query\Expression;
 
 /**
- * An expression groups simple expression according to a type (AND, OR).
+ * An expression groups other expressions known as parts according to a type (AND, OR).
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

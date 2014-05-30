@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Debug;
 
 /**
- * Debugs the execution time of a query.
+ * Query debugger.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -34,7 +34,7 @@ class QueryDebugger
     private $start;
 
     /**
-     * Creates & starts the debug.
+     * Creates and starts a query debugger.
      *
      * @param string $query      The debugged query
      * @param array  $parameters The debugged parameters.

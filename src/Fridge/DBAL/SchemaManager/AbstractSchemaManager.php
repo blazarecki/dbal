@@ -28,9 +28,7 @@ use Fridge\DBAL\Schema\View;
 use Fridge\DBAL\Type\Type;
 
 /**
- * {@inheritdoc}
- *
- * All schema managers must extend this class.
+ * Abstract schema manager.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
