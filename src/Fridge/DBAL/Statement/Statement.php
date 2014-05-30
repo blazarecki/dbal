@@ -19,7 +19,7 @@ use Fridge\DBAL\Type\TypeUtility;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Statement implements StatementInterface, \IteratorAggregate
+class Statement implements StatementInterface
 {
     /** @var \Fridge\DBAL\Driver\Statement\DriverStatementInterface */
     private $driverStatement;

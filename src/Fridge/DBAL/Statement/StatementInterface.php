@@ -18,7 +18,7 @@ use Fridge\DBAL\Driver\Statement\DriverStatementInterface;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface StatementInterface extends DriverStatementInterface
+interface StatementInterface extends DriverStatementInterface, \IteratorAggregate
 {
     /**
      * Gets the driver statement.
